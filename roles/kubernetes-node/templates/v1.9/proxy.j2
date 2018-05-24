@@ -1,0 +1,10 @@
+###
+# kubernetes proxy config
+
+# default config should be adequate
+
+# Add your own!
+KUBE_PROXY_ARGS="--bind-address={{ inventory_hostname }} \
+                 --hostname-override={{ inventory_hostname }} \
+		 --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+		 --cluster-cidr={{ service_cluster_ip_range }}"

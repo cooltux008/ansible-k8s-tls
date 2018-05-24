@@ -1,0 +1,20 @@
+---
+- name: create dir /etc/kubernetes/ssl
+  file:
+    path: /etc/kubernetes/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync ssl certs
+  copy:
+    src: "ssl/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
+    - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
+    - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }

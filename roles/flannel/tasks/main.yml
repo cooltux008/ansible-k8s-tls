@@ -1,0 +1,3 @@
+---
+- import_tasks: flannel_{{ install_or_uninstall }}.yml
+  tags: flannel

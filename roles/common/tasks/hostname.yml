@@ -1,0 +1,4 @@
+---
+- name: set hostname
+  hostname: 
+    name: "{{ hostname_prefix }}-{{ inventory_hostname.split('.')[2:] | join('-') }}"

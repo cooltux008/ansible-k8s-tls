@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes-master
+  roles:
+    - flannel
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+  tags: flannel

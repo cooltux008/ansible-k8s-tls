@@ -1,0 +1,8 @@
+---
+- name: fetch kubectl binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ kubernetes_binary_url }}/kubectl"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755

@@ -1,0 +1,3 @@
+---
+- import_tasks: "kubernetes-master_{{ install_or_uninstall }}.yml"
+  tags: kubernetes-master

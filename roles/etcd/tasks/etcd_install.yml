@@ -1,0 +1,93 @@
+---
+- name: create dir /etc/kubernetes/ssl
+  file:
+    path: /etc/kubernetes/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync pems to /etc/kubernetes/ssl
+  copy:
+    src: ssl/{{ item }}
+    dest: /etc/kubernetes/ssl/
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - kubernetes.pem
+    - kubernetes-key.pem
+    - ca.pem
+
+- name: add etcd group
+  group:
+    name: etcd
+    state: present
+
+- name: add etcd user
+  user:
+    name: etcd
+    shell: /sbin/nologin
+    groups: etcd
+    append: yes
+
+- name: download etcd binary
+  get_url:
+    url: "{{ etcd_bin_tar_url }}"
+    dest: /tmp
+
+- name: unarchive etcd tar
+  unarchive:
+    remote_src: yes
+    src: /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+    dest: /tmp
+
+- name: move etcd,etcdctl to PATH
+  copy:
+    remote_src: yes
+    src: /tmp/etcd-{{ etcd_version }}-linux-amd64/{{ item }}
+    dest: /usr/bin
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - etcd
+    - etcdctl
+
+- name: create etcd data directory
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: etcd
+    group: etcd
+    mode: 0755
+  with_items: 
+    - /var/lib/etcd
+    - /etc/etcd
+
+- name: create /lib/systemd/system/etcd.service
+  template:
+    src: etcd.service.j2
+    dest: /lib/systemd/system/etcd.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: /etc/etcd/etcd.conf
+  template: 
+    src: etcd.conf.j2 
+    dest: /etc/etcd//etcd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart etcd
+
+- name: start etcd
+  service: 
+    name: etcd
+    state: started 
+    enabled: yes

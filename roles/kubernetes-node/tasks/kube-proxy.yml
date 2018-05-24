@@ -1,0 +1,32 @@
+---
+- name: fetch kube-proxy binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ kubernetes_binary_url }}/kube-proxy"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart kube-proxy
+
+- name: create kube-proxy configuration
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
+    - { src: 'proxy.j2', dest: '/etc/kubernetes/proxy' }
+    - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
+  notify: restart kube-proxy
+
+- name: systemd daemon-reload
+  systemd: 
+    daemon-reload: yes
+
+- name: start kube-proxy
+  service: 
+    name: kube-proxy
+    state: started 
+    enabled: yes

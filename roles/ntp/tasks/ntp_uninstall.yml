@@ -1,0 +1,17 @@
+---
+- name: stop chrony
+  service: 
+    name: chronyd
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: uninstall chrony
+  yum:
+    name: chrony
+    state: absent
+
+- name: remove chrony user
+  user:
+    name: chrony
+    state: absent

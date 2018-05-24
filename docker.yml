@@ -1,0 +1,10 @@
+---
+- hosts: 
+    - kubernetes-master
+    - kubernetes-node
+  roles:
+    - docker
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+  tags: docker

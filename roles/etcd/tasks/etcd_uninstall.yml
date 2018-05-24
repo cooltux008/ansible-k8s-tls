@@ -1,0 +1,33 @@
+---
+- name: stop etcd
+  service: 
+    name: etcd
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: remove etcd group
+  group:
+    name: etcd
+    state: absent
+
+- name: remove etcd user
+  user:
+    name: etcd
+    state: absent
+
+- name: remove etcd 
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/bin/etcd
+    - /usr/bin/etcdctl
+    - /tmp/etcd-{{ etcd_version }}-linux-amd64
+    - /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+    - /var/lib/etcd
+    - /etc/etcd
+    - /lib/systemd/system/etcd.service
+    - /etc/kubernetes/ssl/kubernetes.pem
+    - /etc/kubernetes/ssl/kubernetes-key.pem
+    - /etc/kubernetes/ssl/ca.pem

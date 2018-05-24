@@ -1,0 +1,9 @@
+---
+#bridge vars
+bridge1:
+  name: br0
+  netmask: 24
+  gateway: 192.168.130.2
+  dns1: 114.114.114.114
+  dns2: 8.8.8.8
+  ifname1: ens33

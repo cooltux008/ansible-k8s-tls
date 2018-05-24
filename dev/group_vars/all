@@ -1,0 +1,44 @@
+---
+#########################################################
+timezone: Asia/Shanghai
+ntp_server: ntp1.aliyun.com
+domain_name: example.com
+hostname_prefix: node
+#########################################################
+
+
+#########################################################
+## etcd ##
+etcd_version: v3.3.5
+etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+#########################################################
+
+
+
+#########################################################
+## docker ##
+centos7_yum_url: http://192.168.130.1/ftp/centos7
+docker_yum_url: http://192.168.130.1/ftp/linux_soft/yum/docker
+docker_version: 1.12.6
+docker_registry: 192.168.130.1:5000
+kube_repo_prefix: "{{ docker_registry }}/google_containers"
+kube_hyperkube_image: "{{ docker_registry }}/google_containers/hyperkube-amd64:v1.9.0"
+pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
+#########################################################
+
+#########################################################
+## network ##
+network_pod_cluster_cidr: 172.30.0.0/16
+cni: flannel
+#########################################################
+
+
+#########################################################
+## k8s ##
+service_cluster_ip_range: 10.254.0.0/12
+kubernetes_version: v1.9.8
+kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
+kubernetes_master_cluster_ip: 192.168.130.11
+kubernetes_master_cluster_port: 8080
+kubernetes_apiserver: http://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
+#########################################################

@@ -1,0 +1,46 @@
+---
+- name: add kube group
+  group:
+    name: kube
+    state: present
+    system: yes
+            
+- name: add kube user
+  user:
+    name: kube
+    shell: /sbin/nologin
+    groups: kube
+    append: yes
+    system: yes
+
+- name: fetch kube-apiserver binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ kubernetes_binary_url }}/kube-apiserver"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart kube-apiserver
+
+- name: create kube-apiserver configuration
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
+    - { src: 'apiserver.j2', dest: '/etc/kubernetes/apiserver' }
+    - { src: 'kube-apiserver.service.j2', dest: '/lib/systemd/system/kube-apiserver.service' }
+  notify: restart kube-apiserver
+
+- name: systemd daemon-reload
+  systemd: 
+    daemon-reload: yes
+
+- name: start kube-apiserver
+  service: 
+    name: kube-apiserver
+    state: started 
+    enabled: yes

@@ -1,0 +1,29 @@
+---
+- name: stop kubernetes-node 
+  service: 
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  with_items: 
+    - kubelet
+    - kube-proxy
+  ignore_errors: true
+
+- name: remove kubernetes-node directories & configurations
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/local/bin/kubelet
+    - /usr/local/bin/kube-proxy
+    - /etc/kubernetes/kubelet
+    - /etc/kubernetes/proxy
+    - /lib/systemd/system/kubelet.service
+    - /lib/systemd/system/kube-proxy.service
+    - /var/lib/kubelet
+
+- name: uninstall conntrack-tools
+  yum: 
+    name: conntrack-tools
+    state: absent
+    update_cache: yes

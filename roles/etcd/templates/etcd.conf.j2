@@ -1,0 +1,10 @@
+# [member]
+ETCD_NAME="{{ hostname_prefix }}-{{ inventory_hostname.split('.')[2:] | join('-') }}"
+ETCD_DATA_DIR="/var/lib/etcd"
+ETCD_LISTEN_PEER_URLS="https://{{ inventory_hostname }}:2380"
+ETCD_LISTEN_CLIENT_URLS="https://0.0.0.0:2379"
+
+#[cluster]
+ETCD_INITIAL_ADVERTISE_PEER_URLS="https://{{ inventory_hostname }}:2380"
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+ETCD_ADVERTISE_CLIENT_URLS="https://{{ inventory_hostname }}:2379"

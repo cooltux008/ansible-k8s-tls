@@ -1,0 +1,11 @@
+---
+- import_tasks: ssl.yml
+  tags: ssl
+- import_tasks: kube-apiserver.yml
+  tags: kube-apiserver
+- import_tasks: kube-controller-manager.yml
+  tags: kube-controller-manager
+- import_tasks: kube-scheduler.yml
+  tags: kube-scheduler
+- import_tasks: clusterrolebinding.yml
+  tags: clusterrolebinding

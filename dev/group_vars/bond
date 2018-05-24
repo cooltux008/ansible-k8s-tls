@@ -1,0 +1,17 @@
+---
+#bond vars
+nmcli_bond1:
+  conn_name: tenant
+  gw4: 192.168.130.2
+  dns4: 
+    - 114.114.114.114
+    - 8.8.8.8
+  mode: balance-alb
+  ifname1: ens33
+  ifname2: ens37
+nmcli_bond2:
+  conn_name: storage
+  gw4: 172.16.19.2
+  mode: balance-alb
+  ifname1: ens38
+  ifname2: ens39

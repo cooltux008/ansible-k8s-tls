@@ -1,0 +1,31 @@
+---
+- name: fetch kube-controller-manager binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ kubernetes_binary_url }}/kube-controller-manager"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart kube-controller-manager
+
+- name: create kube-controller-manager configration
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'controller-manager.j2', dest: '/etc/kubernetes/controller-manager' }
+    - { src: 'kube-controller-manager.service.j2', dest: '/lib/systemd/system/kube-controller-manager.service' }
+  notify: restart kube-controller-manager
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start kube-controller-manager
+  service: 
+    name: kube-controller-manager
+    state: started 
+    enabled: yes

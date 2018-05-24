@@ -1,0 +1,31 @@
+---
+- name: fetch kube-scheduler binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ kubernetes_binary_url }}/kube-scheduler"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart kube-scheduler
+
+- name: create kube-scheduler configuration
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'scheduler.j2', dest: '/etc/kubernetes/scheduler' }
+    - { src: 'kube-scheduler.service.j2', dest: '/lib/systemd/system/kube-scheduler.service' }
+  notify: restart kube-scheduler
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start kube-scheduler
+  service: 
+    name: kube-scheduler
+    state: started 
+    enabled: yes

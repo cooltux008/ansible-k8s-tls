@@ -1,0 +1,22 @@
+---
+- hosts: etcd
+  tasks:
+    - name: is network_pod_cluster_cidr exists ?
+      shell: >
+             etcdctl --endpoints="{% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}" \
+             --ca-file=/etc/kubernetes/ssl/ca.pem \
+             --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+             --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+             get /kube-centos/network/config
+      register: cidr_state
+      ignore_errors: true
+    - set_fact: CIDR_STATE={{ cidr_state.stdout }}
+    
+    - name: create network_pod_cluster_cidr
+      shell: >
+             etcdctl --endpoints="{% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}" \
+             --ca-file=/etc/kubernetes/ssl/ca.pem \
+             --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+             --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+             mk /kube-centos/network/config '{"Network":"{{ network_pod_cluster_cidr }}","SubnetLen":24,"Backend":{"Type":"host-gw"}}'
+      when: CIDR_STATE

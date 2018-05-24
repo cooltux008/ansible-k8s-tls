@@ -1,0 +1,13 @@
+---
+- name: is clusterrolebinding kubelet-bootstrap exists ?
+  shell: kubectl get clusterrolebinding kubelet-bootstrap
+  register: role_state
+  ignore_errors: true
+- set_fact: ROLE_STATE={{ role_state.stdout }}
+  
+- name: create clusterrolebinding kubelet-bootstrap
+  shell: >
+         kubectl create clusterrolebinding kubelet-bootstrap \
+         --clusterrole=system:node-bootstrapper \
+         --user=kubelet-bootstrap
+  when: not ROLE_STATE
