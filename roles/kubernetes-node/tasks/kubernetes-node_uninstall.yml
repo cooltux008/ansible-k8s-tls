@@ -9,6 +9,17 @@
     - kube-proxy
   ignore_errors: true
 
+- name: filter mounted container dirs
+  shell: df
+  register: df_result
+
+- set_fact: DF_RESULT={{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}
+- name: unmount left pods
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  with_items: "{{ DF_RESULT }}"
+
 - name: remove kubernetes-node directories & configurations
   file:
     path: "{{ item }}"
@@ -27,3 +38,11 @@
     name: conntrack-tools
     state: absent
     update_cache: yes
+
+- name: delete calico 
+  shell: >
+         kubectl -s {{ kubernetes_apiserver }} -n kube-system delete secrets calico-etcd-secrets \
+         && ip link set dev tunl0 down \
+         && ip link delete tunl0
+  ignore_errors: true
+

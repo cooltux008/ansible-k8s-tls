@@ -6,3 +6,21 @@
     owner: root
     group: root
     mode: 0755
+
+- name: create dir ~/.kube/
+  file:
+    path: ~/.kube/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync ~/.kube/config
+  copy:
+    src: "ssl/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'admin.kubeconfig', dest: '~/.kube/config' }

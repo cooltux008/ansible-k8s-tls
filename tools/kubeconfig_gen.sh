@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-export ssl_dir='.'
+export tls_dir='.'
 
 
 export BOOTSTRAP_TOKEN=$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
@@ -18,7 +18,7 @@ export KUBE_APISERVER="https://192.168.130.11:6443"
 ################################################
 # 设置集群参数
 kubectl config set-cluster kubernetes \
-  --certificate-authority=$ssl_dir/ca.pem \
+  --certificate-authority=$tls_dir/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
   --kubeconfig=bootstrap.kubeconfig
@@ -42,14 +42,14 @@ kubectl config use-context default --kubeconfig=bootstrap.kubeconfig
 ################################################
 # 设置集群参数
 kubectl config set-cluster kubernetes \
-  --certificate-authority=$ssl_dir/ca.pem \
+  --certificate-authority=$tls_dir/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
   --kubeconfig=kube-proxy.kubeconfig
 # 设置客户端认证参数
 kubectl config set-credentials kube-proxy \
-  --client-certificate=$ssl_dir/kube-proxy.pem \
-  --client-key=$ssl_dir/kube-proxy-key.pem \
+  --client-certificate=$tls_dir/kube-proxy.pem \
+  --client-key=$tls_dir/kube-proxy-key.pem \
   --embed-certs=true \
   --kubeconfig=kube-proxy.kubeconfig
 # 设置上下文参数
@@ -61,24 +61,24 @@ kubectl config set-context default \
 kubectl config use-context default --kubeconfig=kube-proxy.kubeconfig
 
 ################################################
-## kubelet.kubeconfig ##
+## admin.kubeconfig ##
 ################################################
 # 设置集群参数
 kubectl config set-cluster kubernetes \
-  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
+  --certificate-authority=$tls_dir/ca.pem \
   --embed-certs=true \
   --server=${KUBE_APISERVER} \
-  --kubeconfig=kubelet.kubeconfig
+  --kubeconfig=admin.kubeconfig
 # 设置客户端认证参数
-kubectl config set-credentials kubelet \
-  --client-certificate=/etc/kubernetes/ssl/kubelet.pem \
-  --client-key=/etc/kubernetes/ssl/kubelet-key.pem \
+kubectl config set-credentials admin \
+  --client-certificate=$tls_dir/admin.pem \
+  --client-key=$tls_dir/admin-key.pem \
   --embed-certs=true \
-  --kubeconfig=kubelet.kubeconfig
+  --kubeconfig=admin.kubeconfig
 # 设置上下文参数
 kubectl config set-context default \
   --cluster=kubernetes \
-  --user=kubelet \
-  --kubeconfig=kubelet.kubeconfig
+  --user=admin \
+  --kubeconfig=admin.kubeconfig
 # 设置默认上下文
-kubectl config use-context default --kubeconfig=kubelet.kubeconfig
+kubectl config use-context default --kubeconfig=admin.kubeconfig

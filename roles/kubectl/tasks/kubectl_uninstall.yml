@@ -5,3 +5,4 @@
     state: absent
   with_items:
     - /usr/local/bin/kubectl
+    - ~/.kube/

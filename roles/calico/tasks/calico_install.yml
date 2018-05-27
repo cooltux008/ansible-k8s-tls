@@ -1,0 +1,75 @@
+---
+- name: create calico yaml dir
+  file:
+    path: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync etcd pems
+  copy:
+    src: ssl/{{ item.src }}
+    dest: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: kubernetes.pem, dest: etcd-cert }
+    - { src: kubernetes-key.pem, dest: etcd-key }
+    - { src: ca.pem, dest: etcd-ca }
+
+- name: check calico-etcd-secrets
+  shell: kubectl -s {{ kubernetes_apiserver }} -n kube-system get secrets calico-etcd-secrets
+  register: secrets_result
+  ignore_errors: true
+
+- name: create calico-etcd-secrets
+  shell: >
+         kubectl -s {{ kubernetes_apiserver }} -n kube-system \
+         create secret generic calico-etcd-secrets \
+         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-cert \
+         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-key \
+         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-ca
+  when: secrets_result.rc != 0
+  ignore_errors: true
+
+- name: sync calico yaml
+  template: 
+    src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: calico.yaml.j2, dest: calico.yaml }
+    - { src: rbac.yaml.j2, dest: rbac.yaml }
+  notify: apply calico
+
+- name: create calicoctl config dir
+  file:
+    path: /etc/calico/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: fetch calicoctl binary to PATH(/usr/local/bin)
+  get_url:
+    url: "{{ calicoctl_binary_url }}/calicoctl"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync calico_ipv4pool_cidr.yaml
+  template:
+    src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: calico_ipv4pool_cidr.yaml.j2, dest: "/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml" }
+    - { src: calicoctl.cfg.j2, dest: "/etc/calico/calicoctl.cfg" }
+  notify: add calico-k8s-network

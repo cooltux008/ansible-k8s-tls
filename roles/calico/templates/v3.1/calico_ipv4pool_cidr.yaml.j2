@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ipPool
+metadata:
+  cidr: "{{ network_pod_cluster_cidr }}"
+spec:
+  ipip:
+    enabled: true
+    mode: cross-subnet
+  nat-outgoing: true
+  disabled: false

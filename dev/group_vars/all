@@ -21,15 +21,17 @@ centos7_yum_url: http://192.168.130.1/ftp/centos7
 docker_yum_url: http://192.168.130.1/ftp/linux_soft/yum/docker
 docker_version: 1.12.6
 docker_registry: 192.168.130.1:5000
-kube_repo_prefix: "{{ docker_registry }}/google_containers"
-kube_hyperkube_image: "{{ docker_registry }}/google_containers/hyperkube-amd64:v1.9.0"
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
 #########################################################
 
 #########################################################
 ## network ##
 network_pod_cluster_cidr: 172.30.0.0/16
-cni: flannel
+calico_version: v3.1.1
+calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
+calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
+calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
+calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/v1.11.1
 #########################################################
 
 
