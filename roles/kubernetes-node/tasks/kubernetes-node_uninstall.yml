@@ -38,10 +38,9 @@
     state: absent
     update_cache: yes
 
-- name: delete calico 
+- name: delete tunl0
   shell: >
-         kubectl -s {{ kubernetes_apiserver }} -n kube-system delete secrets calico-etcd-secrets \
-         && ip link set dev tunl0 down \
+         ip link set dev tunl0 down \
          && ip link delete tunl0
   ignore_errors: true
 

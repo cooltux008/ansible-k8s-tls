@@ -1,4 +1,5 @@
 ---
+- import_playbook: kubedns.yml
 - import_playbook: calico.yml
 - import_playbook: kubernetes-node.yml
 - import_playbook: kubernetes-master.yml
