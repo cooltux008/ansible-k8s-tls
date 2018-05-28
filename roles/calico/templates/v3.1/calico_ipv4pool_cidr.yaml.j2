@@ -1,10 +1,9 @@
-apiVersion: v1
-kind: ipPool
+apiVersion: projectcalico.org/v3
+kind: IPPool
 metadata:
-  cidr: "{{ pod_cidr }}"
+  name: my.ippool-1
 spec:
-  ipip:
-    enabled: true
-    mode: cross-subnet
-  nat-outgoing: true
+  cidr: {{ pod_cidr }}
+  ipipMode: CrossSubnet
+  natOutgoing: true
   disabled: false

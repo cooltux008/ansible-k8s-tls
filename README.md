@@ -67,14 +67,20 @@ function kubernetes_gen {
 ...
 ```
 ``` shell
-bash tools/tls_gen.sh
+cd tools
+bash tls_gen.sh
 ```
 ### 2. 创建kubeconfig文件 ###
 ``` shell
-cd ssl
-bash tools/kubeconfig_gen.sh
+cd tools
+bash kubeconfig_gen.sh
 ```
-### 3. 定义变量 ###
+### 3. 创建base64格式的etcd证书变量文件 ###
+``` shell
+cd tools
+bash etcd_tls2base64.sh
+```
+### 4. 定义变量 ###
 **dev/group_vars/all**    
 > 镜像仓库地址，kube-apiserver等二进制文件下载地址请根据实际环境填写
 **dev/hosts**  

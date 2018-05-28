@@ -15,3 +15,5 @@
     - /usr/local/bin/calicoctl
     - /var/tmp/calico
     - /etc/calico
+    - /etc/cni/
+    - /opt/cni/

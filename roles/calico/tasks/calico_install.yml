@@ -19,21 +19,6 @@
     - { src: kubernetes-key.pem, dest: etcd-key }
     - { src: ca.pem, dest: etcd-ca }
 
-- name: check calico-etcd-secrets
-  shell: kubectl -s {{ kubernetes_apiserver }} -n kube-system get secrets calico-etcd-secrets
-  register: secrets_result
-  ignore_errors: true
-
-- name: create calico-etcd-secrets
-  shell: >
-         kubectl -s {{ kubernetes_apiserver }} -n kube-system \
-         create secret generic calico-etcd-secrets \
-         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-cert \
-         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-key \
-         --from-file=/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-ca
-  when: secrets_result.rc != 0
-  ignore_errors: true
-
 - name: sync calico yaml
   template: 
     src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"

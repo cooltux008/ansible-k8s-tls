@@ -56,24 +56,24 @@ data:
   etcd_cert: "/calico-secrets/etcd-cert"
   etcd_key: "/calico-secrets/etcd-key"
 
-#---
+---
 #
 # The following contains k8s Secrets for use with a TLS enabled etcd cluster.
 # For information on populating Secrets, see http://kubernetes.io/docs/user-guide/secrets/
-#apiVersion: v1
-#kind: Secret
-#type: Opaque
-#metadata:
-#  name: calico-etcd-secrets
-#  namespace: kube-system
-#data:
-#  # Populate the following files with etcd TLS configuration if desired, but leave blank if
-#  # not using TLS for etcd.
-#  # This self-hosted install expects three files with the following names.  The values
-#  # should be base64 encoded strings of the entire contents of each file.
-#  # etcd-key: null
-#  # etcd-cert: null
-#  # etcd-ca: null
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: calico-etcd-secrets
+  namespace: kube-system
+data:
+  # Populate the following files with etcd TLS configuration if desired, but leave blank if
+  # not using TLS for etcd.
+  # This self-hosted install expects three files with the following names.  The values
+  # should be base64 encoded strings of the entire contents of each file.
+  etcd-key: {{ etcd_key }}
+  etcd-cert: {{ etcd_cert }}
+  etcd-ca: {{ etcd_ca }}
 
 ---
 
@@ -153,7 +153,7 @@ spec:
             # chosen from this range. Changing this value after installation will have
             # no effect. This should fall within `--cluster-cidr`.
             - name: CALICO_IPV4POOL_CIDR
-              value: "{{ pod_cidr }}"
+              value: "192.168.0.0/16"
             - name: CALICO_IPV4POOL_IPIP
               value: "Always"
             # Disable IPv6 on Kubernetes.
