@@ -27,8 +27,7 @@
   with_items:
     - /usr/local/bin/kubelet
     - /usr/local/bin/kube-proxy
-    - /etc/kubernetes/kubelet
-    - /etc/kubernetes/proxy
+    - /etc/kubernetes/
     - /lib/systemd/system/kubelet.service
     - /lib/systemd/system/kube-proxy.service
     - /var/lib/kubelet

@@ -37,7 +37,7 @@ calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/v1.11.1
 
 #########################################################
 ## k8s ##
-service_cluster_ip_range: 10.254.0.0/12
+service_cluster_ip_range: 10.254.0.0/16
 kubernetes_version: v1.9.8
 kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
 kubernetes_master_cluster_ip: 192.168.130.11
