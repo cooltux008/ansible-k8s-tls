@@ -9,7 +9,7 @@ hostname_prefix: node
 
 #########################################################
 ## etcd ##
-etcd_version: v3.3.5
+etcd_version: v3.2.20
 etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz
 #########################################################
 
@@ -26,12 +26,12 @@ pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:
 
 #########################################################
 ## network ##
-network_pod_cluster_cidr: 172.30.0.0/16
+pod_cidr: 172.30.0.0/16
 calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
-calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/v1.11.1
+calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/v3.1.1
 #########################################################
 
 

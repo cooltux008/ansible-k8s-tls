@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ipPool
 metadata:
-  cidr: "{{ network_pod_cluster_cidr }}"
+  cidr: "{{ pod_cidr }}"
 spec:
   ipip:
     enabled: true

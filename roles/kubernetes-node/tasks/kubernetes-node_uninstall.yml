@@ -28,6 +28,8 @@
     - /usr/local/bin/kubelet
     - /usr/local/bin/kube-proxy
     - /etc/kubernetes/
+    - /etc/cni/
+    - /opt/cni/
     - /lib/systemd/system/kubelet.service
     - /lib/systemd/system/kube-proxy.service
     - /var/lib/kubelet

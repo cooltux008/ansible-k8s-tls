@@ -1,8 +1,9 @@
-apiVersion: v1
-kind: calicoApiConfig
+apiVersion: projectcalico.org/v3
+kind: CalicoAPIConfig
 metadata:
 spec:
-   etcdEndpoints: https://{{ hostvars[groups['etcd'][0]]['inventory_hostname'] }}:2379
+   datastoreType: "etcdv3"
+   etcdEndpoints: "{% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}"
    etcdKeyFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-key
    etcdCertFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-cert
    etcdCACertFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-ca

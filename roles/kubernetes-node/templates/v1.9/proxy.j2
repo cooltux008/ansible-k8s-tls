@@ -7,4 +7,4 @@
 KUBE_PROXY_ARGS="--bind-address={{ inventory_hostname }} \
                  --hostname-override={{ inventory_hostname }} \
 		 --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
-		 --cluster-cidr={{ service_cluster_ip_range }}"
+		 --cluster-cidr={{ pod_cidr }}"
