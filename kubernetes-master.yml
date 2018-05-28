@@ -2,6 +2,7 @@
 - hosts: 
     - kubernetes-master
   roles:
+    - kubectl
     - kubernetes-master
   vars_files: 
     - dev/group_vars/all

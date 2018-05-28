@@ -1,6 +1,6 @@
 ---
 - hosts: 
-    - kubernetes-master
+    - kubernetes-client
   roles:
     - csr-certificate
   vars_files: 
