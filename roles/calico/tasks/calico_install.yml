@@ -56,7 +56,7 @@
 
 - name: fetch calicoctl binary to PATH(/usr/local/bin)
   get_url:
-    url: "{{ calicoctl_binary_url }}/calicoctl"
+    url: "{{ calicoctl_binary_url }}"
     dest: /usr/local/bin
     owner: root
     group: root

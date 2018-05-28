@@ -1,0 +1,11 @@
+---
+- name: delete kubedns 
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/kubedns/
+  ignore_errors: true
+
+- name: remove kubedns yaml
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/tmp/kubedns

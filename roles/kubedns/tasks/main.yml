@@ -1,0 +1,3 @@
+---
+- import_tasks: kubedns_{{ install_or_uninstall }}.yml
+  tags: kubedns

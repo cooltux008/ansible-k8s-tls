@@ -31,7 +31,7 @@ calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
-calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/v3.1.1
+calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/{{ calico_version }}/calicoctl
 #########################################################
 
 
@@ -43,4 +43,17 @@ kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_ver
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 8080
 kubernetes_apiserver: http://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
+
+## kubedns ##
+kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"
+kubedns_dnsmasq_image: "{{ docker_registry }}/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.8"
+kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
+
+## ingress ##
+defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
+nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0-beta.19"
+
+## dashboard ##
+kubernetes_dashboard_version: v1.7.1
+kubernetes_dashboard_image: "{{ docker_registry }}/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
 #########################################################

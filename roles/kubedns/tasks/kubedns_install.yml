@@ -1,0 +1,22 @@
+---
+- name: create kubedns yaml dir
+  file:
+    path: /var/tmp/kubedns/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync kubedns yaml
+  template: 
+    src: "{{ item.src }}"
+    dest: /var/tmp/kubedns/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: kubedns-cm.yaml.j2, dest: kubedns-cm.yaml }
+    - { src: kubedns-controller.yaml.j2, dest: kubedns-controller.yaml }
+    - { src: kubedns-sa.yaml.j2, dest: kubedns-sa.yaml }
+    - { src: kubedns-svc.yaml.j2, dest: kubedns-svc.yaml }
+  notify: apply kubedns
