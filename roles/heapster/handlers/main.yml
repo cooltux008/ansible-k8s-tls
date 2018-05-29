@@ -1,0 +1,3 @@
+---
+- name: apply heapster
+  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/heapster/{{ kubernetes_heapster_version.split('.')[:2] | join('.') }}

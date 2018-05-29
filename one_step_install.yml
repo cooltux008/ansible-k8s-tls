@@ -9,4 +9,5 @@
 - import_playbook: csr-certificate.yml
 - import_playbook: calico.yml
 - import_playbook: kubedns.yml
+- import_playbook: heapster.yml
 - import_playbook: dashboard.yml

@@ -1,0 +1,22 @@
+---
+- name: create heapster yaml dir
+  file:
+    path: /var/tmp/heapster/{{ kubernetes_heapster_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync heapster yaml
+  template: 
+    src: "{{ kubernetes_heapster_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/heapster/{{ kubernetes_heapster_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: influxdb.yaml.j2, dest: influxdb.yaml }
+    - { src: heapster-rbac.yaml.j2, dest: heapster-rbac.yaml }
+    - { src: heapster.yaml.j2, dest: heapster.yaml }
+    - { src: grafana.yaml.j2, dest: grafana.yaml }
+  notify: apply heapster
