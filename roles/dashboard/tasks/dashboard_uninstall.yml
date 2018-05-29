@@ -1,0 +1,11 @@
+---
+- name: delete dashboard 
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/dashboard/{{ kubernetes_dashboard_version.split('.')[:2] | join('.') }}
+  ignore_errors: true
+
+- name: remove dashboard yaml
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/tmp/dashboard

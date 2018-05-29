@@ -1,0 +1,22 @@
+---
+- name: create dashboard yaml dir
+  file:
+    path: /var/tmp/dashboard/{{ kubernetes_dashboard_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync dashboard yaml
+  template: 
+    src: "{{ kubernetes_dashboard_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/dashboard/{{ kubernetes_dashboard_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: dashboard-sa.yaml.j2, dest: dashboard-sa.yaml }
+    - { src: dashboard-rbac.yaml.j2, dest: dashboard-rbac.yaml }
+    - { src: dashboard-controller.yaml.j2, dest: dashboard-controller.yaml }
+    - { src: dashboard-service.yaml.j2, dest: dashboard-service.yaml }
+  notify: apply dashboard

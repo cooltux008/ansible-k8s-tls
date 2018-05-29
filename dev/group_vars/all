@@ -49,11 +49,11 @@ kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1
 kubedns_dnsmasq_image: "{{ docker_registry }}/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.8"
 kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
 
-## ingress ##
-defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
-nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0-beta.19"
-
 ## dashboard ##
 kubernetes_dashboard_version: v1.7.1
 kubernetes_dashboard_image: "{{ docker_registry }}/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
+
+## ingress ##
+defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
+nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0-beta.19"
 #########################################################
