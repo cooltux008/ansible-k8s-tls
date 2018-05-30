@@ -1,0 +1,11 @@
+---
+- name: delete efk 
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/efk/
+  ignore_errors: true
+
+- name: remove efk yaml
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/tmp/efk

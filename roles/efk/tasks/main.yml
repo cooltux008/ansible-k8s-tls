@@ -1,0 +1,3 @@
+---
+- import_tasks: efk_{{ install_or_uninstall }}.yml
+  tags: efk

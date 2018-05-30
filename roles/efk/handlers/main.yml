@@ -1,0 +1,3 @@
+---
+- name: apply efk
+  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/efk/
