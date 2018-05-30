@@ -1,10 +1,6 @@
 ---
-- name: get kubernetes-node
-  shell: kubectl -s {{ kubernetes_apiserver }} get nodes -ojsonpath='{.items[*].metadata.name}'
-  register: node_res
-
 - name: label kubernetes-node "beta.kubernetes.io/fluentd-ds-ready=true"
-  shell: kubectl -s {{ kubernetes_apiserver }} label nodes --overwrite=true {{ node_res.stdout }} 'beta.kubernetes.io/fluentd-ds-ready=true'
+  shell: kubectl -s {{ kubernetes_apiserver }} label nodes --overwrite=true $(kubectl -s {{ kubernetes_apiserver }} get nodes -ojsonpath='{.items[*].metadata.name}') 'beta.kubernetes.io/fluentd-ds-ready=true'
 
 - name: create efk yaml dir
   file:
