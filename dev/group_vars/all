@@ -61,7 +61,7 @@ heapster_grafana_image: "{{ docker_registry }}/google_containers/heapster-grafan
 
 ## efk ##
 alpine_image: "{{ docker_registry }}/alpine:3.6"
-elasticsearch_image: "{{ docker_registry }}/elasticsearch/elasticsearch:5.6.4"
+elasticsearch_image: "{{ docker_registry }}/elasticsearch:v5.6.4"
 fluentd_elasticsearch_image: "{{ docker_registry }}/fluentd-elasticsearch:v2.0.4"
 kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
 
