@@ -42,4 +42,5 @@ KUBE_API_ARGS="--authorization-mode=Node,RBAC \
                --audit-log-maxbackup=3 \
                --audit-log-maxsize=100 \
                --audit-log-path=/var/lib/audit.log \
-               --event-ttl=1h"
+               --event-ttl=1h" \
+	       --feature-gates=CustomPodDNS=true
