@@ -5,13 +5,16 @@
     state: present
     update_cache: yes
 
-- name: create dir /var/lib/kubelet
+- name: create kubelet dir 
   file:
-    path: /var/lib/kubelet
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: 0755
+  with_items: 
+    - /var/lib/kubelet
+    - /etc/kubernetes/manifests
 
 - name: fetch kubelet binary to PATH(/usr/local/bin)
   get_url:
