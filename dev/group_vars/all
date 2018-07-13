@@ -18,6 +18,7 @@ etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }
 
 #########################################################
 ## docker ##
+# ubuntu_apt_url: http://192.168.130.254:15000/repo/ubuntu-xenial/
 centos7_yum_url: http://192.168.130.1/ftp/centos7
 docker_yum_url: http://192.168.130.1/ftp/linux_soft/yum/docker
 docker_version: 1.12.6

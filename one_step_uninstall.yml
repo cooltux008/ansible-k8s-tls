@@ -8,3 +8,4 @@
 - import_playbook: kubectl.yml
 - import_playbook: docker.yml
 - import_playbook: etcd.yml
+- import_playbook: repo.yml

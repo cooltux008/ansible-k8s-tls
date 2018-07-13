@@ -1,0 +1,40 @@
+---
+- name: add docker yum repo
+  yum_repository:
+    name: docker
+    description: docker YUM repo
+    baseurl: "{{ docker_yum_url }}"
+    gpgcheck: no
+
+- name: install docker
+  yum: 
+    name: docker 
+    state: present
+    update_cache: yes
+
+- name: cgroupdriver
+  replace:
+    path: /lib/systemd/system/docker.service
+    regexp: '--exec-opt native.cgroupdriver=cgroupfs'
+    replace: '--exec-opt native.cgroupdriver=systemd'
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: use overlay docker-storage
+  copy:
+    src: docker-storage
+    dest: /etc/sysconfig/docker-storage
+    owner: root
+    group: root
+    mode: 0644
+
+- name: add insecure-mirror
+  template:
+    src: docker.j2
+    dest: /etc/sysconfig/docker
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart docker

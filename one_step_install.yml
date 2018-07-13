@@ -1,5 +1,6 @@
 ---
 - import_playbook: common.yml
+- import_playbook: repo.yml
 - import_playbook: ntp.yml
 - import_playbook: etcd.yml
 - import_playbook: docker.yml

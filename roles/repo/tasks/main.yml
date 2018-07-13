@@ -1,0 +1,3 @@
+---
+- import_tasks: "repo_{{ install_or_uninstall }}.yml"
+  tags: repo

@@ -4,4 +4,3 @@
 - import_tasks: firewalld.yml
 - import_tasks: hostname.yml
   tags: hostname
-- import_tasks: yum.yml

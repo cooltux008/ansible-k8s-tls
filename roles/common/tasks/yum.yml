@@ -1,7 +1,0 @@
----
-- name: add centos7 repo
-  yum_repository:
-    name: centos7
-    description: centos7 YUM repo
-    baseurl: "{{ centos7_yum_url }}"
-    gpgcheck: no
