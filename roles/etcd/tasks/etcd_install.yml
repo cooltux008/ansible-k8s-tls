@@ -80,7 +80,7 @@
 - name: /etc/etcd/etcd.conf
   template: 
     src: etcd.conf.j2 
-    dest: /etc/etcd//etcd.conf
+    dest: /etc/etcd/etcd.conf
     owner: root
     group: root
     mode: 0644
