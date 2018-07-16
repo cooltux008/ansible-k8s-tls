@@ -1,17 +1,5 @@
 ---
-- name: stop chrony
-  service: 
-    name: chronyd
-    state: stopped 
-    enabled: no
-  ignore_errors: true
-
-- name: uninstall chrony
-  yum:
-    name: chrony
-    state: absent
-
-- name: remove chrony user
-  user:
-    name: chrony
-    state: absent
+- import_tasks: centos/centos_ntp_uninstall.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+- import_tasks: ubuntu/ubuntu_ntp_uninstall.yml
+  when: ansible_os_family == "Debian" and ansible_distribution == "xenial"

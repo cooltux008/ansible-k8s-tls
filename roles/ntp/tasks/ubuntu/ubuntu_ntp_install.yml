@@ -1,0 +1,25 @@
+---
+- name: add repo
+  apt_repository:
+    repo: deb {{ ubuntu_apt_url }} xenial repo
+    state: present
+    filename: dce-offline.list
+
+- name: install chrony
+  apt: 
+    name: chrony 
+    state: present
+    update_cache: yes
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: add insecure-mirror
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart chrony

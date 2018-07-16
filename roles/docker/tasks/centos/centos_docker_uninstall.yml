@@ -1,0 +1,49 @@
+---
+- name: stop the docker service
+  service: 
+    name: docker 
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: uninstall docker
+  yum: 
+    name: "{{ item }}"
+    state: absent
+    update_cache: yes
+  with_items:
+    - docker-ce-{{ docker_version }}
+    - container-selinux
+
+- name: remove docker yum repo
+  yum_repository:
+    name: docker
+    state: absent
+
+- name: filter mounted container dirs
+  shell: df
+  register: df_result
+
+- set_fact: DF_RESULT={{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  with_items: "{{ DF_RESULT }}"
+
+- name: remove docker directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/bin/docker
+    - /usr/bin/docker-containerd
+    - /usr/bin/docker-containerd-ctr
+    - /usr/bin/docker-containerd-shim
+    - /usr/bin/dockerd
+    - /usr/bin/docker-init
+    - /usr/bin/docker-proxy
+    - /usr/bin/docker-runc
+    - /etc/docker
+    - /var/lib/docker
+    - /var/run/docker

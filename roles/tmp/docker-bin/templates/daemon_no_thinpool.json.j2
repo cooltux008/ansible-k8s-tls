@@ -1,0 +1,17 @@
+{
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+    "dm.basesize=50G",
+    "dm.use_deferred_deletion=true",
+    "dm.use_deferred_removal=true",
+    "dm.min_free_space=10%"
+  ],
+  "insecure-registries": [
+      "0.0.0.0/0"
+  ],
+  "log-driver": "json-file",
+  "log-opts": {
+      "max-size": "100m",
+      "max-file": "3"
+  }
+}

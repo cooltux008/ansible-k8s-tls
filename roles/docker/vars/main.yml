@@ -1,0 +1,6 @@
+---
+VG_NAME: "{{ vg_name | default('vg001') }}"
+VG_PE_SIZE: "{{ vg_pe_size | default(32) }}"
+THINPOOL_NAME: "{{ thinpool_name | default('thinpool') }}"
+THIN_POOL_CHUNK_SIZE: "{{ thin_pool_chunk_size | default('512K') }}"
+THINPOOL_DISKS: "{{ thinpool_disks | default('') }}"

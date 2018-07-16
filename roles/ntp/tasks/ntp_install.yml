@@ -1,18 +1,5 @@
 ---
-- name: install chrony
-  yum: 
-    name: chrony 
-    state: present
-    update_cache: yes
-
-- name: configure chrony 
-  template: 
-    src: chrony.conf.j2 
-    dest: /etc/chrony.conf
-  notify: restart chrony
-
-- name: start the chrony service
-  service: 
-    name: chronyd 
-    state: started 
-    enabled: yes
+- import_tasks: centos/centos_ntp_install.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+- import_tasks: ubuntu/ubuntu_ntp_install.yml
+  when: ansible_os_family == "Debian" and ansible_distribution == "xenial"

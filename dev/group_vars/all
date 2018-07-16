@@ -15,32 +15,39 @@ etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }
 #########################################################
 
 
+#########################################################
+### devicemapper thinpool相关 ##
+## 组成thinpool vg的磁盘列表,多块磁盘用','分隔,如/dev/sdb,/dev/sdc。如果主机没有用于thinpool的磁盘，会自动跳过，使用默认的loop-lvm方式
+thinpool_disks: /dev/sdb
+#########################################################
+
 
 #########################################################
 ## docker ##
-# ubuntu_apt_url: http://192.168.130.254:15000/repo/ubuntu-xenial/
-# docker_binary_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-{{ docker_version }}.tgz
-centos7_yum_url: http://192.168.130.1/ftp/centos7
-docker_yum_url: http://192.168.130.1/ftp/linux_soft/yum/docker
-docker_version: 1.12.6
+#docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
+docker_version: 18.03.1.ce
+depends_repo_url: http://192.168.130.1/ftp/centos7
+docker_repo_url: http://192.168.130.1/ftp/linux_soft/yum/docker-ce
 docker_registry: 192.168.130.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
 #########################################################
 
+
 #########################################################
 ## network ##
-pod_cidr: 172.30.0.0/16
 calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
 calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/{{ calico_version }}/calicoctl
+pod_cidr: 172.30.0.0/16
 #########################################################
 
 
 #########################################################
 ## k8s ##
 # https://dl.k8s.io/release/v1.11.0/bin/linux/amd64/
+cgroup_driver: cgroupfs
 kubernetes_version: v1.11.0
 kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
 kubernetes_master_cluster_ip: 192.168.130.11
