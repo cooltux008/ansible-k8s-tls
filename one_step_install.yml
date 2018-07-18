@@ -12,3 +12,4 @@
 - import_playbook: kubedns.yml
 - import_playbook: heapster.yml
 - import_playbook: dashboard.yml
+- import_playbook: ingress.yml

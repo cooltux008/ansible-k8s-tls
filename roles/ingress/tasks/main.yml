@@ -1,0 +1,3 @@
+---
+- import_tasks: ingress_{{ install_or_uninstall }}.yml
+  tags: ingress

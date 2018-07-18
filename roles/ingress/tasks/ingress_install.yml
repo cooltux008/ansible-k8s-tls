@@ -1,0 +1,25 @@
+---
+- name: create k8s-ingress yaml dir
+  file:
+    path: /var/tmp/k8s-ingress
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync k8s-ingress yaml
+  template: 
+    src: "{{ item.src }}"
+    dest: /var/tmp/k8s-ingress/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'namespace.yaml.j2', dest: 'namespace.yaml' }
+    - { src: 'default-backend.yaml.j2', dest: 'default-backend.yaml' }
+    - { src: 'configmap.yaml.j2', dest: 'configmap.yaml' }
+    - { src: 'tcp-services-configmap.yaml.j2', dest: 'tcp-services-configmap.yaml' }
+    - { src: 'udp-services-configmap.yaml.j2', dest: 'udp-services-configmap.yaml' }
+    - { src: 'rbac.yaml.j2', dest: 'rbac.yaml' }
+    - { src: 'with-rbac.yaml.j2', dest: 'with-rbac.yaml' }
+  notify: apply k8s-ingress

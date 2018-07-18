@@ -47,7 +47,8 @@ pod_cidr: 172.30.0.0/16
 #########################################################
 ## k8s ##
 # https://dl.k8s.io/release/v1.11.0/bin/linux/amd64/
-cgroup_driver: cgroupfs
+#cgroup_driver: cgroupfs
+cgroup_driver: systemd
 kubernetes_version: v1.11.0
 kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
 kubernetes_master_cluster_ip: 192.168.130.11
@@ -78,5 +79,11 @@ kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
 
 ## ingress ##
 defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
-nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0-beta.19"
+nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.17.1"
+#########################################################
+  
+
+#########################################################
+## helm ##
+#helm_bin_tar_url: https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
 #########################################################

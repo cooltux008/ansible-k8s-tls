@@ -1,0 +1,26 @@
+---
+- name: check k8s-ingress
+  shell: kubectl -s {{ kubernetes_apiserver }} --namespace=ingress-nginx get deployment nginx-ingress-controller
+  register: policy_result
+  ignore_errors: true
+
+- debug:
+    msg: "{{ policy_result }}"
+
+- name: delete k8s-ingress containers
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/k8s-ingress/{{ item }}
+  with_items:
+    - default-backend.yaml
+    - with-rbac.yaml
+    - rbac.yaml
+    - tcp-services-configmap.yaml
+    - udp-services-configmap.yaml
+    - configmap.yaml
+    - namespace.yaml
+  when: policy_result.rc == 0
+  ignore_errors: true
+
+- name: remove k8s-ingress yaml
+  file:
+    path: /var/tmp/k8s-ingress
+    state: absent
