@@ -74,15 +74,15 @@ heapster_image: "{{ docker_registry }}/google_containers/heapster-amd64:{{ kuber
 heapster_influxdb_image: "{{ docker_registry }}/google_containers/heapster-influxdb-amd64:v1.3.3"
 heapster_grafana_image: "{{ docker_registry }}/google_containers/heapster-grafana-amd64:v4.4.3"
 
+## ingress ##
+defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
+nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.17.1"
+
 ## efk ##
 alpine_image: "{{ docker_registry }}/alpine:3.6"
 elasticsearch_image: "{{ docker_registry }}/elasticsearch:v5.6.4"
 fluentd_elasticsearch_image: "{{ docker_registry }}/fluentd-elasticsearch:v2.0.4"
 kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
-
-## ingress ##
-defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
-nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.17.1"
 #########################################################
   
 
