@@ -1,0 +1,11 @@
+---
+- name: delete coredns 
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/coredns/
+  ignore_errors: true
+
+- name: remove coredns yaml
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/tmp/coredns

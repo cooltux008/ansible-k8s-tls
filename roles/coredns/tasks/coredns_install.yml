@@ -1,0 +1,19 @@
+---
+- name: create coredns yaml dir
+  file:
+    path: /var/tmp/coredns/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync coredns yaml
+  template: 
+    src: "{{ item.src }}"
+    dest: /var/tmp/coredns/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: coredns.yaml.j2, dest: coredns.yaml }
+  notify: apply coredns

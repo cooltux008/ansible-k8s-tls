@@ -1,0 +1,3 @@
+---
+- name: apply coredns
+  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/coredns/

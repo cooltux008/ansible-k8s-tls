@@ -1,0 +1,3 @@
+---
+- import_tasks: coredns_{{ install_or_uninstall }}.yml
+  tags: coredns
