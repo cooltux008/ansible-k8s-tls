@@ -1,7 +1,9 @@
 ---
 #########################################################
 timezone: Asia/Shanghai
-ntp_server: ntp1.aliyun.com
+ntp_servers: 
+  - ntp1.aliyun.com
+  - ntp2.aliyun.com
 domain_name: example.com
 hostname_prefix: node
 #########################################################
