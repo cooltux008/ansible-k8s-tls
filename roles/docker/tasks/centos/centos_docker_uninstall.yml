@@ -47,3 +47,35 @@
     - /etc/docker
     - /var/lib/docker
     - /var/run/docker
+
+- name: thinpool
+  lvol:
+    vg: "{{ VG_NAME }}"
+    lv: "{{ THINPOOL_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: thinpool_remove
+
+- name: vg
+  lvg:
+    vg: "{{ VG_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: vg_remove
+
+- name: Read device information (always use unit when probing)
+  parted: device=/dev/{{ THINPOOL_DISKS }} unit=MiB
+  register: thinpool_disk_info
+  ignore_errors: true
+
+- name: Remove all partitions from disk
+  parted:
+    device: /dev/{{ THINPOOL_DISKS }}
+    number: "{{ item.num }}"
+    state: absent
+  with_items:
+    - "{{ thinpool_disk_info.partitions }}"
+  tags: pv_remove
+  ignore_errors: true
