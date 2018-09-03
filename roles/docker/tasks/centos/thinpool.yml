@@ -18,7 +18,7 @@
 
 - shell: echo {{ _META_SIZE | int }}
 
-- name: thinpool /dev/mapper/{{ VG_NAME }}-{{ THINPOOL_NAME }}
+- name: thinpool /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}"
   lvol:
     vg: "{{ VG_NAME }}"
     lv: "{{ THINPOOL_NAME }}"

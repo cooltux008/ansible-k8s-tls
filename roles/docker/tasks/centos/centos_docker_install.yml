@@ -64,9 +64,9 @@
   include_tasks: thinpool.yml
   when: THINPOOL_DISKS != ''
 
-- name: /dev/mapper/{{ VG_NAME }}-{{ THINPOOL_NAME }} exists ?
+- name: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }} exists ?
   stat: 
-    path: /dev/mapper/{{ VG_NAME }}-{{ THINPOOL_NAME }}
+    path: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}
   register: thinpool_exists
 
 - name: create docker configuration directory(/etc/docker)
