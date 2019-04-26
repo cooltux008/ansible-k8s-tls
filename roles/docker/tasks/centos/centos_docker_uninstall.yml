@@ -8,12 +8,9 @@
 
 - name: uninstall docker
   yum: 
-    name: "{{ item }}"
+    name: ["docker-ce-{{ docker_version }}", "container-selinux"]
     state: absent
     update_cache: yes
-  with_items:
-    - docker-ce-{{ docker_version }}
-    - container-selinux
 
 - name: remove docker yum repo
   yum_repository:

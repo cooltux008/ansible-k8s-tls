@@ -2,13 +2,7 @@
   "exec-opts": [
     "native.cgroupdriver={{ cgroup_driver }}"
   ],
-  "storage-driver": "devicemapper",
-  "storage-opts": [
-    "dm.basesize=50G",
-    "dm.use_deferred_deletion=true",
-    "dm.use_deferred_removal=true",
-    "dm.min_free_space=10%"
-  ],
+  "storage-driver": "overlay2",
   "insecure-registries": [
       "0.0.0.0/0"
   ],

@@ -1,11 +1,19 @@
 #!/bin/bash
 
 function download_cfssl {
-	for i in cfssl cfssljson cfssl-certinfo
-	do
-		curl -L $1/${i}_linux-amd64 -O /usr/bin/$i
-		chmod +x /usr/bin/$i
-	done
+    if [ "$(uname)" == "Linux" ];then
+        for i in cfssl cfssljson cfssl-certinfo
+        do
+            curl $1/${i}_linux-amd64 -o /usr/bin/$i
+            chmod +x /usr/bin/$i
+        done
+    elif [ "$(uname)" == "Darwin" ];then
+        for i in cfssl cfssljson cfssl-certinfo
+        do
+            curl $1/${i}_darwin-amd64 -o /usr/local/bin/$i
+            chmod +x /usr/local/bin/$i
+        done
+    fi
 }
 
 function ca_gen {
@@ -66,6 +74,9 @@ function kubernetes_gen {
 	      "192.168.130.11",
 	      "192.168.130.12",
 	      "192.168.130.13",
+	      "192.168.130.14",
+	      "192.168.130.15",
+	      "192.168.130.16",
 	      "127.0.0.1",
 	      "10.254.0.1",
 	      "kubernetes",
@@ -151,7 +162,7 @@ function verify_pem {
 
 mkdir ../ssl
 cd ../ssl
-#export CFSSL_URL="https://pkg.cfssl.org/R1.2"
+#export CFSSL_URL="https://pkg.cfssl.org"
 export CFSSL_URL="http://192.168.130.1/ftp/linux_soft/cfssl/R1.2"
 download_cfssl $CFSSL_URL
 ca_gen

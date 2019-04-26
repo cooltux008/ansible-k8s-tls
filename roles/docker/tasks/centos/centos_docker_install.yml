@@ -21,11 +21,9 @@
 
 - name: install docker-ce-{{ docker_version }}
   yum: 
-    name: "{{ item }}"
+    name: docker-ce-{{ docker_version }}
     state: present
     update_cache: yes
-  with_items:
-    - docker-ce-{{ docker_version }}
 
 - name: yum.conf skip_broken=0, obsoletes=1
   ini_file:
