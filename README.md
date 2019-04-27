@@ -40,7 +40,6 @@ cd ansible-k8s-tls
 	```
   
 
-
 -------------------------------------------------------------------------------
 ## 安装k8s ##
 ### 1. 创建TLS证书和秘钥 ###
@@ -68,11 +67,18 @@ function kubernetes_gen {
 ```
 ``` shell
 cd tools
+
+# 注意修改"hosts": [
+	      "192.168.130.11",
+	      "192.168.130.12",
+	      "192.168.130.13",
 bash tls_gen.sh
 ```
 ### 2. 创建kubeconfig文件 ###
 ``` shell
 cd tools
+
+# 注意修改export KUBE_APISERVER="https://192.168.130.11:6443"
 bash kubeconfig_gen.sh
 ```
 ### 3. 创建base64格式的etcd证书变量文件 ###
@@ -109,7 +115,7 @@ bash etcd_tls2base64.sh
 ``` shell
 ansible-playbook -i dev/hosts --vault-password-file ~/.vault_pass.txt --extra-vars install_or_uninstall=install one_step_install.yml
 ```
-  
+
 
 
 -------------------------------------------------------------------------------

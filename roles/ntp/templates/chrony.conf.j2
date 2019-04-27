@@ -25,9 +25,9 @@ port 123
 {% for item in ntp_servers %}
 server {{ item }} iburst
 {% endfor %}
-server 127.0.0.1 port 10123 iburst
-server localhost port 10123 iburst
-server ::1 port 10123  iburst
+#server 127.0.0.1 port 10123 iburst
+#server localhost port 10123 iburst
+#server ::1 port 10123  iburst
 bindcmdaddress 0.0.0.0
 allow 0.0.0.0/0
 allow ::/0
