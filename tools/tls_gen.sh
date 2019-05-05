@@ -162,7 +162,7 @@ function verify_pem {
 
 mkdir ../ssl
 cd ../ssl
-#export CFSSL_URL="https://pkg.cfssl.org"
+#export CFSSL_URL="https://pkg.cfssl.org/R1.2"
 export CFSSL_URL="http://192.168.130.1/ftp/linux_soft/cfssl/R1.2"
 download_cfssl $CFSSL_URL
 ca_gen
