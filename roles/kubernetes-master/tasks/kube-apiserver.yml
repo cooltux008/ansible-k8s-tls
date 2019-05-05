@@ -20,6 +20,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: fetch_kube-apiserver
   notify: restart kube-apiserver
 
 - name: create kube-apiserver configuration

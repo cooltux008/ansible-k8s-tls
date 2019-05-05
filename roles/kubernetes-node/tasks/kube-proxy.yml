@@ -6,6 +6,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: fetch_kube-proxy
   notify: restart kube-proxy
 
 - name: create kube-proxy configuration

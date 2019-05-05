@@ -23,6 +23,7 @@
     owner: root
     group: root
     mode: 0755
+  tags: fetch_kubelet
   notify: restart kubelet
 
 - name: create kubelet configuration
