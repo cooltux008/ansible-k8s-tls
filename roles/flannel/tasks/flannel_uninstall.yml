@@ -1,19 +1,16 @@
 ---
-- name: stop flannel
-  service: 
-    name: flanneld
-    state: stopped 
-    enabled: no
+- name: delete flannel
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item }}
+  with_items:
+    - kube-flannel.yaml
+  async: 10
   ignore_errors: true
 
-- name: remove flannel 
+- name: remove flannel yaml
   file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - /usr/local/bin/flanneld
-    - /etc/sysconfig/flanneld
-    - /lib/systemd/system/flanneld.service
-    - /usr/libexec/flannel
-    - /run/docker_opts.env
-    - /run/flannel
+    - /var/tmp/flannel
+    - /etc/cni/
+    - /opt/cni/

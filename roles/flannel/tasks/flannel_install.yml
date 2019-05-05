@@ -1,61 +1,19 @@
 ---
-- name: create dir /etc/kubernetes/ssl
+- name: create flannel yaml dir
   file:
-    path: "{{ item }}"
+    path: /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}
     state: directory
     owner: root
     group: root
     mode: 0755
-  with_items:
-    - /etc/kubernetes/ssl
-    - /usr/libexec/flannel
 
-- name: sync pems to /etc/kubernetes/ssl
-  copy:
-    src: ssl/{{ item }}
-    dest: /etc/kubernetes/ssl/
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - kubernetes.pem
-    - kubernetes-key.pem
-    - ca.pem
-
-- name: fetch flanneld binary to PATH(/usr/local/bin)
-  get_url:
-    url: "{{ kubernetes_binary_url }}/flanneld"
-    dest: /usr/local/bin
-    owner: root
-    group: root
-    mode: 0755
-
-- name: create /lib/systemd/system/flanneld.service
-  template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - { src: 'flanneld.service.j2', dest: '/lib/systemd/system/flanneld.service' }
-    - { src: 'mk-docker-opts.sh.j2', dest: '/usr/libexec/flannel/mk-docker-opts.sh' }
-
-- name: systemd daemon-reload
-  systemd:
-    daemon-reload: yes
-
-- name: /etc/sysconfig/flanneld
+- name: sync flannel yaml
   template: 
-    src: flanneld.j2 
-    dest: /etc/sysconfig/flanneld
+    src: "{{ flannel_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item.dest }}
     owner: root
     group: root
     mode: 0644
-  notify: restart flannel
-
-- name: start flannel
-  service: 
-    name: flanneld
-    state: started 
-    enabled: yes
+  with_items:
+    - { src: kube-flannel.yaml.j2, dest: kube-flannel.yaml }
+  notify: apply flannel
