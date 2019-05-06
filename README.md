@@ -24,13 +24,13 @@ cd ansible-k8s-tls
 	``` shell
 	cat <<'EOF' > vault.sh
 	VAULT_ID='myVAULT@2018'
-	echo $VAULT_ID > ~/.vault_pass.txt
+	echo $VAULT_ID > .vault_pass.txt
 
 	ANSIBLE_USER='root' # ssh用户名
 	ANSIBLE_PASSWORD='root' # ssh用户密码
 
-	ansible-vault encrypt_string --vault-id ~/.vault_pass.txt $ANSIBLE_USER --name 'vault_ansible_user' | tee dev/group_vars/vault
-	ansible-vault encrypt_string --vault-id ~/.vault_pass.txt $ANSIBLE_PASSWORD --name 'vault_ansible_password' | tee -a dev/group_vars/vault
+	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_USER --name 'vault_ansible_user' | tee dev/group_vars/vault
+	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_PASSWORD --name 'vault_ansible_password' | tee -a dev/group_vars/vault
 	EOF
 	```
 	**注意:** 请务必修改脚本中的ssh用户名密码及dce认证用户名密码与实际环境匹配
@@ -111,9 +111,13 @@ bash etcd_tls2base64.sh
 [kubernetes-client]
 192.168.130.11
 ```
+```
+# 测试主机连通性
+ansible -i dev/hosts all --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault -m ping
+```
 ### 4. 一键安装k8s ###
 ``` shell
-ansible-playbook -i dev/hosts --vault-password-file ~/.vault_pass.txt --extra-vars install_or_uninstall=install one_step_install.yml
+ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars install_or_uninstall=install one_step_install.yml
 ```
 
 
@@ -121,5 +125,5 @@ ansible-playbook -i dev/hosts --vault-password-file ~/.vault_pass.txt --extra-va
 -------------------------------------------------------------------------------
 ## 卸载k8s ##
 ``` shell
-ansible-playbook -i dev/hosts --vault-password-file ~/.vault_pass.txt --extra-vars install_or_uninstall=uninstall one_step_uninstall.yml
+ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars install_or_uninstall=uninstall one_step_uninstall.yml
 ```
