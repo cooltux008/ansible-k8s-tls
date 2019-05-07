@@ -114,6 +114,9 @@ bash etcd_tls2base64.sh
 ```
 # 测试主机连通性
 ansible -i dev/hosts all --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault -m ping
+
+# 调试
+ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault test.yml
 ```
 ### 4. 一键安装k8s ###
 ``` shell

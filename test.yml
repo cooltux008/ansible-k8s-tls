@@ -1,0 +1,7 @@
+---
+- hosts: kubernetes-master
+  vars:
+    foo: bar
+  tasks:
+  - name: test variables
+    shell: echo {{ ansible_mounts | map(attribute='mount') | join(',') }}
