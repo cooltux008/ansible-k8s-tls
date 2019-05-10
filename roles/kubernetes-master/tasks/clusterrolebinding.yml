@@ -2,7 +2,7 @@
 - name: is clusterrolebinding kubelet-bootstrap exists ?
   shell: kubectl get clusterrolebinding kubelet-bootstrap
   register: role_state
-  ignore_errors: true
+  failed_when: false
 - set_fact: ROLE_STATE={{ role_state.stdout }}
   
 - name: create clusterrolebinding kubelet-bootstrap
