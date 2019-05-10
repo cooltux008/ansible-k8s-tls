@@ -13,12 +13,11 @@
   shell: df
   register: df_result
 
-- set_fact: DF_RESULT={{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}
 - name: unmount left pods
   mount:
     path: "{{ item }}"
     state: unmounted
-  with_items: "{{ DF_RESULT }}"
+  loop: df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)')
 
 - name: remove kubernetes-node directories & configurations
   file:
