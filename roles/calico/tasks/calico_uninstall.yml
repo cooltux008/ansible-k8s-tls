@@ -4,8 +4,7 @@
   with_items:
     - calico.yaml
     - rbac.yaml
-  async: 10
-  ignore_errors: true
+  failed_when: false
 
 - name: remove calico yaml
   file:
@@ -13,7 +12,28 @@
     state: absent
   with_items:
     - /usr/local/bin/calicoctl
-    - /var/tmp/calico
     - /etc/calico
-    - /etc/cni/
-    - /opt/cni/
+    - /var/tmp/calico
+
+- name: remove cni conf
+  file:
+    path: /etc/cni
+    state: absent
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kubernetes-node'] }}"
+
+- name: remove cni bin
+  file:
+    path: /opt/cni
+    state: absent
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kubernetes-node'] }}"
+
+- name: clear calico network interfaces
+  raw: |
+      ifconfig tunl0 down ;\
+      ip link delete tunl0
+  failed_when: false
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kubernetes-node'] }}"
+

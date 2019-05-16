@@ -3,8 +3,7 @@
   shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item }}
   with_items:
     - kube-flannel.yaml
-  async: 10
-  ignore_errors: true
+  failed_when: false
 
 - name: remove flannel yaml
   file:
@@ -13,7 +12,18 @@
   with_items:
     - /var/tmp/flannel
     - /run/flannel
-    - /etc/cni/net.d/10-flannel.conflist
+
+- name: remove cni conf
+  file:
+    path: /etc/cni
+    state: absent
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kubernetes-node'] }}"
+
+- name: remove cni bin
+  file:
+    path: /opt/cni
+    state: absent
   delegate_to: "{{ item }}"
   loop: "{{ groups['kubernetes-node'] }}"
 

@@ -11,7 +11,7 @@
     name: flannel
     state: absent
 
-- name: remove flannel conf
+- name: remove cni
   file: 
     path: "{{ item }}"
     state: absent
@@ -19,7 +19,8 @@
     - /etc/sysconfig/flanneld
     - /usr/lib/systemd/system/flanneld.service
     - /run/flannel
-    - /etc/cni/net.d/10-flannel.conflist
+    - /etc/cni
+    - /opt/cni
 
 - name: clear flannel network in etcd
   raw: |
