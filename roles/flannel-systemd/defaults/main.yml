@@ -1,0 +1,4 @@
+---
+FLANNEL_ETCD_PREFIX: "{{ flannel_etcd_prefix | default('kube-flannel') }}"
+FLANNEL_TYPE: "{{ flannel_type | default('host-gw') }}"
+FLANNEL_RPM: "{{ flannel_rpm | default('https://mirrors.aliyun.com/centos/7/extras/x86_64/Packages/flannel-0.7.1-4.el7.x86_64.rpm') }}"

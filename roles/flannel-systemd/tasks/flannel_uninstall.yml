@@ -1,16 +1,41 @@
 ---
-- name: delete flannel
-  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
-    - kube-flannel.yaml
-  async: 10
+- name: stop the flannel service
+  service: 
+    name: flanneld 
+    state: stopped 
+    enabled: no
   ignore_errors: true
 
-- name: remove flannel yaml
-  file:
+- name: uninstall flannel
+  yum: 
+    name: flannel
+    state: absent
+
+- name: remove flannel conf
+  file: 
     path: "{{ item }}"
     state: absent
-  with_items:
-    - /var/tmp/flannel
-    - /etc/cni/
-    - /opt/cni/
+  loop:
+    - /etc/sysconfig/flanneld
+    - /usr/lib/systemd/system/flanneld.service
+    - /run/flannel
+    - /etc/cni/net.d/10-flannel.conflist
+
+- name: clear flannel network in etcd
+  raw: |
+      etcdctl --endpoints={% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
+      --ca-file=/etc/kubernetes/ssl/ca.pem \
+      --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+      --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+      rm -r /{{ FLANNEL_ETCD_PREFIX }}
+  delegate_to: "{{ groups['etcd'][0] }}"
+  failed_when: false
+
+- name: clear flannel network interfaces
+  raw: |
+      ifconfig cni0 down ;\
+      ifconfig flannel.1 down ;\
+      ip link delete cni0 ;\
+      ip link delete flannel.1
+  failed_when: false
+

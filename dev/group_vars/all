@@ -37,17 +37,24 @@ pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:
 
 #########################################################
 ## network ##
+# cni
+cni_version: v0.8.0
+cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
+pod_cidr: 172.30.0.0/16
+
+# calico
 calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
 calicoctl_binary_url: "{{ url_prefix }}/linux_soft/k8s/calico/{{ calico_version }}/calicoctl"
-pod_cidr: 172.30.0.0/16
 
-cni_version: v0.8.0
-cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
+# flannel(yml)
 flannel_version: v0.10.0
 flannel_image: "{{ docker_registry }}/coreos/flannel:{{ flannel_version }}-amd64"
+# flannel(systemd)
+flannel_wan_iface: ens33
+flannel_rpm: http://192.168.130.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7.x86_64.rpm
 
 #cni_binary_url: https://github.com/containernetworking/plugins/releases/download/v0.8.0/cni-plugins-linux-amd64-v0.8.0.tgz
 #########################################################

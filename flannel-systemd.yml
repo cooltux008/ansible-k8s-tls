@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes-node
+  roles:
+    - flannel-systemd
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+  tags: flannel-systemd
