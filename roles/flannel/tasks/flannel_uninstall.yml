@@ -12,3 +12,4 @@
     state: absent
   with_items:
     - /var/tmp/flannel
+    - /run/flannel
