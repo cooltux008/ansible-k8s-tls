@@ -1,4 +1,14 @@
 ---
+- name: sync flannel cni 10-flannel.conflist
+  template: 
+    src: "10-flannel.conflist.j2"
+    dest: /etc/cni/net.d/10-flannel.conflist
+    owner: root
+    group: root
+    mode: 0644
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['kubernetes-node'] }}"
+
 - name: create flannel yaml dir
   file:
     path: /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}

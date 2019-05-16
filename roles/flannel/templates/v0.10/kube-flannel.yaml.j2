@@ -75,7 +75,7 @@ data:
     {
       "Network": "{{ pod_cidr }}",
       "Backend": {
-        "Type": "vxlan"
+        "Type": "{{ FLANNEL_TYPE }}"
       }
     }
 ---
