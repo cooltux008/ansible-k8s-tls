@@ -8,12 +8,12 @@ domain_name: example.com
 hostname_prefix: node
 #########################################################
 
-
+url_prefix: http://192.168.130.1/ftp
 #########################################################
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.5/etcd-v3.3.5-linux-amd64.tar.gz
 etcd_version: v3.3.5
-etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
 #########################################################
 
 
@@ -28,8 +28,8 @@ etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }
 ## docker ##
 #docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
 docker_version: 18.03.1.ce
-depends_repo_url: http://192.168.130.1/ftp/centos7
-docker_repo_url: http://192.168.130.1/ftp/linux_soft/yum/docker-ce
+depends_repo_url: "{{ url_prefix }}/centos7"
+docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 docker_registry: 192.168.130.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
 #########################################################
@@ -41,8 +41,15 @@ calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
-calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/{{ calico_version }}/calicoctl
+calicoctl_binary_url: "{{ url_prefix }}/linux_soft/k8s/calico/{{ calico_version }}/calicoctl"
 pod_cidr: 172.30.0.0/16
+
+cni_version: v0.8.0
+cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
+flannel_version: v0.10.0
+flannel_image: "{{ docker_registry }}/coreos/flannel:{{ flannel_version }}-amd64"
+
+#cni_binary_url: https://github.com/containernetworking/plugins/releases/download/v0.8.0/cni-plugins-linux-amd64-v0.8.0.tgz
 #########################################################
 
 
@@ -52,7 +59,7 @@ pod_cidr: 172.30.0.0/16
 cgroup_driver: cgroupfs
 #cgroup_driver: systemd
 kubernetes_version: v1.14.1
-kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
+kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 8080
 kubernetes_apiserver: http://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}

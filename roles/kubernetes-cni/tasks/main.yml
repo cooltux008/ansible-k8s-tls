@@ -1,0 +1,3 @@
+---
+- import_tasks: kubernetes-cni_{{ install_or_uninstall }}.yml
+  tags: kubernetes-cni

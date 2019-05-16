@@ -12,3 +12,5 @@
     state: absent
   with_items:
     - /var/tmp/flannel
+    - /etc/cni/
+    - /opt/cni/

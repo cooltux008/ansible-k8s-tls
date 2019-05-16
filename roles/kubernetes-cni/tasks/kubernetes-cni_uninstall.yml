@@ -1,0 +1,8 @@
+---
+- name: remove cni 
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/cni
+    - /opt/cni

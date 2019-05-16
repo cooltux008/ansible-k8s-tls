@@ -1,0 +1,19 @@
+---
+- name: create flannel yaml dir
+  file:
+    path: /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync flannel yaml
+  template: 
+    src: "{{ flannel_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: kube-flannel.yaml.j2, dest: kube-flannel.yaml }
+  notify: apply flannel
