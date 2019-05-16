@@ -65,5 +65,5 @@
   loop:
     - { src: flanneld.j2, dest: /etc/sysconfig/flanneld }
     - { src: flanneld.service.j2, dest: /usr/lib/systemd/system/flanneld.service }
-    - { src: 10-flannel.conf.j2, dest: /etc/cni/net.d/10-flannel.conflist }
+    - { src: 10-flannel.conflist.j2, dest: /etc/cni/net.d/10-flannel.conflist }
   notify: restart flannel
