@@ -32,6 +32,14 @@ depends_repo_url: "{{ url_prefix }}/centos7"
 docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 docker_registry: 192.168.130.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
+
+## containerd ##
+containerd_version: 1.2.6
+containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
+runc_version: 1.0.0-rc8
+runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
+crictl_version: 1.14.0
+crictl_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/crictl-v{{ crictl_version }}-linux-amd64.tar.gz"
 #########################################################
 
 

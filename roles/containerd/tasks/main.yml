@@ -1,0 +1,3 @@
+---
+- import_tasks: containerd_{{ install_or_uninstall }}.yml
+  tags: containerd

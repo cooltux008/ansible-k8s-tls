@@ -1,0 +1,87 @@
+---
+- name: create dir /etc/containerd/
+  file:
+    path: /etc/containerd/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: download containerd binary
+  get_url:
+    url: "{{ containerd_bin_tar_url }}"
+    dest: /tmp
+
+- name: unarchive containerd tar
+  unarchive:
+    remote_src: yes
+    src: /tmp/containerd-{{ containerd_version }}.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: move containerd, ctr, containerd-shim-runc-v1, containerd-shim, containerd-stress to PATH
+  copy:
+    remote_src: yes
+    src: /tmp/bin/{{ item }}
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - containerd
+    - ctr
+    - containerd-shim-runc-v1
+    - containerd-shim
+    - containerd-stress
+
+- name: create /lib/systemd/system/containerd.service
+  template:
+    src: containerd.service.j2
+    dest: /lib/systemd/system/containerd.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: /etc/containerd/config.toml
+  template: 
+    src: config.toml.j2 
+    dest: /etc/containerd/config.toml
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart containerd
+
+- name: start containerd
+  service: 
+    name: containerd
+    state: started 
+    enabled: yes
+
+- name: download runc binary
+  get_url:
+    url: "{{ runc_bin_url }}"
+    dest: /usr/local/bin/runc
+    owner: root
+    group: root
+    mode: 0755
+
+- name: unarchive crictl tar
+  unarchive:
+    src: "{{ crictl_bin_tar_url }}"
+    dest: /usr/local/bin/
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: /etc/crictl.yaml
+  template: 
+    src: crictl.yaml.j2
+    dest: /etc/crictl.yaml
+    owner: root
+    group: root
+    mode: 0644
+
