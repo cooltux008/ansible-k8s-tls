@@ -22,6 +22,6 @@
   lvol:
     vg: "{{ VG_NAME }}"
     lv: "{{ THINPOOL_NAME }}"
-    size: 99%FREE
+    size: 90%FREE
     opts: --type thin-pool --zero n --chunksize {{ THIN_POOL_CHUNK_SIZE }} --poolmetadatasize {{ _META_SIZE | int }}s
   ignore_errors: true
