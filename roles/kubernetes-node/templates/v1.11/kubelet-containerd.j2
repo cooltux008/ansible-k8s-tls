@@ -31,4 +31,7 @@ KUBELET_ARGS="--cgroup-driver={{ cgroup_driver }} \
               --cni-bin-dir=/opt/cni/bin \
               --fail-swap-on=false \
               --feature-gates=CustomPodDNS=true \
-              --pod-manifest-path=/etc/kubernetes/manifests"
+              --pod-manifest-path=/etc/kubernetes/manifests \
+              --container-runtime=remote \
+              --runtime-request-timeout=15m \
+              --container-runtime-endpoint=unix:///run/containerd/containerd.sock"

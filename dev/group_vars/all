@@ -25,6 +25,9 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux
 
 
 #########################################################
+# container runtime <docker|containerd>
+container_runtime: containerd
+
 ## docker ##
 #docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
 docker_version: 18.03.1.ce
