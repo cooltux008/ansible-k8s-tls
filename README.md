@@ -130,3 +130,12 @@ ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars
 ``` shell
 ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars install_or_uninstall=uninstall one_step_uninstall.yml
 ```
+
+
+
+-------------------------------------------------------------------------------
+## 测试组件 ## 
+```shell
+# etcd
+ETCDCTL_API=3 etcdctl --cert=/etc/kubernetes/ssl/kubernetes.pem --key=/etc/kubernetes/ssl/kubernetes-key.pem  --cacert=/etc/kubernetes/ssl/ca.pem member list
+```

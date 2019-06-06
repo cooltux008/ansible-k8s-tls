@@ -25,7 +25,7 @@
   mount:
     path: "{{ item }}"
     state: unmounted
-  loop: df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)')
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
 
 - name: remove docker directories
   file:

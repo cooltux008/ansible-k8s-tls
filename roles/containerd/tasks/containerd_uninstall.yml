@@ -14,8 +14,8 @@
   mount:
     path: "{{ item }}"
     state: unmounted
-  loop: df_result.stdout | regex_findall('(/run/containerd/.+)', wantlist=True)
-  ignore_errors: true
+  loop: "{{ df_result.stdout | regex_findall('(/run/containerd/.+)') }}"
+  tags: unmount_containerd
 
 - name: remove containerd 
   file:
