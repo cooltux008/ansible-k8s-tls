@@ -8,12 +8,12 @@ domain_name: example.com
 hostname_prefix: node
 #########################################################
 
-
+url_prefix: http://192.168.130.1/ftp
 #########################################################
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.5/etcd-v3.3.5-linux-amd64.tar.gz
 etcd_version: v3.3.5
-etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
 #########################################################
 
 
@@ -25,24 +25,49 @@ etcd_bin_tar_url: http://192.168.130.1/ftp/linux_soft/k8s/etcd-{{ etcd_version }
 
 
 #########################################################
+# container runtime <docker|containerd>
+container_runtime: containerd
+
 ## docker ##
 #docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
 docker_version: 18.03.1.ce
-depends_repo_url: http://192.168.130.1/ftp/centos7
-docker_repo_url: http://192.168.130.1/ftp/linux_soft/yum/docker-ce
+depends_repo_url: "{{ url_prefix }}/centos7"
+docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 docker_registry: 192.168.130.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
+
+## containerd ##
+containerd_version: 1.2.6
+containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
+runc_version: 1.0.0-rc8
+runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
+crictl_version: 1.14.0
+crictl_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/crictl-v{{ crictl_version }}-linux-amd64.tar.gz"
 #########################################################
 
 
 #########################################################
 ## network ##
+# cni
+cni_version: v0.8.0
+cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
+pod_cidr: 172.30.0.0/16
+
+# calico
 calico_version: v3.1.1
 calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
 calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
 calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
-calicoctl_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/calico/{{ calico_version }}/calicoctl
-pod_cidr: 172.30.0.0/16
+calicoctl_binary_url: "{{ url_prefix }}/linux_soft/k8s/calico/{{ calico_version }}/calicoctl"
+
+# flannel(yml)
+flannel_version: v0.10.0
+flannel_image: "{{ docker_registry }}/coreos/flannel:{{ flannel_version }}-amd64"
+# flannel(systemd)
+flannel_wan_iface: ens33
+flannel_rpm: http://192.168.130.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7.x86_64.rpm
+
+#cni_binary_url: https://github.com/containernetworking/plugins/releases/download/v0.8.0/cni-plugins-linux-amd64-v0.8.0.tgz
 #########################################################
 
 
@@ -51,8 +76,8 @@ pod_cidr: 172.30.0.0/16
 # https://dl.k8s.io/release/v1.11.0/bin/linux/amd64/
 cgroup_driver: cgroupfs
 #cgroup_driver: systemd
-kubernetes_version: v1.10.2
-kubernetes_binary_url: http://192.168.130.1/ftp/linux_soft/k8s/{{ kubernetes_version }}
+kubernetes_version: v1.14.1
+kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 8080
 kubernetes_apiserver: http://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
