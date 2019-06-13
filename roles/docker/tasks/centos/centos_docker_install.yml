@@ -67,14 +67,6 @@
     path: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}
   register: thinpool_exists
 
-- name: create docker configuration directory(/etc/docker)
-  file:
-    path: /etc/docker
-    state: directory
-    owner: root
-    group: root
-    mode: 0700
-
 - name: docker_config_thinpool
   include_tasks: docker_config_thinpool.yml
   when: thinpool_exists.stat.exists
