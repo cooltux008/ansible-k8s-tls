@@ -1,0 +1,27 @@
+- name: vg {{ VG_NAME }}
+  lvg:
+    vg: "{{ VG_NAME }}"
+    pvs: "{{ THINPOOL_DISKS }}"
+    pesize: "{{ VG_PE_SIZE }}"
+    state: present
+  tags: vg_create
+  ignore_errors: true
+
+- name: _VG_SIZE
+  shell: vgs --noheadings --nosuffix --units s -o vg_size {{ VG_NAME }}
+  register: res_VG_SIZE
+  ignore_errors: true
+
+- set_fact: 
+    _META_SIZE={{ res_VG_SIZE.stdout | int / 1000 + 1 }}
+  ignore_errors: true
+
+- shell: echo {{ _META_SIZE | int }}
+
+- name: thinpool /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}"
+  lvol:
+    vg: "{{ VG_NAME }}"
+    lv: "{{ THINPOOL_NAME }}"
+    size: 90%FREE
+    opts: --type thin-pool --zero n --chunksize {{ THIN_POOL_CHUNK_SIZE }} --poolmetadatasize {{ _META_SIZE | int }}s
+  ignore_errors: true

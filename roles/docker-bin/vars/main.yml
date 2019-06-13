@@ -1,0 +1,6 @@
+---
+VG_NAME: "{{ vg_name | default('docker-vg') }}"
+VG_PE_SIZE: "{{ vg_pe_size | default(32) }}"
+THINPOOL_NAME: "{{ thinpool_name | default('docker-pool') }}"
+THIN_POOL_CHUNK_SIZE: "{{ thin_pool_chunk_size | default('256K') }}"
+THINPOOL_DISKS: "{{ thinpool_disks | default('') }}"

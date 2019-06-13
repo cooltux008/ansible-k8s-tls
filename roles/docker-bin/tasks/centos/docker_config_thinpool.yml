@@ -1,0 +1,8 @@
+- name: docker_config_thinpool
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart docker
