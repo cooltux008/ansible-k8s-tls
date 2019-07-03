@@ -9,5 +9,7 @@
 - import_playbook: kubernetes-master.yml
 - import_playbook: kubectl.yml
 - import_playbook: docker.yml
+- import_playbook: docker-bin.yml
+- import_playbook: containerd.yml
 - import_playbook: etcd.yml
 - import_playbook: repo.yml
