@@ -10,7 +10,7 @@ ansible_connection=paramiko
 192.168.130.11
 
 [kubernetes-node]
-192.168.130.11
+192.168.130.[11:13]
 
 [kubernetes-client]
 192.168.130.11

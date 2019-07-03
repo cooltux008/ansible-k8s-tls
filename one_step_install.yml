@@ -5,8 +5,8 @@
 - import_playbook: etcd.yml
 # container runtime
 #- import_playbook: docker.yml
-- import_playbook: docker-bin.yml
-#- import_playbook: containerd.yml
+#- import_playbook: docker-bin.yml
+- import_playbook: containerd.yml
   
 # k8s
 - import_playbook: kubernetes-master.yml

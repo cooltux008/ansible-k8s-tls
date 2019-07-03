@@ -11,7 +11,8 @@ EOF
 
 
 
-export KUBE_APISERVER="https://192.168.130.11:6443"
+#export KUBE_APISERVER="https://192.168.130.11:6443"
+export KUBE_APISERVER="https://192.168.60.62:6443"
 
 ################################################
 ## kubeconfig=$tls_dir/bootstrap.kubeconfig ##
