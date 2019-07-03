@@ -26,6 +26,11 @@
   tags: fetch_kubelet
   notify: restart kubelet
 
+- name: docker | containerd ?
+  stat:
+    path: /run/containerd/containerd.sock
+  register: containerd
+
 - name: create kubelet configuration
   template: 
     src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
@@ -38,7 +43,7 @@
     - { src: 'kubelet.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
-  when: container_runtime == 'docker'
+  when: not containerd.stat.exists
 
 - name: create kubelet configuration
   template: 
@@ -52,7 +57,7 @@
     - { src: 'kubelet-containerd.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet-containerd.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
-  when: container_runtime == 'containerd'
+  when: containerd.stat.exists
 
 - name: systemd daemon-reload
   systemd: 

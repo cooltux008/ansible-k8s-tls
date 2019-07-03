@@ -25,18 +25,15 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux
 
 
 #########################################################
-# container runtime <docker|containerd>
-container_runtime: containerd
-
 ## docker ##
-#docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
+##docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
 #docker_version: 18.03.1.ce
-docker_version: 18.06.3-ce
-depends_repo_url: "{{ url_prefix }}/centos7"
-docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
-docker_registry: 192.168.130.1:5000
-pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
+#depends_repo_url: "{{ url_prefix }}/centos7"
+#docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
+#docker_registry: 192.168.130.1:5000
+#pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
 ## docker-bin ##
+docker_version: 18.06.3-ce
 docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_version }}.tgz"
 
 ## containerd ##
