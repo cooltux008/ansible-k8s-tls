@@ -1,7 +1,7 @@
 ---
 - name: create coredns yaml dir
   file:
-    path: /var/tmp/coredns/
+    path: /var/tmp/coredns/{{ coredns_version.split('.')[:2] | join('.') }}
     state: directory
     owner: root
     group: root
@@ -9,8 +9,8 @@
 
 - name: sync coredns yaml
   template: 
-    src: "{{ item.src }}"
-    dest: /var/tmp/coredns/{{ item.dest }}
+    src: "{{ coredns_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/coredns/{{ coredns_version.split('.')[:2] | join('.') }}/{{ item.dest }}
     owner: root
     group: root
     mode: 0644

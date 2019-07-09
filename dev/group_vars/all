@@ -91,7 +91,8 @@ kubedns_dnsmasq_image: "{{ docker_registry }}/google_containers/k8s-dns-dnsmasq-
 kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
 
 ## coredns ##
-coredns_image: "{{ docker_registry }}/google_containers/coredns:1.1.3"
+coredns_version: 1.5.2
+coredns_image: "{{ docker_registry }}/google_containers/coredns:{{ coredns_version }}"
 
 ## dashboard ##
 kubernetes_dashboard_version: v1.7.1

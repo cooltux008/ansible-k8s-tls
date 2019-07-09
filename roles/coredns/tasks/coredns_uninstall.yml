@@ -1,6 +1,6 @@
 ---
 - name: delete coredns 
-  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/coredns/
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/coredns/{{ coredns_version.split('.')[:2] | join('.') }}
   ignore_errors: true
 
 - name: remove coredns yaml
