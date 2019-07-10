@@ -75,6 +75,13 @@
   include_tasks: docker_config_no_thinpool.yml
   when: not thinpool_exists.stat.exists
 
+- name: overlay or overlay2 ?
+  replace:
+    path: /etc/docker/daemon.json
+    regexp: '"storage-driver": "overlay2"'
+    replace: '"storage-driver": "overlay"'
+  when: docker_version == '17.03.2.ce'
+
 - name: systemd daemon-reload
   systemd:
     daemon-reload: yes
