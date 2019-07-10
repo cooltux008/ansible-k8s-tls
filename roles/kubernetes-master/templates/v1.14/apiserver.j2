@@ -43,4 +43,12 @@ KUBE_API_ARGS="--authorization-mode=Node,RBAC \
                --audit-log-maxsize=100 \
                --audit-log-path=/var/lib/audit.log \
                --event-ttl=1h" \
-	       --feature-gates=CustomPodDNS=true
+               --feature-gates=CustomPodDNS=true \
+               --volume-stats-agg-period=0 \
+               --requestheader-client-ca-file=/etc/kubernetes/ssl/ca.pem \
+               --requestheader-allowed-names=front-proxy-client \
+               --requestheader-extra-headers-prefix=X-Remote-Extra- \
+               --requestheader-group-headers=X-Remote-Group \
+               --requestheader-username-headers=X-Remote-User \
+               --proxy-client-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
+               --proxy-client-key-file=/etc/kubernetes/ssl/kubernetes-key.pem
