@@ -1,7 +1,10 @@
 #!/bin/bash
 
 
-export tls_dir='../ssl'
+export KUBE_APISERVER="https://192.168.130.11:6443"
+
+
+export tls_dir='../tls/kubernetes'
 
 
 export BOOTSTRAP_TOKEN=$(head -c 16 /dev/urandom | od -An -t x | tr -d ' ')
@@ -11,8 +14,6 @@ EOF
 
 
 
-#export KUBE_APISERVER="https://192.168.130.11:6443"
-export KUBE_APISERVER="https://192.168.60.62:6443"
 
 ################################################
 ## kubeconfig=$tls_dir/bootstrap.kubeconfig ##

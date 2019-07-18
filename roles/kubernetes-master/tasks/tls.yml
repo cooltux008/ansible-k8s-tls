@@ -1,15 +1,15 @@
 ---
-- name: create dir /etc/kubernetes/ssl
+- name: create dir /etc/kubernetes/tls
   file:
-    path: /etc/kubernetes/ssl
+    path: /etc/kubernetes/tls
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- name: sync ssl certs
+- name: sync tls certs
   copy:
-    src: "ssl/{{ item.src }}"
+    src: "tls/kubernetes/{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
@@ -17,8 +17,8 @@
   with_items:
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
-    - { src: 'ca.pem', dest: '/etc/kubernetes/ssl/ca.pem' }
-    - { src: 'ca-key.pem', dest: '/etc/kubernetes/ssl/ca-key.pem' }
-    - { src: 'kubernetes.pem', dest: '/etc/kubernetes/ssl/kubernetes.pem' }
-    - { src: 'kubernetes-key.pem', dest: '/etc/kubernetes/ssl/kubernetes-key.pem' }
+    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/ca.pem' }
+    - { src: 'ca-key.pem', dest: '/etc/kubernetes/tls/ca-key.pem' }
+    - { src: 'server.pem', dest: '/etc/kubernetes/tls/server.pem' }
+    - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/server-key.pem' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }

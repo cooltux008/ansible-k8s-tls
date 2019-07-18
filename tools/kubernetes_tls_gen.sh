@@ -61,46 +61,7 @@ function ca_gen {
 	    }
 	}
 	EOF
-	cfssl gencert -initca ca-csr.json | cfssljson -bare ca
-}
-
-
-
-function kubernetes_gen {
-	cat > kubernetes-csr.json <<-EOF
-	{
-	    "CN": "kubernetes",
-	    "hosts": [
-	      "192.168.130.11",
-	      "192.168.130.12",
-	      "192.168.130.13",
-	      "192.168.130.14",
-	      "192.168.130.15",
-	      "192.168.130.16",
-	      "127.0.0.1",
-	      "10.254.0.1",
-	      "kubernetes",
-	      "kubernetes.default",
-	      "kubernetes.default.svc",
-	      "kubernetes.default.svc.cluster",
-	      "kubernetes.default.svc.cluster.local"
-	    ],
-	    "key": {
-		"algo": "rsa",
-		"size": 2048
-	    },
-	    "names": [
-		{
-		    "C": "CN",
-		    "ST": "BeiJing",
-		    "L": "BeiJing",
-		    "O": "k8s",
-		    "OU": "System"
-		}
-	    ]
-	}
-	EOF
-	cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes kubernetes-csr.json | cfssljson -bare kubernetes
+	cfssl gencert -initca ca-csr.json | cfssljson -bare ca -
 }
 
 
@@ -130,6 +91,42 @@ function admin_gen {
 
 
 
+function kubernetes_gen {
+	cat > server-csr.json <<-EOF
+	{
+	    "CN": "kubernetes",
+	    "hosts": [
+	      "192.168.130.11",
+	      "192.168.130.12",
+	      "192.168.130.13",
+	      "127.0.0.1",
+	      "10.254.0.1",
+	      "kubernetes",
+	      "kubernetes.default",
+	      "kubernetes.default.svc",
+	      "kubernetes.default.svc.cluster",
+	      "kubernetes.default.svc.cluster.local"
+	    ],
+	    "key": {
+		"algo": "rsa",
+		"size": 2048
+	    },
+	    "names": [
+		{
+		    "C": "CN",
+		    "ST": "BeiJing",
+		    "L": "BeiJing",
+		    "O": "k8s",
+		    "OU": "System"
+		}
+	    ]
+	}
+	EOF
+	cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes server-csr.json | cfssljson -bare server
+}
+
+
+
 function kube-proxy_gen {
 	cat > kube-proxy-csr.json <<-EOF
 	{
@@ -155,18 +152,18 @@ function kube-proxy_gen {
 
 
 function verify_pem {
-	openssl x509  -noout -text -in  kubernetes.pem
-	cfssl-certinfo -cert kubernetes.pem
+	openssl x509  -noout -text -in  server.pem
+	cfssl-certinfo -cert server.pem
 }
 
 
-mkdir ../ssl
-cd ../ssl
+mkdir ../tls/kubernetes
+cd ../tls/kubernetes
 #export CFSSL_URL="https://pkg.cfssl.org/R1.2"
 export CFSSL_URL="http://192.168.130.1/ftp/linux_soft/cfssl/R1.2"
 download_cfssl $CFSSL_URL
 ca_gen
-kubernetes_gen
 admin_gen
+kubernetes_gen
 kube-proxy_gen
 verify_pem

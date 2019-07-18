@@ -1,16 +1,16 @@
 ---
-- name: create dir /etc/kubernetes/tls/etcd
+- name: create dir /etc/etcd/tls
   file:
-    path: /etc/kubernetes/tls/etcd
+    path: /etc/etcd/tls
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- name: sync pems to /etc/kubernetes/tls/etcd
+- name: sync pems to /etc/etcd/tls
   copy:
     src: tls/etcd/{{ item }}
-    dest: /etc/kubernetes/tls/etcd
+    dest: /etc/etcd/tls
     owner: root
     group: root
     mode: 0644

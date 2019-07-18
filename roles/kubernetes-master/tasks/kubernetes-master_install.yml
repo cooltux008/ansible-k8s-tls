@@ -1,6 +1,6 @@
 ---
-- import_tasks: ssl.yml
-  tags: ssl
+- import_tasks: tls.yml
+  tags: tls
 - import_tasks: kube-apiserver.yml
   tags: kube-apiserver
 - import_tasks: kube-controller-manager.yml

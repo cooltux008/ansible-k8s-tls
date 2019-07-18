@@ -1,6 +1,6 @@
 ---
-- import_tasks: ssl.yml
-  tags: ssl
+- import_tasks: tls.yml
+  tags: tls
 - import_tasks: kubelet.yml
   tags: kubelet
 - import_tasks: kube-proxy.yml

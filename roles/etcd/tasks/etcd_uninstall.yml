@@ -28,4 +28,3 @@
     - /var/lib/etcd
     - /etc/etcd
     - /lib/systemd/system/etcd.service
-    - /etc/kubernetes/tls/etcd

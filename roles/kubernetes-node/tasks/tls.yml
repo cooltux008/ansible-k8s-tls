@@ -1,15 +1,15 @@
 ---
-- name: create dir /etc/kubernetes/ssl
+- name: create dir /etc/kubernetes/tls
   file:
-    path: /etc/kubernetes/ssl
+    path: /etc/kubernetes/tls
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- name: sync ssl certs
+- name: sync tls certs
   copy:
-    src: "ssl/{{ item.src }}"
+    src: "tls/kubernetes/{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
