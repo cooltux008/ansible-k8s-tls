@@ -45,35 +45,85 @@ cd ansible-k8s-tls
 ### 1. 创建TLS证书和秘钥 ###
 > cfssl下载地址
 > etcd,kube-apiserver的ip地址替换成与实际环境匹配, 如etcd有3台(192.168.130.11-13), 同时192.168.130.11作为kube-apiserver
-``` shell
-...
-function kubernetes_gen {
-	cat > kubernetes-csr.json <<-EOF
-	{
-	    "CN": "kubernetes",
-	    "hosts": [
-	      "192.168.130.11",
-	      "192.168.130.12",
-	      "192.168.130.13",
-	      "127.0.0.1",
-	      "10.254.0.1",
-	      "kubernetes",
-	      "kubernetes.default",
-	      "kubernetes.default.svc",
-	      "kubernetes.default.svc.cluster",
-	      "kubernetes.default.svc.cluster.local"
-	    ],
-...
-```
-``` shell
-cd tools
+ - etcd
 
-# 注意修改"hosts": [
-	      "192.168.130.11",
-	      "192.168.130.12",
-	      "192.168.130.13",
-bash tls_gen.sh
-```
+   ```shell
+   ...
+       cat > server-csr.json <<-EOF
+       {
+           "CN": "etcd",
+           "hosts": [
+             "192.168.130.11",
+             "192.168.130.12",
+             "192.168.130.13",
+             "127.0.0.1"
+           ],
+           "key": {
+           "algo": "rsa",
+           "size": 2048
+           },
+           "names": [
+           {
+               "C": "CN",
+               "ST": "BeiJing",
+               "L": "BeiJing"
+           }
+           ]
+       }
+       EOF
+   ...
+   ```
+
+   ```shell
+   cd tools
+   
+   # 注意修改etcd节点ip 
+   			"hosts": [
+   	      "192.168.130.11",
+   	      "192.168.130.12",
+   	      "192.168.130.13",
+   	      "127.0.0.1"
+   bash etcd_tls_gen.sh
+   ```
+
+   
+
+ - kubernetes
+
+  ```shell
+  ...
+  function kubernetes_gen {
+  	cat > kubernetes-csr.json <<-EOF
+  	{
+  	    "CN": "kubernetes",
+  	    "hosts": [
+  	      "192.168.130.11",
+  	      "192.168.130.12",
+  	      "192.168.130.13",
+  	      "127.0.0.1",
+  	      "10.254.0.1",
+  	      "kubernetes",
+  	      "kubernetes.default",
+  	      "kubernetes.default.svc",
+  	      "kubernetes.default.svc.cluster",
+  	      "kubernetes.default.svc.cluster.local"
+  	    ],
+  ...
+  ```
+
+  ```shell
+  cd tools
+  
+  # 注意修改kubernetes master节点ip
+  			"hosts": [
+  	      "192.168.130.11",
+  	      "192.168.130.12",
+  	      "192.168.130.13",
+  bash kubernetes_tls_gen.sh
+  ```
+
+
+
 ### 2. 创建kubeconfig文件 ###
 ``` shell
 cd tools
