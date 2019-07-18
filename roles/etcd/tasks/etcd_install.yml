@@ -1,22 +1,22 @@
 ---
-- name: create dir /etc/kubernetes/ssl
+- name: create dir /etc/kubernetes/tls/etcd
   file:
-    path: /etc/kubernetes/ssl
+    path: /etc/kubernetes/tls/etcd
     state: directory
     owner: root
     group: root
     mode: 0755
 
-- name: sync pems to /etc/kubernetes/ssl
+- name: sync pems to /etc/kubernetes/tls/etcd
   copy:
-    src: ssl/{{ item }}
-    dest: /etc/kubernetes/ssl/
+    src: tls/etcd/{{ item }}
+    dest: /etc/kubernetes/tls/etcd
     owner: root
     group: root
     mode: 0644
   with_items:
-    - kubernetes.pem
-    - kubernetes-key.pem
+    - server.pem
+    - server-key.pem
     - ca.pem
 
 - name: add etcd group

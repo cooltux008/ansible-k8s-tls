@@ -11,12 +11,12 @@ User=etcd
 EnvironmentFile=-/etc/etcd/etcd.conf
 ExecStart=/usr/bin/etcd \
   --name ${ETCD_NAME} \
-  --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
-  --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
-  --peer-cert-file=/etc/kubernetes/ssl/kubernetes.pem \
-  --peer-key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
-  --trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
-  --peer-trusted-ca-file=/etc/kubernetes/ssl/ca.pem \
+  --cert-file=/etc/kubernetes/tls/etcd/server.pem \
+  --key-file=/etc/kubernetes/tls/etcd/server-key.pem \
+  --peer-cert-file=/etc/kubernetes/tls/etcd/server.pem \
+  --peer-key-file=/etc/kubernetes/tls/etcd/server-key.pem \
+  --trusted-ca-file=/etc/kubernetes/tls/etcd/ca.pem \
+  --peer-trusted-ca-file=/etc/kubernetes/tls/etcd/ca.pem \
   --initial-advertise-peer-urls ${ETCD_INITIAL_ADVERTISE_PEER_URLS} \
   --listen-peer-urls ${ETCD_LISTEN_PEER_URLS} \
   --listen-client-urls ${ETCD_LISTEN_CLIENT_URLS} \

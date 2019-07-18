@@ -1,4 +1,4 @@
-# [member]
+#[member]
 ETCD_NAME="{{ hostname_prefix }}-{{ inventory_hostname.split('.')[2:] | join('-') }}"
 ETCD_DATA_DIR="/var/lib/etcd"
 ETCD_LISTEN_PEER_URLS="https://{{ inventory_hostname }}:2380"

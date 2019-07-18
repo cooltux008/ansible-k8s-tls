@@ -28,6 +28,4 @@
     - /var/lib/etcd
     - /etc/etcd
     - /lib/systemd/system/etcd.service
-    - /etc/kubernetes/ssl/kubernetes.pem
-    - /etc/kubernetes/ssl/kubernetes-key.pem
-    - /etc/kubernetes/ssl/ca.pem
+    - /etc/kubernetes/tls/etcd
