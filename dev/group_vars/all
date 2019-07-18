@@ -27,16 +27,17 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux
 #########################################################
 ## registry ##
 docker_registry: 192.168.130.1:5000
-pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.0"
+pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
 depends_repo_url: "{{ url_prefix }}/centos7"
 
 ## docker ## docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
-#docker_version: 18.03.1.ce
-#docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
+docker_version: 17.03.2.ce
+docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 
 ## docker-bin ##
-docker_version: 18.06.3-ce
-docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_version }}.tgz"
+docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
+#docker_version: 18.06.3-ce
+#docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_version }}.tgz"
 
 ## containerd ##
 containerd_version: 1.2.6
