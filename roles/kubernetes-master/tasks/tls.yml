@@ -1,11 +1,14 @@
 ---
 - name: create dir /etc/kubernetes/tls
   file:
-    path: /etc/kubernetes/tls
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: 0755
+  loop: 
+    - /etc/kubernetes/tls
+    - /var/log/kubernetes
 
 - name: sync tls certs
   copy:

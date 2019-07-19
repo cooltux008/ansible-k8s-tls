@@ -1,0 +1,13 @@
+---
+- name: swapoff -a
+  raw: swapoff -a
+
+- name: clear swap in /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    regexp: '^.*swap\s*swap.*$'
+    state: absent
+    owner: root
+    group: root
+    mode: 0644
+    backrefs: yes

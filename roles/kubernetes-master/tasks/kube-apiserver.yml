@@ -31,8 +31,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
-    - { src: 'apiserver.j2', dest: '/etc/kubernetes/apiserver' }
+    - { src: 'kube-apiserver.j2', dest: '/etc/kubernetes/kube-apiserver' }
     - { src: 'kube-apiserver.service.j2', dest: '/lib/systemd/system/kube-apiserver.service' }
   notify: restart kube-apiserver
 

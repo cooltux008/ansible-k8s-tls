@@ -29,7 +29,8 @@
     - /usr/local/bin/kube-apiserver
     - /usr/local/bin/kube-controller-manager
     - /usr/local/bin/kube-scheduler
-    - /etc/kubernetes
     - /lib/systemd/system/kube-apiserver.service
     - /lib/systemd/system/kube-controller-manager.service
     - /lib/systemd/system/kube-scheduler.service
+    - /etc/kubernetes
+    - /var/log/kubernetes

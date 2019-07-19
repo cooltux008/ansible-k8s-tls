@@ -30,6 +30,7 @@
     - /lib/systemd/system/kubelet.service
     - /lib/systemd/system/kube-proxy.service
     - /var/lib/kubelet
+    - /var/log/kubernetes
 
 - name: uninstall conntrack-tools
   yum: 

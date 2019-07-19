@@ -1,0 +1,10 @@
+###
+# kubernetes scheduler config
+
+KUBE_SCHEDULER_ARGS="--logtostderr=false \
+                     --log-dir=/var/log/kubernetes \
+                     --log-file=/var/log/kubernetes/kube-scheduler.log \
+                     --v=4 \
+                     --master=127.0.0.1:8080 \
+                     --leader-elect=true \
+                     --bind-address=127.0.0.1"

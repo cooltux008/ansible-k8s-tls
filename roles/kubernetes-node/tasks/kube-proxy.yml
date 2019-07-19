@@ -17,8 +17,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
-    - { src: 'proxy.j2', dest: '/etc/kubernetes/proxy' }
+    - { src: 'kube-proxy.j2', dest: '/etc/kubernetes/kube-proxy' }
     - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
   notify: restart kube-proxy
 

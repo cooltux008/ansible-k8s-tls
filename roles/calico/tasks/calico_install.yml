@@ -9,14 +9,14 @@
 
 - name: sync etcd pems
   copy:
-    src: ssl/{{ item.src }}
+    src: tls/etcd/{{ item.src }}
     dest: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item.dest }}
     owner: root
     group: root
     mode: 0644
   with_items:
-    - { src: kubernetes.pem, dest: etcd-cert }
-    - { src: kubernetes-key.pem, dest: etcd-key }
+    - { src: server.pem, dest: etcd-cert }
+    - { src: server-key.pem, dest: etcd-key }
     - { src: ca.pem, dest: etcd-ca }
 
 - name: sync calico yaml

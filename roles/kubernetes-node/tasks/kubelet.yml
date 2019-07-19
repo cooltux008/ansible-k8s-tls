@@ -39,7 +39,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
+    - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
@@ -53,7 +53,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'config.j2', dest: '/etc/kubernetes/config' }
+    - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet-containerd.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet-containerd.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
