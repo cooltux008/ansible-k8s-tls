@@ -4,13 +4,8 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=network.target
 
 [Service]
-EnvironmentFile=-/etc/kubernetes/config
-EnvironmentFile=-/etc/kubernetes/proxy
-ExecStart=/usr/local/bin/kube-proxy \
-        $KUBE_LOGTOSTDERR \
-        $KUBE_LOG_LEVEL \
-        $KUBE_MASTER \
-        $KUBE_PROXY_ARGS
+EnvironmentFile=-/etc/kubernetes/kube-proxy
+ExecStart=/usr/local/bin/kube-proxy $KUBE_PROXY_ARGS
 Restart=on-failure
 LimitNOFILE=65536
 

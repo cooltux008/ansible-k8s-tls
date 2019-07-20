@@ -4,6 +4,8 @@
 - import_playbook: heapster.yml
 - import_playbook: coredns.yml
 - import_playbook: calico.yml
+- import_playbook: flannel.yml
+- import_playbook: flannel-systemd.yml
 - import_playbook: kubernetes-cni.yml
 - import_playbook: kubernetes-node.yml
 - import_playbook: kubernetes-master.yml

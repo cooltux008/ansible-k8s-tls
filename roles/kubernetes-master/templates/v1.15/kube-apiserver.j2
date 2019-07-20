@@ -10,11 +10,10 @@ KUBE_API_ARGS="--logtostderr=false \
                --allow-privileged=true \
                --advertise-address={{ inventory_hostname }} \
                --bind-address=0.0.0.0 \
-               --insecure-bind-address=0.0.0.0 \
-               --port=8080 \
+               --secure-port=6443 \
                --etcd-servers={% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
                --service-cluster-ip-range={{ service_cluster_ip_range }} \
-               --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota,NodeRestriction \
+               --enable-admission-plugins=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota,NodeRestriction \
                --authorization-mode=Node,RBAC \
                --runtime-config=rbac.authorization.k8s.io/v1beta1 \
                --kubelet-https=true \
