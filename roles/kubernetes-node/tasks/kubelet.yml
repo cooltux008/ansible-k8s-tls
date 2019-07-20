@@ -55,7 +55,7 @@
   with_items:
     - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet-containerd.j2', dest: '/etc/kubernetes/kubelet' }
-    - { src: 'kubelet-containerd.service.j2', dest: '/lib/systemd/system/kubelet.service' }
+    - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
   when: containerd.stat.exists
 
