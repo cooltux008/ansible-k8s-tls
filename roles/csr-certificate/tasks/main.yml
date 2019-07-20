@@ -5,19 +5,22 @@
          --clusterrole=system:node-bootstrapper \
          --user=kubelet-bootstrap
   failed_when: false
+  tags: clusterrolebinding_kubelet-bootstrap
 
-- name: wait kubelet csr kubelet-bootstrap (10s)
-  wait_for: timeout=10
+- name: wait kubelet csr kubelet-bootstrap (30s)
+  wait_for: timeout=30
   delegate_to: localhost
 
 - name: certificate approve csr
   raw: kubectl -s {{ kubernetes_apiserver }} certificate approve $(kubectl get csr -ojsonpath='{.items[?(@.status.conditions[0].type!="Approved")].metadata.name}';kubectl -s {{ kubernetes_apiserver }} get csr -ojsonpath='{.items[?(not @.status)].metadata.name}')
   failed_when: false
+  tags: approve_csr
 
-- name: wait kubelet node ok (10s)
-  wait_for: timeout=10
+- name: wait kubelet node ok (30s)
+  wait_for: timeout=30
   delegate_to: localhost
 
 - name: label master node
   raw: kubectl -s {{ kubernetes_apiserver }} label node $(kubectl -s {{ kubernetes_apiserver }} get node -o=jsonpath='{.items[*].metadata.name}') node-role.kubernetes.io/master= --overwrite
   failed_when: false
+  tags: label_master

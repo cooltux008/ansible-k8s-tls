@@ -1,3 +1,0 @@
----
-- import_tasks: "docker_{{ install_or_uninstall }}.yml"
-  tags: docker

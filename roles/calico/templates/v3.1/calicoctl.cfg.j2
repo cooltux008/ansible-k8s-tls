@@ -4,6 +4,6 @@ metadata:
 spec:
    datastoreType: "etcdv3"
    etcdEndpoints: "{% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}"
-   etcdKeyFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-key
-   etcdCertFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-cert
-   etcdCACertFile: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/etcd-ca
+   etcdKeyFile: /etc/etcd/tls/server-key.pem
+   etcdCertFile: /etc/etcd/tls/server.pem
+   etcdCACertFile: /etc/etcd/tls/ca.pem

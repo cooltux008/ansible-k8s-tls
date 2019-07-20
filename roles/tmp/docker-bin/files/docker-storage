@@ -1,1 +1,0 @@
-DOCKER_STORAGE_OPTIONS="--storage-driver overlay --storage-opt dm.fs=xfs --storage-opt dm.thinpooldev=/dev/mapper/centos-docker--pool --storage-opt dm.use_deferred_removal=true --storage-opt dm.use_deferred_deletion=true "

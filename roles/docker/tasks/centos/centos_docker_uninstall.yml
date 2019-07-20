@@ -18,7 +18,7 @@
     state: absent
 
 - name: filter mounted container dirs
-  shell: df
+  raw: df
   register: df_result
 
 - name: unmount left pods 
@@ -26,6 +26,11 @@
     path: "{{ item }}"
     state: unmounted
   loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+
+- name: unmount left docker dirs
+  raw: umount proc
+  failed_when: false
+  tags: unmount
 
 - name: remove docker directories
   file:
@@ -43,6 +48,8 @@
     - /etc/docker
     - /var/lib/docker
     - /var/run/docker
+    - /run/docker
+    - /run/dockershim.sock
 
 - name: thinpool
   lvol:

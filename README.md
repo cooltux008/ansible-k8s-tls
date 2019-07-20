@@ -132,7 +132,7 @@ cd tools
 bash kubeconfig_gen.sh
 ```
 ### 3. 创建base64格式的etcd证书变量文件 ###
-> 脚本生成的ansible变量**etcd_cert,etcd_key,etcd_ca**为后面创建calico secret使用，证书错误会导致calico-node启动失败
+> 脚本生成的ansible变量**etcd_cert,etcd_key,etcd_ca**是为后面创建calico secret准备，证书错误会导致calico-node无法访问etcd而启动失败
 ``` shell
 cd tools
 bash etcd_tls2base64.sh
@@ -147,17 +147,13 @@ bash etcd_tls2base64.sh
 > kubernetes-client是kubectl命令执行的节点，通常为kubernetes master节点, 主要用来执行kubectl命令
 ``` ini
 [etcd]
-192.168.130.11
-192.168.130.12
-192.168.130.13
+192.168.130.[11:13]
 
 [kubernetes-master]
-192.168.130.11
+192.168.130.[11:13]
 
 [kubernetes-node]
-192.168.130.11
-192.168.130.12
-192.168.130.13
+192.168.130.[11:13]
 
 [kubernetes-client]
 192.168.130.11

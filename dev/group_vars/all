@@ -35,9 +35,9 @@ docker_version: 17.03.2.ce
 docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 
 ## docker-bin ##
-docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
-#docker_version: 18.06.3-ce
-#docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_version }}.tgz"
+#docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
+docker_bin_version: 18.06.3-ce
+docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_bin_version }}.tgz"
 
 ## containerd ##
 containerd_version: 1.2.6
