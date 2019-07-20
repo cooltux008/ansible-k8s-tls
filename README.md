@@ -132,6 +132,7 @@ cd tools
 bash kubeconfig_gen.sh
 ```
 ### 3. 创建base64格式的etcd证书变量文件 ###
+> 脚本生成的ansible变量**etcd_cert,etcd_key,etcd_ca**为后面创建calico secret使用，证书错误会导致calico-node启动失败
 ``` shell
 cd tools
 bash etcd_tls2base64.sh
