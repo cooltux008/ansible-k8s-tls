@@ -7,9 +7,11 @@ After=etcd.service
 [Service]
 EnvironmentFile=-/etc/kubernetes/kube-apiserver
 ExecStart=/usr/local/bin/kube-apiserver $KUBE_API_ARGS
-Restart=on-failure
 Type=notify
-LimitNOFILE=65536
+Restart=always
+StartLimitInterval=100s
+RestartSec=10
+LimitNOFILE=1000000
 
 [Install]
 WantedBy=multi-user.target

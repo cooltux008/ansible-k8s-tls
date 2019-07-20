@@ -3,7 +3,7 @@
 KUBELET_ARGS="--logtostderr=false \
               --log-dir=/var/log/kubernetes \
               --log-file=/var/log/kubernetes/kubelet.log \
-              --v=4 \
+              --v=2 \
               --hostname-override={{ inventory_hostname }} \
               --pod-infra-container-image={{ pod_infra_container_image }} \
               --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \

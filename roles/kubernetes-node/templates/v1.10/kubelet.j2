@@ -2,7 +2,7 @@
 ## kubernetes kubelet (minion) config
 KUBELET_ARGS="--logtostderr=false \
               --log-dir=/var/log/kubernetes \
-              --v=4 \
+              --v=2 \
               --hostname-override={{ inventory_hostname }} \
               --pod-infra-container-image={{ pod_infra_container_image }} \
               --bootstrap-kubeconfig=/etc/kubernetes/bootstrap.kubeconfig \

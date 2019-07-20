@@ -5,8 +5,10 @@ Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 [Service]
 EnvironmentFile=-/etc/kubernetes/kube-controller-manager
 ExecStart=/usr/local/bin/kube-controller-manager $KUBE_CONTROLLER_MANAGER_ARGS
-Restart=on-failure
-LimitNOFILE=65536
+Restart=always
+StartLimitInterval=100s
+RestartSec=10
+LimitNOFILE=1000000
 
 [Install]
 WantedBy=multi-user.target
