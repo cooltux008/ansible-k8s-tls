@@ -16,18 +16,19 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - /etc/sysconfig/flanneld
-    - /usr/lib/systemd/system/flanneld.service
+    - /lib/systemd/system/flanneld.service
     - /run/flannel
     - /etc/cni
+    - /etc/flannel
     - /opt/cni
+    - /var/log/flannel
 
 - name: clear flannel network in etcd
   raw: |
       etcdctl --endpoints={% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
-      --ca-file=/etc/kubernetes/ssl/ca.pem \
-      --cert-file=/etc/kubernetes/ssl/kubernetes.pem \
-      --key-file=/etc/kubernetes/ssl/kubernetes-key.pem \
+      --ca-file=/etc/etcd/tls/ca.pem \
+      --cert-file=/etc/etcd/tls/server.pem \
+      --key-file=/etc/etcd/tls/server-key.pem \
       rm -r /{{ FLANNEL_ETCD_PREFIX }}
   delegate_to: "{{ groups['etcd'][0] }}"
   failed_when: false

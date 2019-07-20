@@ -1,0 +1,45 @@
+###
+## kubernetes system config
+##
+## The following values are used to configure the kube-apiserver
+##
+KUBE_API_ARGS="--logtostderr=false \
+               --log-dir=/var/log/kubernetes \
+               --log-file=/var/log/kubernetes/kube-apiserver.log \
+               --v=4 \
+               --allow-privileged=true \
+               --advertise-address={{ inventory_hostname }} \
+               --bind-address=0.0.0.0 \
+               --insecure-bind-address=0.0.0.0 \
+               --port=8080 \
+               --etcd-servers={% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
+               --service-cluster-ip-range={{ service_cluster_ip_range }} \
+               --admission-control=NamespaceLifecycle,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota,NodeRestriction \
+               --authorization-mode=Node,RBAC \
+               --runtime-config=rbac.authorization.k8s.io/v1beta1 \
+               --kubelet-https=true \
+               --enable-bootstrap-token-auth \
+               --token-auth-file=/etc/kubernetes/token.csv \
+               --service-node-port-range=30000-32767 \
+               --tls-cert-file=/etc/kubernetes/tls/server.pem \
+               --tls-private-key-file=/etc/kubernetes/tls/server-key.pem \
+               --client-ca-file=/etc/kubernetes/tls/ca.pem \
+               --service-account-key-file=/etc/kubernetes/tls/ca-key.pem \
+               --etcd-cafile=/etc/etcd/tls/ca.pem \
+               --etcd-certfile=/etc/etcd/tls/server.pem \
+               --etcd-keyfile=/etc/etcd/tls/server-key.pem \
+               --enable-swagger-ui=true \
+               --apiserver-count=3 \
+               --audit-log-maxage=30 \
+               --audit-log-maxbackup=3 \
+               --audit-log-maxsize=100 \
+               --audit-log-path=/var/lib/audit.log \
+               --event-ttl=1h \
+               --feature-gates=CustomPodDNS=true \
+               --requestheader-client-ca-file=/etc/kubernetes/tls/ca.pem \
+               --requestheader-allowed-names=front-proxy-client \
+               --requestheader-extra-headers-prefix=X-Remote-Extra- \
+               --requestheader-group-headers=X-Remote-Group \
+               --requestheader-username-headers=X-Remote-User \
+               --proxy-client-cert-file=/etc/kubernetes/tls/server.pem \
+               --proxy-client-key-file=/etc/kubernetes/tls/server-key.pem"

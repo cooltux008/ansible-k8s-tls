@@ -1,0 +1,9 @@
+# Flanneld configuration options
+
+FLANNEL_OPTIONS="-log_dir=/var/log/flannel \
+                 -etcd-endpoints={% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %} \
+                 -etcd-prefix=/{{ FLANNEL_ETCD_PREFIX }}/network \
+                 -etcd-cafile=/etc/flannel/tls/ca.pem \
+                 -etcd-certfile=/etc/flannel/tls/server.pem \
+                 -etcd-keyfile=/etc/flannel/tls/server-key.pem \
+                 -iface={{ flannel_wan_iface }}"

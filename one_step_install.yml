@@ -16,8 +16,8 @@
 - import_playbook: kubernetes-cni.yml
 
 # network
-- import_playbook: calico.yml
-  #- import_playbook: flannel.yml
+#- import_playbook: calico.yml
+#- import_playbook: flannel.yml
 
 # extra
 #- import_playbook: coredns.yml
