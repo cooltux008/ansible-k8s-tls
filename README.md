@@ -187,7 +187,7 @@ ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars
 
 -------------------------------------------------------------------------------
 ## 测试组件 ## 
+- etcd
 ```shell
-# etcd
-ETCDCTL_API=3 etcdctl --cert=/etc/kubernetes/ssl/kubernetes.pem --key=/etc/kubernetes/ssl/kubernetes-key.pem  --cacert=/etc/kubernetes/ssl/ca.pem member list
+ETCDCTL_API=3 etcdctl --cert=/etc/etcd/tls/server.pem --key=/etc/etcd/tls/server-key.pem  --cacert=/etc/etcd/tls/ca.pem member list
 ```
