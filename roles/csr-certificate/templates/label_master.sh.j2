@@ -1,0 +1,2 @@
+#!/bin/sh
+kubectl -s {{ kubernetes_apiserver }} label node {% for item in groups['kubernetes-master'] %}{{ hostvars[item]['inventory_hostname'] }}{% if not loop.last %} {% endif %}{% endfor %} node-role.kubernetes.io/master= --overwrite

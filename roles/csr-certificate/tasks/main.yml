@@ -1,16 +1,4 @@
 ---
-- name: create clusterrolebinding kubelet-bootstrap
-  raw: >
-         kubectl -s {{ kubernetes_apiserver }} create clusterrolebinding kubelet-bootstrap \
-         --clusterrole=system:node-bootstrapper \
-         --user=kubelet-bootstrap
-  failed_when: false
-  tags: clusterrolebinding_kubelet-bootstrap
-
-- name: wait kubelet csr kubelet-bootstrap (30s)
-  wait_for: timeout=30
-  delegate_to: localhost
-
 - name: certificate approve csr
   raw: kubectl -s {{ kubernetes_apiserver }} certificate approve $(kubectl get csr -ojsonpath='{.items[?(@.status.conditions[0].type!="Approved")].metadata.name}';kubectl -s {{ kubernetes_apiserver }} get csr -ojsonpath='{.items[?(not @.status)].metadata.name}')
   failed_when: false
@@ -20,7 +8,16 @@
   wait_for: timeout=30
   delegate_to: localhost
 
+- name: sync label_master.sh
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: label_master.sh.j2, dest: /var/tmp/label_master.sh }
+
 - name: label master node
-  raw: kubectl -s {{ kubernetes_apiserver }} label node $(kubectl -s {{ kubernetes_apiserver }} get node -o=jsonpath='{.items[*].metadata.name}') node-role.kubernetes.io/master= --overwrite
-  failed_when: false
+  raw: bash /var/tmp/label_master.sh ; rm -rf /var/tmp/label_master.sh
   tags: label_master

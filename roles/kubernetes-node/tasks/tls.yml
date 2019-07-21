@@ -21,3 +21,4 @@
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }
+    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/ca.pem' }
