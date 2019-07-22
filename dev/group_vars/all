@@ -50,6 +50,11 @@ runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
 ## cri-tools
 cri_tools_version: "{{ kubernetes_version }}"
 cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
+ 
+## kata-containers
+kata_containers_version: 1.8.0
+kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/kata-static-{{ kata_containers_version }}-x86_64.tar.xz"
+
 #########################################################
 
 

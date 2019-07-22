@@ -1,0 +1,7 @@
+---
+- name: remove kata-containers
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /opt/kata

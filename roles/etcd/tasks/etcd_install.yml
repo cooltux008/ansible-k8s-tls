@@ -91,3 +91,11 @@
     name: etcd
     state: started 
     enabled: yes
+
+- name: clear tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/etcd-{{ etcd_version }}-linux-amd64
+    - /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz

@@ -22,8 +22,6 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - /tmp/containerd-{{ containerd_version }}.linux-amd64.tar.gz
-    - /tmp/bin
     - /usr/local/bin/containerd
     - /usr/local/bin/ctr
     - /usr/local/bin/containerd-shim-runc-v1

@@ -1,0 +1,3 @@
+---
+- import_tasks: kata-containers_{{ install_or_uninstall }}.yml
+  tags: kata-containers

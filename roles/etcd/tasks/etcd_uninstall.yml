@@ -23,8 +23,6 @@
   with_items:
     - /usr/bin/etcd
     - /usr/bin/etcdctl
-    - /tmp/etcd-{{ etcd_version }}-linux-amd64
-    - /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz
     - /var/lib/etcd
     - /etc/etcd
     - /lib/systemd/system/etcd.service

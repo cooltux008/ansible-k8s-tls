@@ -60,5 +60,13 @@
     state: started 
     enabled: yes
 
+- name: clear tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/containerd-{{ containerd_version }}.linux-amd64.tar.gz
+    - /tmp/bin
+
 - import_tasks: runc.yml
   tags: runc

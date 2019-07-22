@@ -1,0 +1,38 @@
+---
+- name: unarchive kata-containers bin tar
+  unarchive:
+    src: "{{ kata_containers_bin_tar_url }}"
+    dest: /tmp
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: install kata-containers to /opt/kata
+  raw: rm -rf /opt/kata ; mv /tmp/opt/kata /opt
+
+- name: remove tmp dir
+  file:
+    path: /tmp/opt
+    state: absent
+
+- name: create dir /etc/kata-containers
+  file:
+    path: /etc/kata-containers
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: update /etc/containerd/config.toml (kata-containers)
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: config-kata.toml.j2, dest: /etc/containerd/config.toml }
+    - { src: configuration.toml.j2, dest: /etc/kata-containers/configuration.toml }
+  notify: restart containerd
+
