@@ -1,5 +1,5 @@
 ---
-- name: create dir /etc/kubernetes/tls
+- name: create dir /etc/kubernetes/tls/{kubernetes,etcd}
   file:
     path: "{{ item }}"
     state: directory
@@ -7,10 +7,11 @@
     group: root
     mode: 0755
   loop: 
-    - /etc/kubernetes/tls
+    - /etc/kubernetes/tls/kubernetes
+    - /etc/kubernetes/tls/etcd
     - /var/log/kubernetes
 
-- name: sync tls certs
+- name: sync kubernetes tls certs
   copy:
     src: "tls/kubernetes/{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -20,8 +21,20 @@
   with_items:
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
-    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/ca.pem' }
-    - { src: 'ca-key.pem', dest: '/etc/kubernetes/tls/ca-key.pem' }
-    - { src: 'server.pem', dest: '/etc/kubernetes/tls/server.pem' }
-    - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/server-key.pem' }
+    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/kubernetes/ca.pem' }
+    - { src: 'ca-key.pem', dest: '/etc/kubernetes/tls/kubernetes/ca-key.pem' }
+    - { src: 'server.pem', dest: '/etc/kubernetes/tls/kubernetes/server.pem' }
+    - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/kubernetes/server-key.pem' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }
+
+- name: sync etcd tls certs
+  copy:
+    src: "tls/etcd/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/etcd/ca.pem' }
+    - { src: 'server.pem', dest: '/etc/kubernetes/tls/etcd/server.pem' }
+    - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/etcd/server-key.pem' }

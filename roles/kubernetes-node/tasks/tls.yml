@@ -1,5 +1,5 @@
 ---
-- name: create dir /etc/kubernetes/tls
+- name: create dir /etc/kubernetes/tls/kubernetes
   file:
     path: "{{ item }}"
     state: directory
@@ -7,7 +7,7 @@
     group: root
     mode: 0755
   loop: 
-    - /etc/kubernetes/tls
+    - /etc/kubernetes/tls/kubernetes
     - /var/log/kubernetes
 
 - name: sync tls certs
@@ -21,4 +21,4 @@
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }
-    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/ca.pem' }
+    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/kubernetes/ca.pem' }
