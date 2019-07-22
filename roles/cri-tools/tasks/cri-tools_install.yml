@@ -1,0 +1,21 @@
+---
+- name: unarchive crictl tar
+  unarchive:
+    src: "{{ cri_tools_bin_tar_url }}/{{ item }}"
+    dest: /usr/local/bin/
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - crictl-{{ cri_tools_version }}-linux-amd64.tar.gz
+    - critest-{{ cri_tools_version }}-linux-amd64.tar.gz
+
+- name: /etc/crictl.yaml
+  template: 
+    src: crictl.yaml.j2
+    dest: /etc/crictl.yaml
+    owner: root
+    group: root
+    mode: 0644
+

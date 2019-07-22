@@ -42,10 +42,14 @@ docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_bin_versio
 ## containerd ##
 containerd_version: 1.2.7
 containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
+
+## runc
 runc_version: 1.0.0-rc8
 runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
-crictl_version: 1.14.0
-crictl_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/crictl-v{{ crictl_version }}-linux-amd64.tar.gz"
+
+## cri-tools
+cri_tools_version: "{{ kubernetes_version }}"
+cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
 #########################################################
 
 

@@ -1,0 +1,9 @@
+---
+- name: remove cri-tools
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/local/bin/crictl
+    - /usr/local/bin/critest
+    - /etc/crictl.yaml

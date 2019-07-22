@@ -31,8 +31,6 @@
     - /usr/local/bin/containerd-stress
     - /etc/containerd
     - /lib/systemd/system/containerd.service
-    - /usr/local/bin/runc
     - /run/containerd
     - /var/lib/containerd
-    - /usr/local/bin/crictl
-    - /etc/crictl.yaml
+    - /usr/local/bin/runc

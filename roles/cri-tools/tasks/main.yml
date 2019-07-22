@@ -1,0 +1,3 @@
+---
+- import_tasks: cri-tools_{{ install_or_uninstall }}.yml
+  tags: cri-tools

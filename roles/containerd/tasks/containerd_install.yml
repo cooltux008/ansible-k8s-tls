@@ -60,28 +60,5 @@
     state: started 
     enabled: yes
 
-- name: download runc binary
-  get_url:
-    url: "{{ runc_bin_url }}"
-    dest: /usr/local/bin/runc
-    owner: root
-    group: root
-    mode: 0755
-
-- name: unarchive crictl tar
-  unarchive:
-    src: "{{ crictl_bin_tar_url }}"
-    dest: /usr/local/bin/
-    remote_src: yes
-    owner: root
-    group: root
-    mode: 0755
-
-- name: /etc/crictl.yaml
-  template: 
-    src: crictl.yaml.j2
-    dest: /etc/crictl.yaml
-    owner: root
-    group: root
-    mode: 0644
-
+- import_tasks: runc.yml
+  tags: runc
