@@ -21,11 +21,23 @@
 
 - name: create calicoctl config dir
   file:
-    path: /etc/calico/
+    path: /etc/calico/tls/etcd
     state: directory
     owner: root
     group: root
     mode: 0755
+
+- name: sync etcd tls certs
+  copy:
+    src: "tls/etcd/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'ca.pem', dest: '/etc/calico/tls/etcd/ca.pem' }
+    - { src: 'server.pem', dest: '/etc/calico/tls/etcd/server.pem' }
+    - { src: 'server-key.pem', dest: '/etc/calico/tls/etcd/server-key.pem' }
 
 - name: fetch calicoctl binary to PATH(/usr/local/bin)
   get_url:
