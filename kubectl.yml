@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - kubernetes-master
+    - kubernetes-client
   roles:
     - kubectl
   vars_files: 
