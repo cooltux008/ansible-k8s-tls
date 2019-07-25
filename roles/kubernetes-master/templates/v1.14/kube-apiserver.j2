@@ -24,15 +24,15 @@ KUBE_API_ARGS="--logtostderr=false \
                --tls-private-key-file=/etc/kubernetes/tls/kubernetes/server-key.pem \
                --client-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \
                --service-account-key-file=/etc/kubernetes/tls/kubernetes/ca-key.pem \
-               --etcd-cafile=/etc/etcd/tls/etcd/ca.pem \
-               --etcd-certfile=/etc/etcd/tls/etcd/server.pem \
-               --etcd-keyfile=/etc/etcd/tls/etcd/server-key.pem \
+               --etcd-cafile=/etc/kubernetes/tls/etcd/ca.pem \
+               --etcd-certfile=/etc/kubernetes/tls/etcd/server.pem \
+               --etcd-keyfile=/etc/kubernetes/tls/etcd/server-key.pem \
                --enable-swagger-ui=true \
                --apiserver-count=3 \
                --audit-log-maxage=30 \
                --audit-log-maxbackup=3 \
                --audit-log-maxsize=100 \
-               --audit-log-path=/var/lib/audit.log \
+               --audit-log-path=/var/log/audit/kube-apiserver.log \
                --event-ttl=1h \
                --feature-gates=CustomPodDNS=true \
                --requestheader-client-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \

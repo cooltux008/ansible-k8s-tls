@@ -32,7 +32,7 @@ KUBE_API_ARGS="--logtostderr=false \
                --audit-log-maxage=30 \
                --audit-log-maxbackup=3 \
                --audit-log-maxsize=100 \
-               --audit-log-path=/var/lib/audit.log \
+               --audit-log-path=/var/log/audit/kube-apiserver.log \
                --event-ttl=1h \
                --feature-gates=CustomPodDNS=true \
                --requestheader-client-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \

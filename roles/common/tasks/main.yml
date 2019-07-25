@@ -1,8 +1,13 @@
 ---
-- import_tasks: timezone.yml
-- import_tasks: selinux.yml
-- import_tasks: firewalld.yml
 - import_tasks: hostname.yml
   tags: hostname
+- import_tasks: timezone.yml
+  tags: timezone
+- import_tasks: firewalld.yml
+  tags: firewalld
+- import_tasks: selinux.yml
+  tags: selinux
 - import_tasks: swapoff.yml
   tags: swapoff
+- import_tasks: sysctl.yml
+  tags: sysctl

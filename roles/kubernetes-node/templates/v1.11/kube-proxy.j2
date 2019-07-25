@@ -3,7 +3,6 @@
 KUBE_PROXY_ARGS="--logtostderr=false \
                  --log-dir=/var/log/kubernetes \
                  --v=2 \
-                 --master=127.0.0.1:8080 \
                  --bind-address={{ inventory_hostname }} \
                  --hostname-override={{ inventory_hostname }} \
                  --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
