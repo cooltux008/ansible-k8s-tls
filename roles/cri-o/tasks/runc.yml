@@ -1,0 +1,8 @@
+---
+- name: install runc
+  get_url:
+    url: "{{ runc_bin_url }}"
+    dest: /usr/local/bin/runc
+    owner: root
+    group: root
+    mode: 0755

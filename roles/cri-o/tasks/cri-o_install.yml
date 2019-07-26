@@ -1,0 +1,92 @@
+---
+- name: install crio depends (libseccomp-devel)
+  yum: 
+    name: libseccomp-devel
+    state: present
+    update_cache: yes
+
+- import_tasks: runc.yml
+  tags: runc
+
+- name: create crio dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /etc/crio
+    - /etc/containers/oci/hooks.d
+    - /var/lib/crio
+    - /var/lib/containers/storage
+    - /var/log/crio/pods
+
+- name: download crio binary
+  get_url:
+    url: "{{ crio_bin_tar_url }}"
+    dest: /tmp
+
+- name: unarchive crio tar
+  unarchive:
+    remote_src: yes
+    src: /tmp/crio-{{ crio_version }}.linux-amd64.tar.gz
+    dest: /tmp
+
+- name: move crio, conmon to PATH
+  copy:
+    remote_src: yes
+    src: /tmp/bin/{{ item }}
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - crio
+    - conmon
+
+- name: create /lib/systemd/system/crio.service
+  template:
+    src: "{{ crio_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: crio.j2, dest: /etc/default/crio }
+    - { src: crio.conf.j2, dest: /etc/crio/crio.conf }
+    - { src: crio.service.j2, dest: /lib/systemd/system/crio.service }
+    - { src: policy.json.j2, dest: /etc/containers/policy.json }
+  notify: restart crio
+
+- name: create /lib/systemd/system/crio-shutdown.service
+  template:
+    src: "{{ crio_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: crio-shutdown.service.j2, dest: /lib/systemd/system/crio-shutdown.service }
+  notify: restart crio-shutdown
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start crio
+  service: 
+    name: "{{ item }}"
+    state: started 
+    enabled: yes
+  loop:
+    - crio
+    - crio-shutdown
+
+- name: clear tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/crio-{{ crio_version }}.linux-amd64.tar.gz
+    - /tmp/bin

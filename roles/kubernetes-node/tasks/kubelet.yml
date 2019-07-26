@@ -26,10 +26,20 @@
   tags: fetch_kubelet
   notify: restart kubelet
 
-- name: docker | containerd ?
+- name: container engine is docker ?
   stat:
-    path: /run/containerd/containerd.sock
+    path: /var/run/dockershim.sock
+  register: docker
+
+- name: container engine is containerd ?
+  stat:
+    path: /var/run/containerd/containerd.sock
   register: containerd
+
+- name: container engine is crio ?
+  stat:
+    path: /var/run/crio/crio.sock
+  register: crio
 
 - name: create kubelet configuration
   template: 
@@ -43,7 +53,7 @@
     - { src: 'kubelet.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
-  when: not containerd.stat.exists
+  when: docker.stat.exists
 
 - name: create kubelet configuration
   template: 
@@ -58,6 +68,20 @@
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
   when: containerd.stat.exists
+
+- name: create kubelet configuration
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
+    - { src: 'kubelet-crio.j2', dest: '/etc/kubernetes/kubelet' }
+    - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
+  notify: restart kubelet
+  when: crio.stat.exists
 
 - name: systemd daemon-reload
   systemd: 

@@ -33,26 +33,22 @@
     - containerd-shim
     - containerd-stress
 
-- name: create /lib/systemd/system/containerd.service
-  template:
-    src: containerd.service.j2
-    dest: /lib/systemd/system/containerd.service
-    owner: root
-    group: root
-    mode: 0644
-
-- name: systemd daemon-reload
-  systemd:
-    daemon-reload: yes
-
 - name: /etc/containerd/config.toml
   template: 
-    src: config.toml.j2 
-    dest: /etc/containerd/config.toml
+    src: "{{ containerd_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
   notify: restart containerd
+  loop:
+    - { src: config.toml.j2, dest: /etc/containerd/config.toml }
+    - { src: containerd.service.j2, dest: /lib/systemd/system/containerd.service }
+  notify: restart containerd
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
 
 - name: start containerd
   service: 

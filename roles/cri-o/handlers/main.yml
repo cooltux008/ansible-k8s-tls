@@ -1,0 +1,12 @@
+---
+- name: restart crio
+  service: 
+    name: crio
+    state: restarted
+    enabled: yes
+
+- name: restart crio-shutdown
+  service: 
+    name: crio-shutdown
+    state: restarted
+    enabled: yes

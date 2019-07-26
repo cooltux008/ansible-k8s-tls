@@ -1,0 +1,38 @@
+---
+- name: stop crio
+  service: 
+    name: "{{ item }}"
+    state: stopped 
+    enabled: no
+  loop:
+    - crio
+    - crio-shutdown
+  ignore_errors: true
+
+- name: filter mounted container dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/run/containers/.+)') }}"
+  tags: unmount_crio
+
+- name: remove crio 
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/crio
+    - /etc/containers
+    - /var/lib/crio
+    - /var/lib/containers
+    - /var/run/containers
+    - /var/log/crio
+    - /lib/systemd/system/crio-shutdown.service
+    - /lib/systemd/system/crio.service
+    - /etc/default/crio
+    - /usr/local/bin/crio
+    - /usr/local/bin/conmon
