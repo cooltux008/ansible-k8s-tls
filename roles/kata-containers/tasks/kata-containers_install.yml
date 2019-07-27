@@ -1,4 +1,23 @@
 ---
+- name: container engine is docker ?
+  stat:
+    path: /var/run/dockershim.sock
+  register: docker
+
+- name: container engine is containerd ?
+  stat:
+    path: /var/run/containerd/containerd.sock
+  register: containerd
+
+- name: container engine is crio ?
+  stat:
+    path: /var/run/crio/crio.sock
+  register: crio
+
+- name: exit 
+  fail: msg="kata-containers is not compatible with docker"
+  when: docker.stat.exists
+
 - name: unarchive kata-containers bin tar
   unarchive:
     src: "{{ kata_containers_bin_tar_url }}"
@@ -10,12 +29,6 @@
 
 - name: install kata-containers to /opt/kata
   raw: rm -rf /opt/kata ; mv /tmp/opt/kata /opt
-
-- name: ln -s containerd-shim-kata-v2 to $PATH
-  file:
-    src: /opt/kata/bin/containerd-shim-kata-v2
-    dest: /usr/local/bin/containerd-shim-kata-v2
-    state: link
 
 - name: remove tmp dir
   file:
@@ -29,16 +42,6 @@
     owner: root
     group: root
     mode: 0755
-
-- name: container engine is containerd ?
-  stat:
-    path: /var/run/containerd/containerd.sock
-  register: containerd
-
-- name: container engine is crio ?
-  stat:
-    path: /var/run/crio/crio.sock
-  register: crio
 
 - name: update /etc/containerd/config.toml (kata-containers)
   template: 

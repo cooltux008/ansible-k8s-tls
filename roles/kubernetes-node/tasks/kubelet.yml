@@ -41,7 +41,7 @@
     path: /var/run/crio/crio.sock
   register: crio
 
-- name: create kubelet configuration
+- name: create kubelet configuration with docker
   template: 
     src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -55,7 +55,7 @@
   notify: restart kubelet
   when: docker.stat.exists
 
-- name: create kubelet configuration
+- name: create kubelet configuration with containerd
   template: 
     src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -69,7 +69,7 @@
   notify: restart kubelet
   when: containerd.stat.exists
 
-- name: create kubelet configuration
+- name: create kubelet configuration with crio
   template: 
     src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
     dest: "{{ item.dest }}"

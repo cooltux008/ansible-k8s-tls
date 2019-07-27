@@ -26,16 +26,7 @@
     path: /var/run/crio/crio.sock
   register: crio
 
-- name: /etc/crictl.yaml
-  template: 
-    src: crictl-crio.yaml.j2
-    dest: /etc/crictl.yaml
-    owner: root
-    group: root
-    mode: 0644
-  when: crio.stat.exists
-
-- name: /etc/crictl.yaml
+- name: /etc/crictl.yaml compatible with docker
   template: 
     src: crictl-docker.yaml.j2
     dest: /etc/crictl.yaml
@@ -44,7 +35,7 @@
     mode: 0644
   when: docker.stat.exists
 
-- name: /etc/crictl.yaml
+- name: /etc/crictl.yaml compatible with containerd
   template: 
     src: crictl-containerd.yaml.j2
     dest: /etc/crictl.yaml
@@ -52,3 +43,13 @@
     group: root
     mode: 0644
   when: containerd.stat.exists
+
+- name: /etc/crictl.yaml compatible with crio
+  template: 
+    src: crictl-crio.yaml.j2
+    dest: /etc/crictl.yaml
+    owner: root
+    group: root
+    mode: 0644
+  when: crio.stat.exists
+

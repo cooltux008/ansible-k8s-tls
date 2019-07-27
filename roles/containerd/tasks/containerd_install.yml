@@ -44,7 +44,6 @@
   loop:
     - { src: config.toml.j2, dest: /etc/containerd/config.toml }
     - { src: containerd.service.j2, dest: /lib/systemd/system/containerd.service }
-  notify: restart containerd
 
 - name: systemd daemon-reload
   systemd:
