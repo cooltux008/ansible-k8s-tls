@@ -14,7 +14,7 @@
     path: /var/run/crio/crio.sock
   register: crio
 
-- name: exit 
+- name: compatible with docker ?
   fail: msg="kata-containers is not compatible with docker"
   when: docker.stat.exists
 
@@ -34,6 +34,14 @@
   file:
     path: /tmp/opt
     state: absent
+
+- name: link containerd-shim-kata-v2 to $PATH
+  file:
+    src: /opt/kata/bin/containerd-shim-kata-v2
+    dest: /usr/local/bin/containerd-shim-kata-v2
+    owner: root
+    group: root
+    state: link
 
 - name: create dir /etc/kata-containers
   file:

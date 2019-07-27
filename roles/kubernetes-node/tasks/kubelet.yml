@@ -28,7 +28,7 @@
 
 - name: container engine is docker ?
   stat:
-    path: /var/run/dockershim.sock
+    path: /var/run/docker.sock
   register: docker
 
 - name: container engine is containerd ?

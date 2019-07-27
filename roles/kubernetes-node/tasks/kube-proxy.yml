@@ -9,7 +9,17 @@
   tags: fetch_kube-proxy
   notify: restart kube-proxy
 
-- name: create kube-proxy configuration
+- name: install ipvs
+  yum: 
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - ipvsadm
+    - ipset
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7 and proxy_mode == "ipvs"
+
+- name: create kube-proxy configuration (iptables)
   template: 
     src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -20,6 +30,20 @@
     - { src: 'kube-proxy.j2', dest: '/etc/kubernetes/kube-proxy' }
     - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
   notify: restart kube-proxy
+  when: proxy_mode == 'iptables'
+
+- name: create kube-proxy configuration (ipvs)
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: 'kube-proxy-ipvs.j2', dest: '/etc/kubernetes/kube-proxy' }
+    - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
+  notify: restart kube-proxy
+  when: proxy_mode == 'ipvs'
 
 - name: systemd daemon-reload
   systemd: 

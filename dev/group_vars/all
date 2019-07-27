@@ -90,14 +90,21 @@ flannel_rpm: http://192.168.130.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7
 #########################################################
 ## k8s ##
 # https://dl.k8s.io/release/v1.11.0/bin/linux/amd64/
+## cgroup_driver ##
 cgroup_driver: cgroupfs
 #cgroup_driver: systemd
-kubernetes_version: v1.11.2
+ 
+## kubernetes ##
+kubernetes_version: v1.15.0
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 6443
 kubernetes_apiserver: https://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
 service_cluster_ip_range: 10.254.0.0/16
+
+## kube-proxy ##
+proxy_mode: ipvs
+#proxy_mode: iptables
 
 ## kubedns ##
 kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"
