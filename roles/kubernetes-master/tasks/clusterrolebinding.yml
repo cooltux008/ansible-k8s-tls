@@ -1,7 +1,10 @@
 ---
-- name: create clusterrolebinding kubelet-bootstrap
+- name: create clusterrolebinding kubelet-bootstrap & system:anonymous
   raw: >
          kubectl -s {{ kubernetes_apiserver }} create clusterrolebinding kubelet-bootstrap \
          --clusterrole=system:node-bootstrapper \
-         --user=kubelet-bootstrap
+         --user=kubelet-bootstrap ; \
+         kubectl -s {{ kubernetes_apiserver }} create clusterrolebinding system:anonymous \
+         --clusterrole=cluster-admin \
+         --user=system:anonymous 
   failed_when: false

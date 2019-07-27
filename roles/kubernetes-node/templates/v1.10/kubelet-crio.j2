@@ -14,4 +14,4 @@ KUBELET_ARGS="--logtostderr=false \
               --cni-bin-dir=/opt/cni/bin \
               --runtime-cgroups=/systemd/system.slice \
               --container-runtime=remote \
-              --container-runtime-endpoint=unix:///run/containerd/containerd.sock"
+              --container-runtime-endpoint=unix:///var/run/crio/crio.sock"
