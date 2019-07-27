@@ -15,5 +15,6 @@
 - import_playbook: docker-bin.yml
 - import_playbook: containerd.yml
 - import_playbook: cri-o.yml
+- import_playbook: kata-containers.yml
 - import_playbook: etcd.yml
 - import_playbook: repo.yml

@@ -17,8 +17,8 @@
     name: docker
     state: absent
 
-- name: filter mounted container dirs
-  raw: df
+- name: filter mounted pod dirs
+  shell: df
   register: df_result
 
 - name: unmount left pods 
@@ -26,6 +26,16 @@
     path: "{{ item }}"
     state: unmounted
   loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+
+- name: filter mounted docker dirs
+  shell: df
+  register: df_result
+
+- name: unmount left docker
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/docker/.+)') }}"
 
 - name: unmount left docker dirs
   raw: umount proc

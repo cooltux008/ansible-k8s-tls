@@ -16,7 +16,7 @@
     group: root
     mode: 0644
   with_items:
-    - { src: label_master.sh.j2, dest: /var/tmp/label_master.sh }
+    - { src: label_node.sh.j2, dest: /var/tmp/label_master.sh }
 
 - name: label master node
   raw: bash /var/tmp/label_master.sh ; rm -rf /var/tmp/label_master.sh
