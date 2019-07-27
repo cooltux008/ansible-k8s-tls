@@ -1,10 +1,10 @@
 root = "/var/lib/containerd"
-state = "/run/containerd"
+state = "/var/run/containerd"
 subreaper = true
 oom_score = -999
 
 [grpc]
-  address = "/run/containerd/containerd.sock"
+  address = "/var/run/containerd/containerd.sock"
   uid = 0
   gid = 0
   max_recv_message_size = 16777216

@@ -19,7 +19,7 @@ grpc_max_recv_msg_size = 16777216
 
 [crio.runtime]
 runtime = "/usr/local/bin/runc"
-runtime_untrusted_workload = ""
+runtime_untrusted_workload = "/opt/kata/bin/kata-runtime"
 default_workload_trust = "trusted"
 no_pivot = false
 conmon = "/usr/local/bin/conmon"
@@ -69,6 +69,11 @@ manage_network_ns_lifecycle = false
 runtime_path = "/usr/local/bin/runc"
 runtime_type = "oci"
 runtime_root = "/var/run/runc"
+
+[crio.runtime.runtimes.kata-runtime]
+runtime_path = "/opt/kata/bin/kata-runtime"
+runtime_type = "oci"
+runtime_root = "/var/run/kata-runtime"
 
 [crio.image]
 default_transport = "docker://"

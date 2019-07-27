@@ -30,15 +30,39 @@
     group: root
     mode: 0755
 
+- name: container engine is containerd ?
+  stat:
+    path: /var/run/containerd/containerd.sock
+  register: containerd
+
+- name: container engine is crio ?
+  stat:
+    path: /var/run/crio/crio.sock
+  register: crio
+
 - name: update /etc/containerd/config.toml (kata-containers)
   template: 
-    src: "{{ item.src }}"
+    src: "{{ kata_containers_version.split('.')[:2] | join('.') }}/{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
   loop:
-    - { src: config-kata.toml.j2, dest: /etc/containerd/config.toml }
+    - { src: kata-containerd.toml.j2, dest: /etc/containerd/config.toml }
     - { src: configuration.toml.j2, dest: /etc/kata-containers/configuration.toml }
+  when: containerd.stat.exists
   notify: restart containerd
+
+- name: update /etc/crio/crio.conf (kata-containers)
+  template: 
+    src: "{{ kata_containers_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: kata-crio.toml.j2, dest: /etc/crio/crio.conf }
+    - { src: configuration.toml.j2, dest: /etc/kata-containers/configuration.toml }
+  when: crio.stat.exists
+  notify: restart crio
 
