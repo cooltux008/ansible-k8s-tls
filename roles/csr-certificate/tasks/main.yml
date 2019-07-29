@@ -4,7 +4,7 @@
   failed_when: false
   tags: approve_csr
 
-- name: wait kubelet node ok (30s)
+- name: wait kubelet node ok (15s)
   wait_for: timeout=15
   delegate_to: localhost
 
