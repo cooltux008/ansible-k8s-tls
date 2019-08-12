@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes-node
+  roles:
+    - podman
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+  tags: podman

@@ -13,7 +13,7 @@ url_prefix: http://192.168.130.1/ftp
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
 etcd_version: v3.3.13
-etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
+etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
 #########################################################
 
 
@@ -25,23 +25,26 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd-{{ etcd_version }}-linux
 
 
 #########################################################
+## repo ##
+depends_repo_url: "{{ url_prefix }}/centos7"
+docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
+podman_repo_url: "{{ url_prefix }}/linux_soft/yum/podman"
+
 ## registry ##
 docker_registry: 192.168.130.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
-depends_repo_url: "{{ url_prefix }}/centos7"
 
 ## docker ## docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
 docker_version: 17.03.2.ce
-docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
 
 ## docker-bin ##
 #docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
 docker_bin_version: 18.06.3-ce
-docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker-{{ docker_bin_version }}.tgz"
+docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_bin_version }}.tgz"
 
 ## containerd ##
 containerd_version: 1.2.7
-containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
+containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
 
 ## cri-o ##
 crio_version: v1.15.0
@@ -59,6 +62,13 @@ kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/ka
 cri_tools_version: v1.15.0
 cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
  
+## podman
+podman_version: v1.4.4
+podman_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/podman/{{ podman_version }}"
+ 
+## buildah
+buildah_version: v1.10.1
+buildah_bin_url: "{{ url_prefix }}/linux_soft/k8s/buildah/{{ buildah_version }}"
 #########################################################
 
 
@@ -95,7 +105,7 @@ cgroup_driver: cgroupfs
 #cgroup_driver: systemd
  
 ## kubernetes ##
-kubernetes_version: v1.15.0
+kubernetes_version: v1.15.2
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 6443
@@ -103,8 +113,8 @@ kubernetes_apiserver: https://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_m
 service_cluster_ip_range: 10.254.0.0/16
 
 ## kube-proxy ##
-proxy_mode: ipvs
-#proxy_mode: iptables
+#proxy_mode: ipvs
+proxy_mode: iptables
 
 ## kubedns ##
 kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"

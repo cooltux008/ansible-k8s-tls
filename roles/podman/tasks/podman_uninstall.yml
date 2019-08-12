@@ -1,0 +1,22 @@
+---
+- name: filter mounted container dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/run/containers/.+)') }}"
+  tags: unmount_podman
+
+- name: remove podman 
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/containers
+    - /var/lib/containers
+    - /usr/local/bin/podman
+    - /usr/local/bin/podman-remote
+    - /usr/local/bin/buildah

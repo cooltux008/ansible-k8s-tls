@@ -1,11 +1,14 @@
 ---
 - name: add centos7 repo
   yum_repository:
-    name: centos7
-    description: centos7 YUM repo
-    baseurl: "{{ depends_repo_url }}"
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
     gpgcheck: no
     state: present
+  loop:
+    - { name: centos7, description: centos7 YUM repo, baseurl: "{{ depends_repo_url }}" }
+    - { name: podman, description: podman, baseurl: "{{ podman_repo_url }}" }
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
 - name: add ubuntu repo

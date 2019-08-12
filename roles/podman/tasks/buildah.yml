@@ -1,0 +1,8 @@
+---
+- name: install buildah
+  get_url:
+    url: "{{ buildah_bin_url }}/buildah"
+    dest: /usr/local/bin/buildah
+    owner: root
+    group: root
+    mode: 0755

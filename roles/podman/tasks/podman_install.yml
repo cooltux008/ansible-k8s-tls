@@ -1,0 +1,44 @@
+---
+- name: install podman depends (ostree-devel)
+  yum: 
+    name: ['ostree-devel', 'libseccomp-devel']
+    state: present
+    update_cache: yes
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+
+- import_tasks: buildah.yml
+  tags: buildah
+
+- name: create podman dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /etc/containers
+    - /var/lib/containers
+
+- name: download podman binary
+  get_url:
+    url: "{{ podman_bin_tar_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - podman
+    - podman-remote
+
+- name: create podman conf
+  template:
+    src: "{{ podman_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: policy.json.j2, dest: /etc/containers/policy.json }
+    - { src: registries.conf.j2, dest: /etc/containers/registries.conf }
+
