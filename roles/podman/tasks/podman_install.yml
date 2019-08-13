@@ -8,6 +8,8 @@
 
 - import_tasks: buildah.yml
   tags: buildah
+- import_tasks: skopeo.yml
+  tags: skopeo
 
 - name: create podman dirs
   file:

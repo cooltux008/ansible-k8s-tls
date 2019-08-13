@@ -1,0 +1,8 @@
+---
+- name: install skopeo
+  get_url:
+    url: "{{ skopeo_bin_url }}"
+    dest: /usr/local/bin/skopeo
+    owner: root
+    group: root
+    mode: 0755

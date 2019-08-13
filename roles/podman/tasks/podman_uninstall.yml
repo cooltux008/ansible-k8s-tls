@@ -20,3 +20,4 @@
     - /usr/local/bin/podman
     - /usr/local/bin/podman-remote
     - /usr/local/bin/buildah
+    - /usr/local/bin/skopeo
