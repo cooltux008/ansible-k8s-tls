@@ -1,6 +1,6 @@
 ---
 - hosts: 
-    - kubernetes-master
+    - kubernetes_master
   roles:
     - kubectl
     - kubernetes-master

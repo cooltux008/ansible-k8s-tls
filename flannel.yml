@@ -1,6 +1,6 @@
 ---
 - hosts: 
-    - kubernetes-client
+    - kubernetes_client
   roles:
     - flannel
   vars_files: 

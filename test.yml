@@ -1,5 +1,5 @@
 ---
-- hosts: kubernetes-master
+- hosts: kubernetes_master
   vars:
     foo: bar
   tasks:

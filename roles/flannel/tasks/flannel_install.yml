@@ -7,7 +7,7 @@
     group: root
     mode: 0644
   delegate_to: "{{ item }}"
-  loop: "{{ groups['kubernetes-node'] }}"
+  loop: "{{ groups['kubernetes_node'] }}"
 
 - name: create flannel yaml dir
   file:

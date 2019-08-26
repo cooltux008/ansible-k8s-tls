@@ -20,14 +20,14 @@
     path: /etc/cni
     state: absent
   delegate_to: "{{ item }}"
-  loop: "{{ groups['kubernetes-node'] }}"
+  loop: "{{ groups['kubernetes_node'] }}"
 
 - name: remove cni bin
   file:
     path: /opt/cni
     state: absent
   delegate_to: "{{ item }}"
-  loop: "{{ groups['kubernetes-node'] }}"
+  loop: "{{ groups['kubernetes_node'] }}"
 
 - name: clear calico network interfaces
   raw: |
@@ -35,5 +35,5 @@
       ip link delete tunl0
   failed_when: false
   delegate_to: "{{ item }}"
-  loop: "{{ groups['kubernetes-node'] }}"
+  loop: "{{ groups['kubernetes_node'] }}"
 

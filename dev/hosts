@@ -6,11 +6,11 @@ ansible_connection=paramiko
 [etcd]
 192.168.130.13
 
-[kubernetes-master]
+[kubernetes_master]
 192.168.130.11
 
-[kubernetes-node]
-192.168.130.11
+[kubernetes_node]
+192.168.130.[11:13]
 
-[kubernetes-client]
+[kubernetes_client]
 192.168.130.11

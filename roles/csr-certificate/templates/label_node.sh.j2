@@ -1,3 +1,3 @@
 #!/bin/sh
-kubectl -s {{ kubernetes_apiserver }} label node {% for item in groups['kubernetes-master'] %}{{ hostvars[item]['inventory_hostname'] }}{% if not loop.last %} {% endif %}{% endfor %} node-role.kubernetes.io/master= --overwrite
-kubectl -s {{ kubernetes_apiserver }} label node {% for item in groups['kubernetes-node'] %}{{ hostvars[item]['inventory_hostname'] }}{% if not loop.last %} {% endif %}{% endfor %} node-role.kubernetes.io/compute= --overwrite
+kubectl -s {{ kubernetes_apiserver }} label node {% for item in groups['kubernetes_master'] %}{{ hostvars[item]['inventory_hostname'] }}{% if not loop.last %} {% endif %}{% endfor %} node-role.kubernetes.io/master= --overwrite
+kubectl -s {{ kubernetes_apiserver }} label node {% for item in groups['kubernetes_node'] %}{{ hostvars[item]['inventory_hostname'] }}{% if not loop.last %} {% endif %}{% endfor %} node-role.kubernetes.io/compute= --overwrite

@@ -1,6 +1,6 @@
 ---
 - hosts: 
-    - kubernetes-node
+    - kubernetes_node
   roles:
     - cri-o
   vars_files: 

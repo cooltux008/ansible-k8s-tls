@@ -15,8 +15,5 @@
     group: root
     mode: 0644
   with_items:
-    - { src: dashboard-sa.yaml.j2, dest: dashboard-sa.yaml }
-    - { src: dashboard-rbac.yaml.j2, dest: dashboard-rbac.yaml }
-    - { src: dashboard-controller.yaml.j2, dest: dashboard-controller.yaml }
-    - { src: dashboard-service.yaml.j2, dest: dashboard-service.yaml }
+    - { src: kubernetes-dashboard.yaml.j2, dest: kubernetes-dashboard.yaml }
   notify: apply dashboard

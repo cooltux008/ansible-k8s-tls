@@ -131,7 +131,7 @@ coredns_image: "{{ docker_registry }}/google_containers/coredns:{{ coredns_versi
 
 ## dashboard ##
 kubernetes_dashboard_version: v1.7.1
-kubernetes_dashboard_image: "{{ docker_registry }}/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
+kubernetes_dashboard_image: "registry.cn-hangzhou.aliyuncs.com/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
 
 ## heapster ##
 kubernetes_heapster_version: v1.5.3
