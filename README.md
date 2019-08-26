@@ -154,13 +154,13 @@ bash etcd_tls2base64.sh
 [etcd]
 192.168.130.[11:13]
 
-[kubernetes-master]
+[kubernetes_master]
 192.168.130.[11:13]
 
-[kubernetes-node]
+[kubernetes_node]
 192.168.130.[11:13]
 
-[kubernetes-client]
+[kubernetes_client]
 192.168.130.11
 ```
 ```
