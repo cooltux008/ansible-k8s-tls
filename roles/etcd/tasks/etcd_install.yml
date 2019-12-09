@@ -65,26 +65,21 @@
     - /var/lib/etcd
     - /etc/etcd
 
-- name: create /lib/systemd/system/etcd.service
-  template:
-    src: etcd.service.j2
-    dest: /lib/systemd/system/etcd.service
+- name: create etcd configuration 
+  template: 
+    src: "{{ etcd_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
     owner: root
     group: root
     mode: 0644
+  with_items:
+    - { src: 'etcd.service.j2', dest: '/lib/systemd/system/etcd.service' }
+    - { src: 'etcd.conf.j2', dest: '/etc/etcd/etcd.conf' }
+  notify: restart etcd
 
 - name: systemd daemon-reload
   systemd:
     daemon-reload: yes
-
-- name: /etc/etcd/etcd.conf
-  template: 
-    src: etcd.conf.j2 
-    dest: /etc/etcd/etcd.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart etcd
 
 - name: start etcd
   service: 

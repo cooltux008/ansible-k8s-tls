@@ -1,0 +1,27 @@
+name: "{{ hostname_prefix }}-{{ inventory_hostname.split('.')[2:] | join('-') }}"
+data-dir: "/var/lib/etcd"
+listen-peer-urls: "https://{{ inventory_hostname }}:2380"
+listen-client-urls: "https://0.0.0.0:2379"
+initial-advertise-peer-urls: "https://{{ inventory_hostname }}:2380"
+advertise-client-urls: "https://{{ inventory_hostname }}:2379"
+initial-cluster: "{% for item in groups['etcd'] %}{{ hostname_prefix }}-{{ hostvars[item]['inventory_hostname'].split('.')[2:] | join('-') }}=https://{{ hostvars[item]['inventory_hostname'] }}:2380{% if not loop.last %},{% endif %}{% endfor %}" 
+initial-cluster-token: "etcd-cluster"
+client-transport-security:
+  cert-file: /etc/etcd/tls/server.pem
+  key-file: /etc/etcd/tls/server-key.pem
+  client-cert-auth: true
+  trusted-ca-file: /etc/etcd/tls/ca.pem
+  auto-tls: false
+peer-transport-security:
+  cert-file: /etc/etcd/tls/server.pem
+  key-file: /etc/etcd/tls/server-key.pem
+  client-cert-auth: true
+  trusted-ca-file: /etc/etcd/tls/ca.pem
+  auto-tls: false
+
+enable-v2: true
+enable-pprof: true
+auto-compaction-mode: periodic
+auto-compaction-retention: "1"
+debug: false
+logger: zap
