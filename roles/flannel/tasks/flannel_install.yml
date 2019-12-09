@@ -1,7 +1,7 @@
 ---
 - name: sync flannel cni 10-flannel.conflist
   template: 
-    src: "10-flannel.conflist.j2"
+    src: "{{ flannel_version.split('.')[:2] | join('.') }}/10-flannel.conflist.j2"
     dest: /etc/cni/net.d/10-flannel.conflist
     owner: root
     group: root
