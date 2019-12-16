@@ -1,0 +1,9 @@
+apiVersion: projectcalico.org/v3
+kind: CalicoAPIConfig
+metadata:
+spec:
+   datastoreType: "etcdv3"
+   etcdEndpoints: "{% for item in groups['etcd'] %}https://{{ hostvars[item]['inventory_hostname'] }}:2379{% if not loop.last %},{% endif %}{% endfor %}"
+   etcdKeyFile: /etc/calico/tls/etcd/server-key.pem
+   etcdCertFile: /etc/calico/tls/etcd/server.pem
+   etcdCACertFile: /etc/calico/tls/etcd/ca.pem

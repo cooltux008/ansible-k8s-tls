@@ -16,7 +16,6 @@
     mode: 0644
   with_items:
     - { src: calico.yaml.j2, dest: calico.yaml }
-    - { src: rbac.yaml.j2, dest: rbac.yaml }
   notify: apply calico
 
 - name: create calicoctl config dir
@@ -57,4 +56,6 @@
   with_items:
     - { src: calico_ipv4pool_cidr.yaml.j2, dest: "/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml" }
     - { src: calicoctl.cfg.j2, dest: "/etc/calico/calicoctl.cfg" }
-  notify: add calico-k8s-network
+  notify: 
+    - add calico-ippool
+    - delete default-calico-ippool

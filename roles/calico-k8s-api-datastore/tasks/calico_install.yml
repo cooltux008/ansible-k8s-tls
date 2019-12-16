@@ -1,0 +1,54 @@
+---
+- name: create calico yaml dir
+  file:
+    path: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync calico-typha yaml
+  template: 
+    src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: calico-typha.yaml.j2, dest: calico.yaml }
+    - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
+  notify: apply calico
+  when: calico_typha 
+
+- name: sync calico yaml
+  template: 
+    src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: calico.yaml.j2, dest: calico.yaml }
+    - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
+  notify: apply calico
+  when: not calico_typha 
+
+- name: untial calico containers ok
+  raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system get pods --field-selector="status.phase==Running" | grep -v "^NAME" | grep '^calico' | wc -l
+  register: result
+  until: result.stdout >= 4
+  retries: 5
+  delay: 10
+
+- name: sync calico_ipv4pool_cidr.yaml
+  template:
+    src: "{{ calico_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: calico_ipv4pool_cidr.yaml.j2, dest: "/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml" }
+  notify: 
+    - add calico-ippool
+    - delete default-calico-ippool

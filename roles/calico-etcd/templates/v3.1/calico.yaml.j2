@@ -121,7 +121,7 @@ spec:
         # container programs network policy and routes on each
         # host.
         - name: calico-node
-          image: "{{ calico_node_image }}"
+          image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
           env:
             # The location of the Calico etcd cluster.
             - name: ETCD_ENDPOINTS
@@ -220,7 +220,7 @@ spec:
         # This container installs the Calico CNI binaries
         # and CNI network config file on each node.
         - name: install-cni
-          image: "{{ calico_cni_image }}"
+          image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
           command: ["/install-cni.sh"]
           env:
             # Name of the CNI config file to create.
@@ -307,7 +307,7 @@ spec:
       serviceAccountName: calico-kube-controllers
       containers:
         - name: calico-kube-controllers
-          image: "{{ calico_policy_controller_image }}"
+          image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
           env:
             # The location of the Calico etcd cluster.
             - name: ETCD_ENDPOINTS
@@ -361,5 +361,75 @@ metadata:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  name: calico-node
+  namespace: kube-system
+# Calico Version v3.1.1
+# https://docs.projectcalico.org/v3.1/releases#v3.1.1
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: calico-kube-controllers
+rules:
+  - apiGroups:
+    - ""
+    - extensions
+    resources:
+      - pods
+      - namespaces
+      - networkpolicies
+      - nodes
+    verbs:
+      - watch
+      - list
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+      - networkpolicies
+    verbs:
+      - watch
+      - list
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: calico-kube-controllers
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-kube-controllers
+subjects:
+- kind: ServiceAccount
+  name: calico-kube-controllers
+  namespace: kube-system
+
+---
+
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: calico-node
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - nodes
+    verbs:
+      - get
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: calico-node
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: calico-node
+subjects:
+- kind: ServiceAccount
   name: calico-node
   namespace: kube-system

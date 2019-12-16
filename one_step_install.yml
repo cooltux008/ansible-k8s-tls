@@ -19,8 +19,8 @@
 - import_playbook: csr-certificate.yml
 
 # network
-- import_playbook: flannel.yml
-#- import_playbook: calico.yml
+#- import_playbook: flannel.yml
+#- import_playbook: calico-k8s-api-datastore.yml
 
 # extra
 #- import_playbook: coredns.yml

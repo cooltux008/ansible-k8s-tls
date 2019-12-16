@@ -1,19 +1,17 @@
 ---
-- name: delete calico 
-  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
+- name: delete flannel
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item }}
   with_items:
-    - calico.yaml
-    - rbac.yaml
+    - kube-flannel.yaml
   failed_when: false
 
-- name: remove calico yaml
+- name: remove flannel yaml
   file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - /usr/local/bin/calicoctl
-    - /etc/calico
-    - /var/tmp/calico
+    - /var/tmp/flannel
+    - /run/flannel
 
 - name: remove cni conf
   file:
@@ -29,10 +27,10 @@
   delegate_to: "{{ item }}"
   loop: "{{ groups['kubernetes_node'] }}"
 
-- name: clear calico network interfaces
+- name: clear flannel network interfaces
   raw: |
-      ifconfig tunl0 down ;\
-      ip link delete tunl0
+      ifconfig cni0 down ;\
+      ip link delete cni0
   failed_when: false
   delegate_to: "{{ item }}"
   loop: "{{ groups['kubernetes_node'] }}"

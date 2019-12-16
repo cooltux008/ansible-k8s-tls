@@ -84,11 +84,9 @@ cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ 
 pod_cidr: 172.30.0.0/16
 
 # calico
-calico_version: v3.1.1
-calico_node_image: "{{ docker_registry }}/calico/node:{{ calico_version }}"
-calico_cni_image: "{{ docker_registry }}/calico/cni:{{ calico_version }}"
-calico_policy_controller_image: "{{ docker_registry }}/calico/kube-controllers:{{ calico_version }}"
+calico_version: v3.10.2
 calicoctl_binary_url: "{{ url_prefix }}/linux_soft/k8s/calico/{{ calico_version }}/calicoctl"
+calico_typha: true
 
 # flannel(yml)
 flannel_version: v0.11.0

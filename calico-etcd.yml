@@ -1,0 +1,10 @@
+---
+- hosts: 
+    - kubernetes_client
+  roles:
+    - calico-etcd
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+    - dev/group_vars/etcd
+  tags: calico

@@ -2,8 +2,11 @@
 - name: apply calico
   shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
   with_items:
-    - rbac.yaml
     - calico.yaml
 
-- name: add calico-k8s-network
+- name: add calico-ippool
   shell: calicoctl apply -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml
+
+- name: delete default-calico-ippool
+  shell: calicoctl delete ippool default-ipv4-ippool
+  failed_when: false

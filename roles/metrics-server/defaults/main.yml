@@ -1,0 +1,2 @@
+---
+FLANNEL_TYPE: "{{ flannel_type | default('host-gw') }}"
