@@ -25,6 +25,8 @@
     - { src: 'ca-key.pem', dest: '/etc/kubernetes/tls/kubernetes/ca-key.pem' }
     - { src: 'server.pem', dest: '/etc/kubernetes/tls/kubernetes/server.pem' }
     - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/kubernetes/server-key.pem' }
+    - { src: 'aggregator.pem', dest: '/etc/kubernetes/tls/kubernetes/aggregator.pem' }
+    - { src: 'aggregator-key.pem', dest: '/etc/kubernetes/tls/kubernetes/aggregator-key.pem' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }
 
 - name: sync etcd tls certs

@@ -17,7 +17,6 @@
   with_items:
     - { src: calico-typha.yaml.j2, dest: calico.yaml }
     - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
-  notify: apply calico
   when: calico_typha 
 
 - name: sync calico yaml
@@ -30,13 +29,18 @@
   with_items:
     - { src: calico.yaml.j2, dest: calico.yaml }
     - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
-  notify: apply calico
   when: not calico_typha 
+
+- name: apply calico
+  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
+  with_items:
+    - calico.yaml
+    - calicoctl.yaml
 
 - name: untial calico containers ok
   raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system get pods --field-selector="status.phase==Running" | grep -v "^NAME" | grep '^calico' | wc -l
   register: result
-  until: result.stdout >= 4
+  until: result.stdout | int >= 4
   retries: 5
   delay: 10
 

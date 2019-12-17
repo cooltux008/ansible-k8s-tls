@@ -11,13 +11,13 @@ client-transport-security:
   key-file: /etc/etcd/tls/server-key.pem
   client-cert-auth: true
   trusted-ca-file: /etc/etcd/tls/ca.pem
-  auto-tls: false
+  auto-tls: true
 peer-transport-security:
   cert-file: /etc/etcd/tls/server.pem
   key-file: /etc/etcd/tls/server-key.pem
   client-cert-auth: true
   trusted-ca-file: /etc/etcd/tls/ca.pem
-  auto-tls: false
+  auto-tls: true
 
 enable-v2: true
 enable-pprof: true

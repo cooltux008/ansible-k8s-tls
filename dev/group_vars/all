@@ -150,6 +150,14 @@ kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
   
 
 #########################################################
+## metrics-server ##
+metrics_server_version: v0.3.6
+metrics_server_image: "{{ docker_registry }}/google_containers/metrics-server-amd64:{{ metrics_server_version }}"
+addon_resizer_image: "{{ docker_registry }}/google_containers/addon-resizer:1.8.7"
+#########################################################
+  
+
+#########################################################
 ## helm ##
 #helm_bin_tar_url: https://storage.googleapis.com/kubernetes-helm/helm-v2.9.1-linux-amd64.tar.gz
 #########################################################

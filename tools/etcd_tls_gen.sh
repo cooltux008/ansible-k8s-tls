@@ -1,19 +1,16 @@
 #!/bin/bash
 
 function download_cfssl {
-    if [ "$(uname)" == "Linux" ];then
-        for i in cfssl cfssljson cfssl-certinfo
-        do
+    for i in cfssl cfssljson cfssl-certinfo
+    do
+        if [ "$(uname)" == "Linux" ];then
             curl $1/${i}_linux-amd64 -o /usr/bin/$i
             chmod +x /usr/bin/$i
-        done
-    elif [ "$(uname)" == "Darwin" ];then
-        for i in cfssl cfssljson cfssl-certinfo
-        do
+        elif [ "$(uname)" == "Darwin" ];then
             curl $1/${i}_darwin-amd64 -o /usr/local/bin/$i
             chmod +x /usr/local/bin/$i
-        done
-    fi
+	fi
+    done
 }
 
 function etcd_gen {

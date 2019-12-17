@@ -530,8 +530,8 @@ spec:
       serviceAccountName: calico-node
       priorityClassName: system-cluster-critical
       # fsGroup allows using projected serviceaccount tokens as described here kubernetes/kubernetes#82573 
-      #securityContext:
-      #  fsGroup: 65534
+      securityContext:
+        fsGroup: 65534
       containers:
       - image: "{{ docker_registry }}/calico/typha:{{ calico_version }}"
         name: calico-typha

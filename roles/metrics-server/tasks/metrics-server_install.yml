@@ -1,0 +1,19 @@
+---
+- name: create metrics-server yaml dir
+  file:
+    path: /var/tmp/metrics-server/{{ metrics_server_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync metrics-server yaml
+  template: 
+    src: "{{ metrics_server_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/metrics-server/{{ metrics_server_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: metrics-server.yaml.j2, dest: metrics-server.yaml }
+  notify: apply metrics-server

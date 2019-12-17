@@ -1,10 +1,4 @@
 ---
-- name: apply calico
-  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
-    - calico.yaml
-    - calicoctl.yaml
-
 - name: add calico-ippool
   shell: kubectl -s {{ kubernetes_apiserver }} exec -i -n kube-system calicoctl /calicoctl -- apply -f - < /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml
 

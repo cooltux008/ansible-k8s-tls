@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes_client
+  roles:
+    - metrics-server
+  vars_files: 
+    - dev/group_vars/all
+    - dev/group_vars/vault
+  tags: metrics-server
