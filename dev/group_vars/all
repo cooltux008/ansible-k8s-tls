@@ -6,9 +6,10 @@ ntp_servers:
   - ntp2.aliyun.com
 domain_name: example.com
 hostname_prefix: node
+url_prefix: http://192.168.130.1/ftp
 #########################################################
 
-url_prefix: http://192.168.130.1/ftp
+
 #########################################################
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
@@ -126,34 +127,46 @@ kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-
 ## coredns ##
 coredns_version: 1.5.2
 coredns_image: "{{ docker_registry }}/google_containers/coredns:{{ coredns_version }}"
-
-## dashboard ##
-kubernetes_dashboard_version: v1.7.1
-kubernetes_dashboard_image: "registry.cn-hangzhou.aliyuncs.com/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
-
-## heapster ##
-kubernetes_heapster_version: v1.5.3
-heapster_image: "{{ docker_registry }}/google_containers/heapster-amd64:{{ kubernetes_heapster_version }}"
-heapster_influxdb_image: "{{ docker_registry }}/google_containers/heapster-influxdb-amd64:v1.3.3"
-heapster_grafana_image: "{{ docker_registry }}/google_containers/heapster-grafana-amd64:v4.4.3"
-
-## ingress ##
-defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
-nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.17.1"
-
-## efk ##
-alpine_image: "{{ docker_registry }}/alpine:3.6"
-elasticsearch_image: "{{ docker_registry }}/elasticsearch:v5.6.4"
-fluentd_elasticsearch_image: "{{ docker_registry }}/fluentd-elasticsearch:v2.0.4"
-kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
 #########################################################
-  
+
 
 #########################################################
 ## metrics-server ##
 metrics_server_version: v0.3.6
 metrics_server_image: "{{ docker_registry }}/google_containers/metrics-server-amd64:{{ metrics_server_version }}"
 addon_resizer_image: "{{ docker_registry }}/google_containers/addon-resizer:1.8.7"
+#########################################################
+  
+
+#########################################################
+## dashboard ##
+kubernetes_dashboard_version: v1.10.1
+kubernetes_dashboard_image: "gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
+#########################################################
+
+
+#########################################################
+## ingress ##
+defaultbackend_image: "{{ docker_registry }}/google_containers/defaultbackend:1.4"
+nginx_ingress_controller_image: "{{ docker_registry }}/kubernetes-ingress-controller/nginx-ingress-controller:0.17.1"
+#########################################################
+
+
+#########################################################
+## heapster ##
+kubernetes_heapster_version: v1.5.3
+heapster_image: "{{ docker_registry }}/google_containers/heapster-amd64:{{ kubernetes_heapster_version }}"
+heapster_influxdb_image: "{{ docker_registry }}/google_containers/heapster-influxdb-amd64:v1.3.3"
+heapster_grafana_image: "{{ docker_registry }}/google_containers/heapster-grafana-amd64:v4.4.3"
+#########################################################
+
+
+#########################################################
+## efk ##
+alpine_image: "{{ docker_registry }}/alpine:3.6"
+elasticsearch_image: "{{ docker_registry }}/elasticsearch:v5.6.4"
+fluentd_elasticsearch_image: "{{ docker_registry }}/fluentd-elasticsearch:v2.0.4"
+kibana_image: "{{ docker_registry }}/kibana/kibana:5.6.4"
 #########################################################
   
 
