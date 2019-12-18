@@ -38,7 +38,7 @@
     - calicoctl.yaml
 
 - name: untial calico containers ok
-  raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system --no-headers get pods --field-selector="status.phase==Running" | grep '^calico' | wc -l
+  raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system get pods --field-selector="status.phase==Running" --no-headers | grep '^calico' | wc -l
   register: result
   until: result.stdout | int >= 4
   retries: 5

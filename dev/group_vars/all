@@ -120,9 +120,9 @@ service_cluster_ip_range: 10.254.0.0/16
 proxy_mode: iptables
 
 ## kubedns ##
-kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"
-kubedns_dnsmasq_image: "{{ docker_registry }}/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.8"
-kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
+#kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"
+#kubedns_dnsmasq_image: "{{ docker_registry }}/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.8"
+#kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
 
 ## coredns ##
 coredns_version: 1.5.2
@@ -140,8 +140,13 @@ addon_resizer_image: "{{ docker_registry }}/google_containers/addon-resizer:1.8.
 
 #########################################################
 ## dashboard ##
-kubernetes_dashboard_version: v1.10.1
-kubernetes_dashboard_image: "gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
+#v1.10 只支持到k8s 1.10
+#kubernetes_dashboard_version: v1.10.1
+#kubernetes_dashboard_image: "gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
+#v2 支持>=1.16的版本
+kubernetes_dashboard_version: v2.0.0-beta8
+kubernetes_dashboard_image: "{{ docker_registry }}/kubernetesui/dashboard:{{ kubernetes_dashboard_version }}"
+kubernetes_dashboard_metrics_scraper_image: "{{ docker_registry }}/kubernetesui/metrics-scraper:v1.0.1"
 #########################################################
 
 
