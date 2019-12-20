@@ -1,0 +1,18 @@
+###
+# The following values are used to configure the kubernetes controller-manager
+
+KUBE_CONTROLLER_MANAGER_ARGS="--logtostderr=false \
+                              --log-dir=/var/log/kubernetes \
+                              --log-file=/var/log/kubernetes/kube-controller-manager.log \
+                              --v=2 \
+                              --master=127.0.0.1:8080 \
+                              --bind-address=127.0.0.1 \
+                              --service-cluster-ip-range={{ service_cluster_ip_range }} \
+                              --cluster-name=kubernetes \
+                              --cluster-signing-cert-file=/etc/kubernetes/tls/kubernetes/ca.pem \
+                              --cluster-signing-key-file=/etc/kubernetes/tls/kubernetes/ca-key.pem \
+                              --service-account-private-key-file=/etc/kubernetes/tls/kubernetes/ca-key.pem \
+                              --root-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \
+                              --leader-elect=true \
+                              --cluster-cidr={{ pod_cidr }} \
+                              --allocate-node-cidrs=true"

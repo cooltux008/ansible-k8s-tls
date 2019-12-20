@@ -1,0 +1,14 @@
+[Unit]
+Description=Kubernetes Scheduler Plugin
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+EnvironmentFile=-/etc/kubernetes/kube-scheduler
+ExecStart=/usr/local/bin/kube-scheduler $KUBE_SCHEDULER_ARGS
+Restart=always
+StartLimitInterval=100s
+RestartSec=10
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target

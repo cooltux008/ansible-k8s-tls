@@ -1,0 +1,10 @@
+###
+# kubernetes kube-proxy config
+KUBE_PROXY_ARGS="--logtostderr=false \
+                 --log-dir=/var/log/kubernetes \
+                 --log-file=/var/log/kubernetes/kube-proxy.log \
+                 --v=2 \
+                 --bind-address={{ inventory_hostname }} \
+                 --hostname-override={{ inventory_hostname }} \
+                 --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
+                 --cluster-cidr={{ pod_cidr }}"
