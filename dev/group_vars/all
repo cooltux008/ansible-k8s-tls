@@ -108,7 +108,7 @@ cgroup_driver: cgroupfs
 #cgroup_driver: systemd
  
 ## kubernetes ##
-kubernetes_version: v1.16.2
+kubernetes_version: v1.17.0
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_master_cluster_ip: 192.168.130.11
 kubernetes_master_cluster_port: 6443

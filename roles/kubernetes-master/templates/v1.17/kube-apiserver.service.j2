@@ -1,0 +1,17 @@
+[Unit]
+Description=Kubernetes API Service
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=network.target
+After=etcd.service
+
+[Service]
+EnvironmentFile=-/etc/kubernetes/kube-apiserver
+ExecStart=/usr/local/bin/kube-apiserver $KUBE_API_ARGS
+Type=notify
+Restart=always
+StartLimitInterval=100s
+RestartSec=10
+LimitNOFILE=1000000
+
+[Install]
+WantedBy=multi-user.target
