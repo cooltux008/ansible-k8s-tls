@@ -35,4 +35,7 @@
     - /lib/systemd/system/crio.service
     - /etc/default/crio
     - /usr/local/bin/crio
+    - /usr/local/bin/crio-status
+    - /usr/local/bin/pinns
     - /usr/local/bin/conmon
+    - /usr/local/bin/runc

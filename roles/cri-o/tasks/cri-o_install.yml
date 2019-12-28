@@ -22,27 +22,26 @@
     - /var/lib/containers/storage
     - /var/log/crio/pods
 
-- name: download crio binary
+- name: get crio to PATH
   get_url:
-    url: "{{ crio_bin_tar_url }}"
-    dest: /tmp
-
-- name: unarchive crio tar
-  unarchive:
-    remote_src: yes
-    src: /tmp/crio-{{ crio_version }}.linux-amd64.tar.gz
-    dest: /tmp
-
-- name: move crio, conmon to PATH
-  copy:
-    remote_src: yes
-    src: /tmp/bin/{{ item }}
+    url: "{{ crio_bin_url }}/{{ item }}"
     dest: /usr/local/bin
     owner: root
     group: root
     mode: 0755
   loop:
     - crio
+    - crio-status
+    - pinns
+
+- name: get conmon to PATH
+  get_url:
+    url: "{{ conmon_bin_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
     - conmon
 
 - name: create /lib/systemd/system/crio.service
@@ -82,11 +81,3 @@
   loop:
     - crio
     - crio-shutdown
-
-- name: clear tmp files
-  file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - /tmp/crio-{{ crio_version }}.linux-amd64.tar.gz
-    - /tmp/bin
