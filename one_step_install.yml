@@ -1,28 +1,63 @@
 ---
+# common
+####################################
 - import_playbook: common.yml
 - import_playbook: repo.yml
 - import_playbook: ntp.yml
+####################################
+
+
+
+# etcd
+####################################
 - import_playbook: etcd.yml
+####################################
+
+
+
 # container runtime
+####################################
+#docker#
 #- import_playbook: docker.yml
 #- import_playbook: docker-bin.yml
-- import_playbook: containerd.yml
-#- import_playbook: cri-o.yml
+
+#containerd#
+#- import_playbook: containerd.yml
+
+#cri-o#
+- import_playbook: cri-o.yml
+
+#cri-tools#
+- import_playbook: cri-tools.yml
+- import_playbook: podman.yml
+
+#kata-containers#
+- import_playbook: kata-containers.yml
+####################################
   
+
+
 # k8s
+####################################
 - import_playbook: kubernetes-master.yml
 - import_playbook: kubernetes-node.yml
-  #- import_playbook: cri-tools.yml
-  #- import_playbook: podman.yml
 - import_playbook: kubectl.yml
 - import_playbook: kubernetes-cni.yml
 - import_playbook: csr-certificate.yml
+####################################
+
+
 
 # network
+####################################
 #- import_playbook: flannel.yml
 - import_playbook: calico-k8s-api-datastore.yml
+#######################################
+
+
 
 # extra
+#######################################
 - import_playbook: coredns.yml
 - import_playbook: metrics-server.yml
 - import_playbook: dashboard.yml
