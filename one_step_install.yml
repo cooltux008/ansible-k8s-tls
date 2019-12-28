@@ -52,15 +52,14 @@
 ####################################
 #- import_playbook: flannel.yml
 - import_playbook: calico-k8s-api-datastore.yml
-####################################
+#######################################
 
 
 
 # extra
-####################################
+#######################################
 - import_playbook: coredns.yml
 - import_playbook: metrics-server.yml
 - import_playbook: dashboard.yml
 #- import_playbook: ingress.yml
 #- import_playbook: heapster.yml
-####################################
