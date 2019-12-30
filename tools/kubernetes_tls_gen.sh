@@ -148,30 +148,6 @@ function kube-proxy_gen {
 }
 
 
-function aggregator_gen {
-	cat > aggregator-csr.json <<-EOF
-	{
-	  "CN": "aggregator",
-	  "hosts": [],
-	  "key": {
-	    "algo": "rsa",
-	    "size": 2048
-	  },
-	  "names": [
-	    {
-	      "C": "CN",
-	      "ST": "BeiJing",
-	      "L": "BeiJing",
-	      "O": "k8s",
-	      "OU": "System"
-	    }
-	  ]
-	}
-	EOF
-	cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=kubernetes aggregator-csr.json | cfssljson -bare aggregator
-}
-
-
 function verify_pem {
 	openssl x509  -noout -text -in  server.pem
 	cfssl-certinfo -cert server.pem
@@ -189,3 +165,6 @@ kubernetes_gen
 kube-proxy_gen
 aggregator_gen
 verify_pem
+
+
+rm -rf admin.csr admin-csr.json ca-config.json ca.csr ca-csr.json config.json csr.json kube-proxy.csr kube-proxy-csr.json server.csr server-csr.json

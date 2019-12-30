@@ -15,9 +15,11 @@
     group: root
     mode: 0644
   with_items:
-    - server.pem
-    - server-key.pem
-    - ca.pem
+    - etcd-peer.pem
+    - etcd-peer-key.pem
+    - etcd-client.pem
+    - etcd-client-key.pem
+    - etcd-ca.pem
 
 - name: add etcd group
   group:

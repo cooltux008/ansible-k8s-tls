@@ -7,16 +7,16 @@ advertise-client-urls: "https://{{ inventory_hostname }}:2379"
 initial-cluster: "{% for item in groups['etcd'] %}{{ hostname_prefix }}-{{ hostvars[item]['inventory_hostname'].split('.')[2:] | join('-') }}=https://{{ hostvars[item]['inventory_hostname'] }}:2380{% if not loop.last %},{% endif %}{% endfor %}" 
 initial-cluster-token: "etcd-cluster"
 client-transport-security:
-  cert-file: /etc/etcd/tls/server.pem
-  key-file: /etc/etcd/tls/server-key.pem
+  cert-file: /etc/etcd/tls/etcd-client.pem
+  key-file: /etc/etcd/tls/etcd-client-key.pem
   client-cert-auth: true
-  trusted-ca-file: /etc/etcd/tls/ca.pem
+  trusted-ca-file: /etc/etcd/tls/etcd-ca.pem
   auto-tls: true
 peer-transport-security:
-  cert-file: /etc/etcd/tls/server.pem
-  key-file: /etc/etcd/tls/server-key.pem
+  cert-file: /etc/etcd/tls/etcd-peer.pem
+  key-file: /etc/etcd/tls/etcd-peer-key.pem
   client-cert-auth: true
-  trusted-ca-file: /etc/etcd/tls/ca.pem
+  trusted-ca-file: /etc/etcd/tls/etcd-ca.pem
   auto-tls: true
 
 enable-v2: true

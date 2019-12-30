@@ -31,8 +31,35 @@
     mode: 0755
   loop:
     - crio
+    - crio-config
+    - pause
+  when: crio_version is version('v1.16.0', '<')
+
+- name: get crio to PATH
+  get_url:
+    url: "{{ crio_bin_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - crio
+    - crio-status
+    - pause
+  when: crio_version is version('v1.16.0', '>=') and crio_version is version('v1.17.0', '<')
+
+- name: get crio to PATH
+  get_url:
+    url: "{{ crio_bin_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - crio
     - crio-status
     - pinns
+  when: crio_version is version('v1.17.0', '>=')
 
 - name: get conmon to PATH
   get_url:

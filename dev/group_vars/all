@@ -48,7 +48,7 @@ containerd_version: 1.3.2
 containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
 
 ## cri-o ##
-crio_version: v1.16.1
+crio_version: v1.18.0
 crio_bin_url: "{{ url_prefix }}/linux_soft/k8s/cri-o/{{ crio_version }}"
 
 ## conmon ##
@@ -64,7 +64,7 @@ kata_containers_version: 1.10.0-rc0
 kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/kata-static-{{ kata_containers_version }}-x86_64.tar.xz"
 
 ## cri-tools
-cri_tools_version: v1.16.1
+cri_tools_version: v1.18.0
 cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
  
 ## podman
