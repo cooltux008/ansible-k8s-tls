@@ -46,7 +46,10 @@ cd ansible-k8s-tls
 - 1.10.2
 - 1.11.2
 - 1.14.2
-- 1.15.0
+- 1.15.2
+- 1.16.2
+- 1.17.0
+- 1.18.0
 ### 1. 创建TLS证书和秘钥 ###
 > cfssl下载地址
 > etcd,kube-apiserver的ip地址替换成与实际环境匹配, 如etcd有3台(192.168.130.11-13), 同时192.168.130.11作为kube-apiserver
@@ -89,6 +92,7 @@ cd ansible-k8s-tls
    	      "192.168.130.13",
    	      "127.0.0.1"
    bash etcd_tls_gen.sh
+   bash etcd_tls2base64.sh
    ```
 
    
@@ -125,8 +129,18 @@ cd ansible-k8s-tls
   	      "192.168.130.12",
   	      "192.168.130.13",
   bash kubernetes_tls_gen.sh
+  bash kubeconfig_gen.sh
   ```
 
+
+   
+
+ - aggregator
+  ```shell
+  cd tools
+  
+  bash aggregator_tls_gen.sh
+  ```
 
 
 ### 2. 创建kubeconfig文件 ###
@@ -189,5 +203,6 @@ ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars
 ## 测试组件 ## 
 - etcd
 ```shell
-ETCDCTL_API=3 etcdctl --cert=/etc/etcd/tls/server.pem --key=/etc/etcd/tls/server-key.pem  --cacert=/etc/etcd/tls/ca.pem member list
+ETCDCTL_API=2 etcdctl --ca-file=/etc/etcd/tls/etcd-ca.pem --cert-file=/etc/etcd/tls/etcd-client.pem --key-file=/etc/etcd/tls/etcd-client-key.pem --endpoints="https://127.0.0.1:2379" cluster-health
+ETCDCTL_API=3 etcdctl --cacert=/etc/etcd/tls/etcd-ca.pem --cert=/etc/etcd/tls/etcd-client.pem --key=/etc/etcd/tls/etcd-client-key.pem --endpoints="https://127.0.0.1:2379" endpoint health
 ```
