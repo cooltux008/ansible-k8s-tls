@@ -33,7 +33,7 @@
     - crio
     - crio-config
     - pause
-  when: crio_version is version('1.16.0', '<')
+  when: crio_version is version('v1.16.0', '<')
 
 - name: get crio to PATH
   get_url:
@@ -46,7 +46,7 @@
     - crio
     - crio-status
     - pinns
-  when: crio_version is version('1.16.0', '>=')
+  when: crio_version is version('v1.16.0', '>=')
 
 - name: get conmon to PATH
   get_url:

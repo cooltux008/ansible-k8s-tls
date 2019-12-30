@@ -25,6 +25,7 @@
     - { src: 'ca-key.pem', dest: '/etc/kubernetes/tls/kubernetes/ca-key.pem' }
     - { src: 'server.pem', dest: '/etc/kubernetes/tls/kubernetes/server.pem' }
     - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/kubernetes/server-key.pem' }
+    - { src: 'aggregator-ca.pem', dest: '/etc/kubernetes/tls/kubernetes/aggregator-ca.pem' }
     - { src: 'aggregator.pem', dest: '/etc/kubernetes/tls/kubernetes/aggregator.pem' }
     - { src: 'aggregator-key.pem', dest: '/etc/kubernetes/tls/kubernetes/aggregator-key.pem' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }
@@ -37,6 +38,6 @@
     group: root
     mode: 0644
   with_items:
-    - { src: 'ca.pem', dest: '/etc/kubernetes/tls/etcd/ca.pem' }
-    - { src: 'server.pem', dest: '/etc/kubernetes/tls/etcd/server.pem' }
-    - { src: 'server-key.pem', dest: '/etc/kubernetes/tls/etcd/server-key.pem' }
+    - { src: 'etcd-ca.pem', dest: '/etc/kubernetes/tls/etcd/etcd-ca.pem' }
+    - { src: 'etcd-client.pem', dest: '/etc/kubernetes/tls/etcd/etcd-client.pem' }
+    - { src: 'etcd-client-key.pem', dest: '/etc/kubernetes/tls/etcd/etcd-client-key.pem' }

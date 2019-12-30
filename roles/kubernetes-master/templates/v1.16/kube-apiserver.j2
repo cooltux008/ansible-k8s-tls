@@ -24,9 +24,9 @@ KUBE_API_ARGS="--logtostderr=false \
                --tls-private-key-file=/etc/kubernetes/tls/kubernetes/server-key.pem \
                --client-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \
                --service-account-key-file=/etc/kubernetes/tls/kubernetes/ca-key.pem \
-               --etcd-cafile=/etc/kubernetes/tls/etcd/ca.pem \
-               --etcd-certfile=/etc/kubernetes/tls/etcd/server.pem \
-               --etcd-keyfile=/etc/kubernetes/tls/etcd/server-key.pem \
+               --etcd-cafile=/etc/kubernetes/tls/etcd/etcd-ca.pem \
+               --etcd-certfile=/etc/kubernetes/tls/etcd/etcd-client.pem \
+               --etcd-keyfile=/etc/kubernetes/tls/etcd/etcd-client-key.pem \
                --apiserver-count=3 \
                --audit-log-maxage=30 \
                --audit-log-maxbackup=3 \
@@ -34,7 +34,7 @@ KUBE_API_ARGS="--logtostderr=false \
                --audit-log-path=/var/log/audit/kube-apiserver.log \
                --event-ttl=1h \
                --feature-gates= \
-               --requestheader-client-ca-file=/etc/kubernetes/tls/kubernetes/ca.pem \
+               --requestheader-client-ca-file=/etc/kubernetes/tls/kubernetes/aggregator-ca.pem \
                --proxy-client-cert-file=/etc/kubernetes/tls/kubernetes/aggregator.pem \
                --proxy-client-key-file=/etc/kubernetes/tls/kubernetes/aggregator-key.pem \
                --requestheader-allowed-names=aggregator,metrics-server,front-proxy-client \

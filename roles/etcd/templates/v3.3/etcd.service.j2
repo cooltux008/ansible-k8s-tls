@@ -11,12 +11,12 @@ User=etcd
 EnvironmentFile=-/etc/etcd/etcd.conf
 ExecStart=/usr/bin/etcd \
   --name ${ETCD_NAME} \
-  --cert-file=/etc/etcd/tls/server.pem \
-  --key-file=/etc/etcd/tls/server-key.pem \
-  --peer-cert-file=/etc/etcd/tls/server.pem \
-  --peer-key-file=/etc/etcd/tls/server-key.pem \
-  --trusted-ca-file=/etc/etcd/tls/ca.pem \
-  --peer-trusted-ca-file=/etc/etcd/tls/ca.pem \
+  --cert-file=/etc/etcd/tls/etcd-client.pem \
+  --key-file=/etc/etcd/tls/etcd-client-key.pem \
+  --peer-cert-file=/etc/etcd/tls/etcd-peer.pem \
+  --peer-key-file=/etc/etcd/tls/etcd-peer-key.pem \
+  --trusted-ca-file=/etc/etcd/tls/etcd-ca.pem \
+  --peer-trusted-ca-file=/etc/etcd/tls/etcd-ca.pem \
   --initial-advertise-peer-urls ${ETCD_INITIAL_ADVERTISE_PEER_URLS} \
   --listen-peer-urls ${ETCD_LISTEN_PEER_URLS} \
   --listen-client-urls ${ETCD_LISTEN_CLIENT_URLS} \
