@@ -1,0 +1,17 @@
+---
+- name: delete traefik 
+  shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/traefik/{{ traefik_version.split('.')[:2] | join('.') }}/{{ item }}
+  loop:
+    - traefik_demo_whoami.yaml
+    - traefik_ingressroutes.yaml
+    - traefik_middlewares.yaml
+    - traefik_deploy.yaml
+    - traefik_crd.yaml
+  ignore_errors: true
+
+- name: remove traefik yaml
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/tmp/traefik

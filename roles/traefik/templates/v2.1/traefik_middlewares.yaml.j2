@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: authsecret
+  namespace: default
+data:
+  users: |2
+    dHJhZWZpazokYXByMSREN2hPL29HQiRoVnRoM2JnclM2NnN4U3A3ZTB5RGQuCg==
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-basicauth
+spec:
+  basicAuth:
+    secret: authsecret
+    headerField: X-WebAuth-User
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-digestauth
+spec:
+  digestAuth:
+    secret: authsecret
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-compress
+spec:
+  compress: {}
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-header
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+      - "OPTIONS"
+      - "PUT"
+    accessControlAllowOrigin: "origin-list-or-null"
+    accessControlMaxAge: 100
+    addVaryHeader: "true"
+    customRequestHeaders:
+      X-Script-Name: "test"
+    customResponseHeaders:
+      X-Custom-Response-Header: "value"
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-retry
+spec:
+  retry:
+    attempts: 4
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-ratelimit
+spec:
+  rateLimit:
+    average: 100
+    burst: 50
+    sourceCriterion:
+      ipStrategy:
+        depth: 10
+
+---
+# Sets the maximum request body to 2Mb
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: test-buffering
+spec:
+  buffering:
+    maxRequestBodyBytes: 2000000
+    maxResponseBodyBytes: 2000000
+    memRequestBodyBytes: 2000000
+    memResponseBodyBytes: 2000000
+    retryExpression: "IsNetworkError() && Attempts() < 2"

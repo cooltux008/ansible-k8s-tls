@@ -1,0 +1,9 @@
+---
+- name: apply traefik
+  shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/traefik/{{ traefik_version.split('.')[:2] | join('.') }}/{{ item }}
+  loop:
+    - traefik_crd.yaml
+    - traefik_deploy.yaml
+    - traefik_demo_whoami.yaml
+    - traefik_ingressroutes.yaml
+    - traefik_middlewares.yaml

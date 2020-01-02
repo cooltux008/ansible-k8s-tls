@@ -1,0 +1,23 @@
+---
+- name: create traefik yaml dir
+  file:
+    path: /var/tmp/traefik/{{ traefik_version.split('.')[:2] | join('.') }}
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: sync traefik yaml
+  template: 
+    src: "{{ traefik_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: /var/tmp/traefik/{{ traefik_version.split('.')[:2] | join('.') }}/{{ item.dest }}
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - { src: traefik_crd.yaml.j2, dest: traefik_crd.yaml }
+    - { src: traefik_deploy.yaml.j2, dest: traefik_deploy.yaml }
+    - { src: traefik_demo_whoami.yaml.j2, dest: traefik_demo_whoami.yaml }
+    - { src: traefik_ingressroutes.yaml.j2, dest: traefik_ingressroutes.yaml }
+    - { src: traefik_middlewares.yaml.j2, dest: traefik_middlewares.yaml }
+  notify: apply traefik

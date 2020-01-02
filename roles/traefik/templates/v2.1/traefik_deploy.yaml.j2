@@ -1,0 +1,182 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: default
+  name: traefik-ingress-controller
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  namespace: default
+  name: traefik-conf
+data:
+  traefik.toml: |
+    [global]
+      checkNewVersion = true
+      sendAnonymousUsage = true
+    [entryPoints]
+      [entryPoints.web]
+        address = ":80"
+      [entryPoints.websecure]
+        address = ":443"
+      [entryPoints.ping]
+        address = ":8081"
+      [entryPoints.metrics]
+        address = ":8082"
+      [entryPoints.tcptest]
+        address = ":9000"
+    [log]
+      level = "DEBUG"
+      filePath = "/var/log/traefik/traefik.log"
+      format = "json"
+    [accessLog]
+      filePath = "/var/log/traefik/traefik_access.log"
+      format = "json"
+      bufferingSize = 100
+      [accessLog.filters]
+        retryAttempts = true
+        minDuration = "10ms"
+      [accessLog.fields]
+        defaultMode = "keep"
+        [accessLog.fields.names]
+        "ClientUsername" = "drop"
+        [accessLog.fields.headers]
+          defaultMode = "keep"
+          [accessLog.fields.headers.names]
+            "User-Agent" = "redact"
+            "Authorization" = "drop"
+            "Content-Type" = "keep"
+    [api]
+      insecure = true
+      dashboard = true
+      debug = true
+    [ping]
+      entryPoint = "ping"
+    [metrics]
+      [metrics.prometheus]
+        entryPoint = "metrics"
+        buckets = [0.1,0.3,1.2,5.0]
+        addEntryPointsLabels = true
+        addServicesLabels = true
+    [tracing]
+      [tracing.jaeger]
+        samplingServerURL = "http://localhost:5778/sampling"
+        samplingType = "const"
+        samplingParam = 1.0
+        localAgentHostPort = "127.0.0.1:6831"
+        gen128Bit = true
+        propagation = "jaeger"
+        traceContextHeaderName = "uber-trace-id"
+        [tracing.jaeger.collector]
+          endpoint = "http://127.0.0.1:14268/api/traces?format=jaeger.thrift"
+          user = "my-user"
+          password = "my-password"
+    [providers]
+      kubernetescrd = true
+    [certificatesresolvers]
+      [certificatesresolvers.default]
+        [certificatesresolvers.default.acme]
+          tlschallenge = true
+          email = "foo@you.com"
+          storage = "acme.json"
+          caserver = "https://acme-staging-v02.api.letsencrypt.org/directory"
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  namespace: default
+  name: traefik
+  labels:
+    app: traefik
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      serviceAccountName: traefik-ingress-controller
+      containers:
+        - name: traefik
+          image: "{{ traefik_image }}"
+          args:
+            - --configfile=/etc/traefick/traefik.toml
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: 8081
+            timeoutSeconds: 1
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: 8081
+            timeoutSeconds: 1
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 50Mi
+            limits:
+              cpu: 100m
+              memory: 50Mi
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: admin
+              containerPort: 8080
+          volumeMounts:
+          - name: traefik-conf
+            mountPath: /etc/traefik/traefik.toml
+            subPath: traefik.toml
+          - name: traefik-log
+            mountPath: /var/log/traefik
+      volumes:
+      - name: traefik-log
+        hostPath:
+          path: /var/log/traefik
+      - name: traefik-conf
+        configMap:
+          items:
+            - path: traefik.toml
+              key: traefik.toml
+          name: traefik-conf
+          defaultMode: 420
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+spec:
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+    - protocol: TCP
+      name: websecure
+      port: 443
+    - protocol: TCP
+      name: admin
+      port: 8080
+    - protocol: TCP
+      name: ping
+      port: 8081
+    - protocol: TCP
+      name: metrics
+      port: 8082
+    - protocol: TCP
+      name: tcptest
+      port: 9000
+  selector:
+    app: traefik

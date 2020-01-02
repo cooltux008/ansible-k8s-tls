@@ -1,0 +1,3 @@
+---
+- import_tasks: traefik_{{ install_or_uninstall }}.yml
+  tags: traefik
