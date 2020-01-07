@@ -1,14 +1,15 @@
 ---
 - name: add docker repo
   apt_repository:
-    repo: deb {{ ubuntu_apt_url }} xenial repo
+    repo: deb {{ docker_apt_url }} {{ ansible_distribution_release }} main
     state: present
-    filename: dce-offline.list
+    filename: docker
 
-- name: uninstall docker
+- name: install docker
   apt: 
     name: docker 
-    state: absent
+    state: present
+    update_cache: yes
 
 - name: cgroupdriver
   replace:

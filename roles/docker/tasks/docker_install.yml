@@ -1,5 +1,5 @@
 ---
-- import_tasks: centos/centos_docker_install.yml
+- include_tasks: centos/docker_install.yml
   when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-- import_tasks: ubuntu/ubuntu_docker_install.yml
-  when: ansible_os_family == "Debian" and ansible_distribution == "xenial"
+- include_tasks: debian/docker_install.yml
+  when: ansible_os_family == "Debian"

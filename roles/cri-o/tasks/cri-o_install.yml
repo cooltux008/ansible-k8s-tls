@@ -1,9 +1,8 @@
 ---
-- name: install crio depends (libseccomp-devel)
-  yum: 
-    name: libseccomp-devel
-    state: present
-    update_cache: yes
+- include_tasks: centos/cri-o_depends.yml
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
+- include_tasks: debian/cri-o_depends.yml
+  when: ansible_os_family == "Debian"
 
 - import_tasks: runc.yml
   tags: runc

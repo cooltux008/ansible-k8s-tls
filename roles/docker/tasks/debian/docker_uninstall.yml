@@ -1,0 +1,96 @@
+---
+- name: stop the docker service
+  service: 
+    name: docker 
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: uninstall docker
+  apt: 
+    name: ["docker-ce-{{ docker_version }}", "container-selinux"]
+    state: absent
+    update_cache: yes
+
+- name: remove docker yum repo
+  apt_repository:
+    name: docker
+    state: absent
+
+- name: filter mounted pod dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+  ignore_errors: true
+
+- name: filter mounted docker dirs
+  shell: df
+  register: df_result
+
+- name: unmount left docker
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/docker/.+)') }}"
+  ignore_errors: true
+
+- name: unmount left docker dirs
+  raw: umount proc
+  failed_when: false
+  tags: unmount
+
+- name: remove docker directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/bin/docker
+    - /usr/bin/docker-containerd
+    - /usr/bin/docker-containerd-ctr
+    - /usr/bin/docker-containerd-shim
+    - /usr/bin/dockerd
+    - /usr/bin/docker-init
+    - /usr/bin/docker-proxy
+    - /usr/bin/docker-runc
+    - /etc/docker
+    - /var/lib/docker
+    - /var/run/docker
+    - /run/docker
+    - /run/dockershim.sock
+
+- name: thinpool
+  lvol:
+    vg: "{{ VG_NAME }}"
+    lv: "{{ THINPOOL_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: thinpool_remove
+
+- name: vg
+  lvg:
+    vg: "{{ VG_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: vg_remove
+
+- name: Read device information (always use unit when probing)
+  parted: device=/dev/{{ THINPOOL_DISKS }} unit=MiB
+  register: thinpool_disk_info
+  ignore_errors: true
+
+- name: Remove all partitions from disk
+  parted:
+    device: /dev/{{ THINPOOL_DISKS }}
+    number: "{{ item.num }}"
+    state: absent
+  with_items:
+    - "{{ thinpool_disk_info.partitions }}"
+  tags: pv_remove
+  ignore_errors: true

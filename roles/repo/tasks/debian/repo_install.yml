@@ -1,0 +1,23 @@
+---
+- name: add debian {{ ansible_distribution_release }} repo
+  apt_repository:
+    repo: deb [trusted=yes] {{ depends_repo_url }} {{ ansible_distribution_release }} main contrib 
+    state: present
+    update_cache: yes
+    validate_certs: no
+    filename: debian
+  when: debian_offline
+
+- name: add debian {{ ansible_distribution_release }} repo
+  apt_repository:
+    repo: deb http://mirrors.aliyun.com/debian/ {{ item }} main contrib non-free
+    state: present
+    update_cache: yes
+    validate_certs: no
+    filename: debian
+  loop:
+    - '{{ ansible_distribution_release }}'
+    - '{{ ansible_distribution_release }}-updates'
+    - '{{ ansible_distribution_release }}-proposed-updates'
+    - '{{ ansible_distribution_release }}-backports'
+  when: not debian_offline

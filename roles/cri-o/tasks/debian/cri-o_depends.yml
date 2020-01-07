@@ -1,0 +1,14 @@
+---
+- name: install crio depends (libseccomp)
+  apt: 
+    name: ["libseccomp-dev","libgpgme-dev","libdevmapper-dev","libdevmapper-dev","libglib2.0-dev"]
+    state: present
+    update_cache: yes
+
+- name: link libdevmapper.so.1.02
+  file:
+    src: /lib/x86_64-linux-gnu/libdevmapper.so.1.02.1
+    dest: /lib/x86_64-linux-gnu/libdevmapper.so.1.02
+    owner: root
+    group: root
+    state: link

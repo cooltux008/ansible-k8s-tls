@@ -5,7 +5,6 @@
     baseurl: "{{ docker_repo_url }}"
     gpgcheck: no
     state: present
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
 
 - name: yum.conf skip_broken=1, obsoletes=0
   ini_file:

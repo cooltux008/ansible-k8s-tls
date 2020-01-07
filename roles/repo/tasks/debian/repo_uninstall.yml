@@ -1,0 +1,8 @@
+---
+- name: remove debian {{ ansible_distribution_release }} repo
+  apt_repository:
+    repo: deb [trusted=yes] {{ depends_repo_url }} {{ ansible_distribution_release }} main contrib 
+    state: absent
+    update_cache: yes
+    validate_certs: no
+    filename: debian-offline

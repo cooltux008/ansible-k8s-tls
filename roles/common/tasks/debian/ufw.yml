@@ -1,0 +1,5 @@
+---
+- name: disable UFW
+  ufw:
+    state: disabled
+  failed_when: false

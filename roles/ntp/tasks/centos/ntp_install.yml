@@ -9,7 +9,14 @@
   template: 
     src: chrony.conf.j2 
     dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: 0644
   notify: restart chrony
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
 
 - name: start the chrony service
   service: 

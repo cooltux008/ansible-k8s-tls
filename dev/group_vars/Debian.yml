@@ -1,0 +1,4 @@
+depends_repo_url: "{{ url_prefix }}/debian10"
+docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
+podman_repo_url: "{{ url_prefix }}/linux_soft/yum/podman"
+debian_offline: false

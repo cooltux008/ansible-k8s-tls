@@ -3,11 +3,23 @@
   tags: hostname
 - import_tasks: timezone.yml
   tags: timezone
-- import_tasks: firewalld.yml
-  tags: firewalld
-- import_tasks: selinux.yml
-  tags: selinux
 - import_tasks: swapoff.yml
   tags: swapoff
-- import_tasks: sysctl.yml
+- include_tasks: centos/firewalld.yml
+  tags: firewalld
+  when: ansible_distribution == "CentOS"
+- include_tasks: centos/selinux.yml
+  tags: selinux
+  when: ansible_distribution == "CentOS"
+- include_tasks: centos/sysctl.yml
   tags: sysctl
+  when: ansible_distribution == "CentOS"
+- include_tasks: debian/ufw.yml
+  tags: ufw
+  when: ansible_os_family == "Debian"
+- include_tasks: debian/apparmor.yml
+  tags: apparmor
+  when: ansible_os_family == "Debian"
+- import_tasks: debian/sysctl.yml
+  tags: sysctl
+  #when: ansible_distribution == "Debian"
