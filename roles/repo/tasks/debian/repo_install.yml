@@ -1,5 +1,5 @@
 ---
-- name: add debian {{ ansible_distribution_release }} repo
+- name: add debian {{ ansible_distribution_release }} offline repo
   apt_repository:
     repo: deb [trusted=yes] {{ depends_repo_url }} {{ ansible_distribution_release }} main contrib 
     state: present
@@ -8,16 +8,21 @@
     filename: debian
   when: debian_offline
 
-- name: add debian {{ ansible_distribution_release }} repo
+- name: add debian {{ ansible_distribution_release }} online repo (tsinghua/aliyun)
   apt_repository:
-    repo: deb http://mirrors.aliyun.com/debian/ {{ item }} main contrib non-free
+    repo: deb {{ item.mirror }} {{ item.codename }} main contrib non-free
     state: present
-    update_cache: yes
+    update_cache: no
     validate_certs: no
     filename: debian
   loop:
-    - '{{ ansible_distribution_release }}'
-    - '{{ ansible_distribution_release }}-updates'
-    - '{{ ansible_distribution_release }}-proposed-updates'
-    - '{{ ansible_distribution_release }}-backports'
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/debian/", codename: "{{ ansible_distribution_release }}" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/debian/", codename: "{{ ansible_distribution_release }}-updates" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/debian/", codename: "{{ ansible_distribution_release }}-proposed-updates" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/debian/", codename: "{{ ansible_distribution_release }}-backports" }
+    - { mirror: "https://mirrors.aliyun.com/debian/", codename: "{{ ansible_distribution_release }}" }
+    - { mirror: "https://mirrors.aliyun.com/debian/", codename: "{{ ansible_distribution_release }}-updates" }
+    - { mirror: "https://mirrors.aliyun.com/debian/", codename: "{{ ansible_distribution_release }}-proposed-updates" }
+    - { mirror: "https://mirrors.aliyun.com/debian/", codename: "{{ ansible_distribution_release }}-backports" }
+  ignore_errors: true
   when: not debian_offline

@@ -1,6 +1,6 @@
 ---
 - name: install podman depends (ostree)
   apt: 
-    name: ['ostree-dev', 'libseccomp-dev']
+    name: ['libostree-dev', 'libseccomp-dev']
     state: present
     update_cache: yes

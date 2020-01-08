@@ -26,11 +26,6 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-
 
 
 #########################################################
-## repo ##
-depends_repo_url: "{{ url_prefix }}/centos7"
-docker_repo_url: "{{ url_prefix }}/linux_soft/yum/docker-ce"
-podman_repo_url: "{{ url_prefix }}/linux_soft/yum/podman"
-
 ## registry ##
 docker_registry: 192.168.130.254:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
@@ -114,7 +109,7 @@ cgroup_driver: cgroupfs
 ## kubernetes ##
 kubernetes_version: v1.17.0
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
-kubernetes_master_cluster_ip: 192.168.130.11
+kubernetes_master_cluster_ip: 192.168.130.21
 kubernetes_master_cluster_port: 6443
 kubernetes_apiserver: https://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
 service_cluster_ip_range: 10.254.0.0/16

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-export KUBE_APISERVER="https://192.168.130.11:6443"
+export KUBE_APISERVER="https://192.168.130.21:6443"
 
 
 export tls_dir='../tls/kubernetes'
