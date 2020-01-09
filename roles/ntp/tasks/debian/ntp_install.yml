@@ -1,8 +1,11 @@
 ---
 - name: install chrony
   apt: 
-    name: chrony 
+    name: ["chrony"]
     state: present
+    update_cache: yes
+    cache_valid_time: 3600
+    install_recommends: no
 
 - name: configure chrony 
   template: 

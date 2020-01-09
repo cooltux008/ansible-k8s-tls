@@ -79,7 +79,7 @@ skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version
 #########################################################
 ## network ##
 # cni
-cni_version: v0.8.0
+cni_version: v0.8.4
 cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
 pod_cidr: 172.30.0.0/16
 
