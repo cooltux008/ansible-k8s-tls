@@ -1,0 +1,11 @@
+---
+- name: disable UFW
+  ufw:
+    state: disabled
+  failed_when: false
+
+- name: disable AppArmor
+  service:
+    name: apparmor
+    state: stopped
+    enabled: no

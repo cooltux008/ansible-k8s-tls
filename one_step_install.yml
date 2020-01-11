@@ -22,10 +22,10 @@
 #- import_playbook: docker-bin.yml
 
 #containerd#
-#- import_playbook: containerd.yml
+- import_playbook: containerd.yml
 
 #cri-o#
-- import_playbook: cri-o.yml
+#- import_playbook: cri-o.yml
 
 #cri-tools#
 - import_playbook: cri-tools.yml

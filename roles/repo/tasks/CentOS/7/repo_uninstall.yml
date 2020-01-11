@@ -1,0 +1,9 @@
+---
+- name: remove centos{{ ansible_distribution_major_version|int }} repo
+  yum_repository:
+    name: "{{ item.name }}"
+    baseurl: "{{ item.baseurl }}"
+    state: absent
+  loop:
+    - { name: "{{ ansible_distribution }}{{ ansible_distribution_version }}", description: "{{ ansible_distribution }}{{ ansible_distribution_version }} YUM repo", baseurl: "{{ depends_repo_url }}" }
+    - { name: podman, description: podman, baseurl: "{{ podman_repo_url }}" }

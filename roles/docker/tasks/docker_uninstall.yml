@@ -1,5 +1,2 @@
 ---
-- import_tasks: centos/centos_docker_uninstall.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-- import_tasks: ubuntu/ubuntu_docker_uninstall.yml
-  when: ansible_os_family == "Debian" and ansible_distribution == "xenial"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/docker_uninstall.yml"

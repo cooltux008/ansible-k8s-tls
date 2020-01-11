@@ -3,11 +3,11 @@
   tags: hostname
 - import_tasks: timezone.yml
   tags: timezone
-- import_tasks: firewalld.yml
-  tags: firewalld
-- import_tasks: selinux.yml
-  tags: selinux
 - import_tasks: swapoff.yml
   tags: swapoff
-- import_tasks: sysctl.yml
-  tags: sysctl
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/{{ task_item }}"
+  loop: 
+    - security.yml
+    - sysctl.yml
+  loop_control:
+    loop_var: task_item

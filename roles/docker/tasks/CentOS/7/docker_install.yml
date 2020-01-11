@@ -1,0 +1,92 @@
+- name: add docker repo
+  yum_repository:
+    name: docker
+    description: docker YUM repo
+    baseurl: "{{ docker_repo_url }}"
+    gpgcheck: no
+    state: present
+
+- name: yum.conf skip_broken=1, obsoletes=0
+  ini_file:
+    path: /etc/yum.conf
+    section: main
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: True
+  with_items:
+    - { option: skip_broken, value: 1 }
+    - { option: obsoletes, value: 0 }
+  notify: restart docker
+
+- name: install docker-ce-{{ docker_version }}
+  yum: 
+    name: docker-ce-{{ docker_version }}
+    state: present
+    update_cache: yes
+
+- name: yum.conf skip_broken=0, obsoletes=1
+  ini_file:
+    path: /etc/yum.conf
+    section: main
+    option: "{{ item.option }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: True
+  with_items:
+    - { option: skip_broken, value: 0 }
+    - { option: obsoletes, value: 1 }
+
+- name: create docker directory
+  file:
+    path: "{{ item.dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  with_items: 
+    - { dir: /etc/docker, mode: '0700' }
+    - { dir: /etc/systemd/system/docker.service.d, mode: '0700' }
+
+- name: docker.service
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: 
+    - { src: docker.service.j2, dest: /lib/systemd/system/docker.service }
+    - { src: tune.conf.j2, dest: /etc/systemd/system/docker.service.d/tune.conf }
+
+- name: thinpool
+  include_tasks: thinpool.yml
+  when: THINPOOL_DISKS != ''
+
+- name: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }} exists ?
+  stat: 
+    path: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}
+  register: thinpool_exists
+
+- name: docker_config_thinpool
+  include_tasks: docker_config_thinpool.yml
+  when: thinpool_exists.stat.exists
+
+- name: docker_config_no_thinpool
+  include_tasks: docker_config_no_thinpool.yml
+  when: not thinpool_exists.stat.exists
+
+- name: overlay or overlay2 ?
+  replace:
+    path: /etc/docker/daemon.json
+    regexp: '"storage-driver": "overlay2"'
+    replace: '"storage-driver": "overlay"'
+  when: docker_version == '17.03.2.ce'
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start docker
+  service: 
+    name: docker
+    state: started 
+    enabled: yes

@@ -1,0 +1,6 @@
+---
+- name: install crio depends (libseccomp)
+  yum: 
+    name: libseccomp-devel
+    state: present
+    update_cache: yes

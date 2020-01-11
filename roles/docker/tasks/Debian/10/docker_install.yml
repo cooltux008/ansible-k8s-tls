@@ -1,0 +1,35 @@
+---
+- name: add docker repo <{{ ansible_distribution }}:{{ ansible_distribution_version }}({{ ansible_distribution_release }})>
+  apt_repository:
+    repo: deb [trusted=yes] {{ docker_repo_url }} {{ ansible_distribution_release }} stable
+    state: present
+    update_cache: yes
+    validate_certs: no
+    filename: docker
+
+- name: install docker
+  apt: 
+    name: ["docker-ce"]
+    state: present
+    update_cache: yes
+    cache_valid_time: 3600
+    install_recommends: no
+
+- name: cgroupdriver
+  replace:
+    path: /lib/systemd/system/docker.service
+    regexp: '--exec-opt native.cgroupdriver=cgroupfs'
+    replace: '--exec-opt native.cgroupdriver=systemd'
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: add insecure-mirror
+  template:
+    src: daemon_no_thinpool.json.j2
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart docker

@@ -4,6 +4,6 @@
   roles:
     - flannel
   vars_files: 
-    - dev/group_vars/all
-    - dev/group_vars/vault
+    - dev/group_vars/all.yml
+    - dev/group_vars/vault.yml
   tags: flannel

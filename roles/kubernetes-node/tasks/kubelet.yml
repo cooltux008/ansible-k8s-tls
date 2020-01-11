@@ -1,9 +1,5 @@
 ---
-- name: install conntrack-tools
-  yum: 
-    name: conntrack-tools
-    state: present
-    update_cache: yes
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/kubelet_depends.yml"
 
 - name: create kubelet dir 
   file:

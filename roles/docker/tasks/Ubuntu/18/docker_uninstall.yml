@@ -1,0 +1,72 @@
+---
+- name: stop the docker service
+  service: 
+    name: "{{ item }}"
+    state: stopped 
+    enabled: no
+  loop: ["docker", "containerd"]
+  ignore_errors: true
+
+- name: uninstall docker
+  apt: 
+    name: ["docker-ce", "containerd.io"]
+    state: absent
+    update_cache: yes
+
+- name: remove docker repo
+  apt_repository:
+    repo: deb [trusted=yes] {{ docker_repo_url }} {{ ansible_distribution_release }} stable
+    state: absent
+    update_cache: yes
+    validate_certs: no
+    filename: docker
+
+- name: filter mounted pod dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+  ignore_errors: true
+
+- name: filter mounted docker dirs
+  shell: df
+  register: df_result
+
+- name: unmount left docker
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/docker/.+)') }}"
+  ignore_errors: true
+
+- name: unmount left docker dirs
+  raw: umount proc
+  failed_when: false
+  tags: unmount
+
+- name: remove docker directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /usr/bin/docker
+    - /usr/bin/docker-containerd
+    - /usr/bin/docker-containerd-ctr
+    - /usr/bin/docker-containerd-shim
+    - /usr/bin/dockerd
+    - /usr/bin/docker-init
+    - /usr/bin/docker-proxy
+    - /usr/bin/docker-runc
+    - /etc/docker
+    - /var/lib/docker
+    - /var/run/docker
+    - /var/run/docker.sock
+    - /run/docker
+    - /run/dockershim.sock
+    - /var/lib/containerd
+    - /run/containerd
+

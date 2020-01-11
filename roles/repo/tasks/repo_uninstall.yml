@@ -1,16 +1,2 @@
 ---
-- name: remove centos7 repo
-  yum_repository:
-    name: centos7
-    description: centos7 YUM repo
-    baseurl: "{{ depends_repo_url }}"
-    gpgcheck: no
-    state: absent
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-
-- name: remove ubuntu repo
-  apt_repository:
-    repo: deb {{ depends_repo_url }} xenial repo
-    state: absent
-    filename: dce-offline.list
-  when: ansible_os_family == "Debian" and ansible_distribution == "xenial"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/repo_uninstall.yml"

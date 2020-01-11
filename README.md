@@ -29,8 +29,8 @@ cd ansible-k8s-tls
 	ANSIBLE_USER='root' # ssh用户名
 	ANSIBLE_PASSWORD='root' # ssh用户密码
 
-	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_USER --name 'vault_ansible_user' | tee dev/group_vars/vault
-	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_PASSWORD --name 'vault_ansible_password' | tee -a dev/group_vars/vault
+	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_USER --name 'vault_ansible_user' | tee dev/group_vars/vault.yml
+	ansible-vault encrypt_string --vault-id .vault_pass.txt $ANSIBLE_PASSWORD --name 'vault_ansible_password' | tee -a dev/group_vars/vault.yml
 	EOF
 	```
 	**注意:** 请务必修改脚本中的ssh用户名密码及dce认证用户名密码与实际环境匹配
@@ -179,10 +179,10 @@ bash etcd_tls2base64.sh
 ```
 ```
 # 测试主机连通性
-ansible -i dev/hosts all --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault -m ping
+ansible -i dev/hosts all --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault.yml -m ping
 
 # 调试
-ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault test.yml
+ansible-playbook -i dev/hosts --vault-password-file .vault_pass.txt --extra-vars @dev/group_vars/vault.yml test.yml
 ```
 ### 4. 一键安装k8s ###
 ``` shell

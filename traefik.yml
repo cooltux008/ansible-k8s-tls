@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes_client
+  roles:
+    - traefik
+  vars_files: 
+    - dev/group_vars/all.yml
+    - dev/group_vars/vault.yml
+  tags: traefik
