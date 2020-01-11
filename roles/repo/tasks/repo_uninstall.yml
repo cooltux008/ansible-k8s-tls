@@ -1,2 +1,2 @@
 ---
-- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_version }}/repo_uninstall.yml"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/repo_uninstall.yml"

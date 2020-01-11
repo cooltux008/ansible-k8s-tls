@@ -1,2 +1,2 @@
 ---
-- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_version }}/ntp_uninstall.yml"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/ntp_uninstall.yml"
