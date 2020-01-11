@@ -1,0 +1,31 @@
+---
+- name: add {{ ansible_distribution }}:{{ ansible_distribution_version }}({{ ansible_distribution_release }}) offline repo
+  apt_repository:
+    repo: deb [trusted=yes] {{ item }} {{ ansible_distribution_release }} main restricted
+    state: present
+    update_cache: yes
+    validate_certs: no
+    filename: ubuntu
+  loop: "{{ depends_repo_url }}"
+  when: depends_offline
+
+- name: add {{ ansible_distribution }}:{{ ansible_distribution_version }}({{ ansible_distribution_release }}) online repo (tsinghua/aliyun)
+  apt_repository:
+    repo: deb {{ item.mirror }} {{ item.codename }} main multiverse restricted universe
+    state: present
+    update_cache: no
+    validate_certs: no
+    filename: ubuntu
+  loop:
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/", codename: "{{ ansible_distribution_release }}" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/", codename: "{{ ansible_distribution_release }}-backports" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/", codename: "{{ ansible_distribution_release }}-proposed" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/", codename: "{{ ansible_distribution_release }}-security" }
+    #- { mirror: "https://mirrors.tuna.tsinghua.edu.cn/ubuntu/", codename: "{{ ansible_distribution_release }}-updates" }
+    - { mirror: "https://mirrors.aliyun.com/ubuntu/", codename: "{{ ansible_distribution_release }}" }
+    - { mirror: "https://mirrors.aliyun.com/ubuntu/", codename: "{{ ansible_distribution_release }}-backports" }
+    - { mirror: "https://mirrors.aliyun.com/ubuntu/", codename: "{{ ansible_distribution_release }}-proposed" }
+    - { mirror: "https://mirrors.aliyun.com/ubuntu/", codename: "{{ ansible_distribution_release }}-security" }
+    - { mirror: "https://mirrors.aliyun.com/ubuntu/", codename: "{{ ansible_distribution_release }}-updates" }
+  ignore_errors: true
+  when: not depends_offline

@@ -1,6 +1,0 @@
----
-- name: disable AppArmor
-  service:
-    name: apparmor
-    state: stopped
-    enabled: no

@@ -1,0 +1,11 @@
+---
+- name: add {{ ansible_distribution }}:{{ ansible_distribution_version }}({{ ansible_distribution_release }}) offline repo
+  yum_repository:
+    name: "{{ item.name }}"
+    description: "{{ item.description }}"
+    baseurl: "{{ item.baseurl }}"
+    gpgcheck: no
+    state: present
+  loop:
+    - { name: "{{ ansible_distribution }}{{ ansible_distribution_version }}", description: "{{ ansible_distribution }}{{ ansible_distribution_version }} YUM repo", baseurl: "{{ depends_repo_url }}" }
+    - { name: podman, description: podman, baseurl: "{{ podman_repo_url }}" }

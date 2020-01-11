@@ -5,21 +5,27 @@
   tags: timezone
 - import_tasks: swapoff.yml
   tags: swapoff
-- include_tasks: centos/firewalld.yml
-  tags: firewalld
-  when: ansible_distribution == "CentOS"
-- include_tasks: centos/selinux.yml
-  tags: selinux
-  when: ansible_distribution == "CentOS"
-- include_tasks: centos/sysctl.yml
-  tags: sysctl
-  when: ansible_distribution == "CentOS"
-- include_tasks: debian/ufw.yml
-  tags: ufw
-  when: ansible_os_family == "Debian"
-- include_tasks: debian/apparmor.yml
-  tags: apparmor
-  when: ansible_os_family == "Debian"
-- import_tasks: debian/sysctl.yml
-  tags: sysctl
-  #when: ansible_distribution == "Debian"
+  #- include_tasks: CentOS/{{ ansible_distribution_version }}/firewalld.yml
+  #  tags: firewalld
+  #  when: ansible_distribution == "CentOS"
+  #- include_tasks: CentOS/{{ ansible_distribution_version }}/selinux.yml
+  #  tags: selinux
+  #  when: ansible_distribution == "CentOS"
+  #- include_tasks: CentOS/{{ ansible_distribution_version }}/sysctl.yml
+  #  tags: sysctl
+  #  when: ansible_distribution == "CentOS"
+  #- include_tasks: Debian/{{ ansible_distribution_version }}/ufw.yml
+  #  tags: ufw
+  #  when: ansible_distribution == "Debian"
+  #- include_tasks: Debian/{{ ansible_distribution_version }}/apparmor.yml
+  #  tags: apparmor
+  #  when: ansible_distribution == "Debian"
+  #- import_tasks: Debian/{{ ansible_distribution_version }}/sysctl.yml
+  #  tags: sysctl
+  #  when: ansible_distribution == "Debian"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_version }}/{{ task_item }}"
+  loop: 
+    - security.yml
+    - sysctl.yml
+  loop_control:
+    loop_var: task_item

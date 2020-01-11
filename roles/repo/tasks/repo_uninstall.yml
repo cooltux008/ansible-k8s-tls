@@ -1,5 +1,2 @@
 ---
-- include_tasks: centos/repo_uninstall.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-- include_tasks: debian/repo_uninstall.yml
-  when: ansible_os_family == "Debian"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_version }}/repo_uninstall.yml"

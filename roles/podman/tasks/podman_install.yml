@@ -1,8 +1,5 @@
 ---
-- include_tasks: centos/podman_depends.yml
-  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int >= 7
-- include_tasks: debian/podman_depends.yml
-  when: ansible_os_family == "Debian"
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_version }}/podman_depends.yml"
 
 - import_tasks: buildah.yml
   tags: buildah
