@@ -1,11 +1,12 @@
 ---
 - name: remove debian {{ ansible_distribution_release }} offline repo
   apt_repository:
-    repo: deb [trusted=yes] {{ depends_repo_url }} {{ ansible_distribution_release }} main contrib 
+    repo: deb [trusted=yes] {{ item }} {{ ansible_distribution_release }} main contrib 
     state: absent
     update_cache: no
     validate_certs: no
     filename: debian-offline
+  loop: "{{ depends_repo_url }}"
 
 - name: remove debian {{ ansible_distribution_release }} online repo (tsinghua)
   apt_repository:

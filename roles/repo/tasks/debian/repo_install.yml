@@ -1,11 +1,12 @@
 ---
 - name: add debian {{ ansible_distribution_release }} offline repo
   apt_repository:
-    repo: deb [trusted=yes] {{ depends_repo_url }} {{ ansible_distribution_release }} main contrib 
+    repo: deb [trusted=yes] {{ item }} {{ ansible_distribution_release }} main contrib 
     state: present
     update_cache: yes
     validate_certs: no
     filename: debian
+  loop: "{{ depends_repo_url }}"
   when: debian_offline
 
 - name: add debian {{ ansible_distribution_release }} online repo (tsinghua/aliyun)
