@@ -26,10 +26,8 @@
 
 #cri-o#
 #- import_playbook: cri-o.yml
-
-#cri-tools#
-- import_playbook: cri-tools.yml
-- import_playbook: podman.yml
+#- import_playbook: cri-tools.yml
+#- import_playbook: podman.yml
 
 #kata-containers#
 - import_playbook: kata-containers.yml

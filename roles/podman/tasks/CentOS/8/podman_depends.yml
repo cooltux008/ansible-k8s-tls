@@ -1,0 +1,6 @@
+---
+- name: install podman depends (ostree)
+  yum: 
+    name: ['ostree-devel', 'libseccomp-devel']
+    state: present
+    update_cache: yes

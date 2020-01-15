@@ -1,0 +1,6 @@
+---
+- name: install conntrack-tools
+  dnf: 
+    name: conntrack-tools
+    state: present
+    update_cache: yes
