@@ -1,0 +1,29 @@
+---
+- name: install haproxy & keepalived
+  dnf: 
+    name: ["haproxy", "keepalived"]
+    state: present
+
+- name: create haproxy configuration file
+  template: 
+    src: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/haproxy.cfg.j2"
+    dest: /etc/haproxy/haproxy.cfg
+  notify: restart haproxy
+
+- name: start haproxy service
+  service: 
+    name: haproxy 
+    state: started 
+    enabled: yes
+
+- name: create keepalived configuration file
+  template: 
+    src: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/keepalived.conf.j2"
+    dest: /etc/keepalived/keepalived.conf
+  notify: restart keepalived
+
+- name: start keepalived service
+  service: 
+    name: keepalived 
+    state: started 
+    enabled: yes

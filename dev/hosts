@@ -17,3 +17,12 @@ ansible_connection=paramiko
 
 [kubernetes_client]
 192.168.130.11
+
+
+[lb_node]
+192.168.130.11 keepalived_state=MASTER keepalived_virtual_router_id=11 keepalived_priority=100
+192.168.130.21 keepalived_state=BACKUP keepalived_virtual_router_id=21 keepalived_priority=90
+192.168.130.31 keepalived_state=BACKUP keepalived_virtual_router_id=31 keepalived_priority=80
+[lb_node:vars]
+keepalived_interface=ens33
+keepalived_vip=192.168.130.100/24 brd 192.168.130.255 dev {{ keepalived_interface }}

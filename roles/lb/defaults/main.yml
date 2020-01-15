@@ -1,0 +1,4 @@
+# haproxy vars
+haproxy_port_https: 443
+k8s_apiserver_port_https: 6443
+haproxy_balance: roundrobin

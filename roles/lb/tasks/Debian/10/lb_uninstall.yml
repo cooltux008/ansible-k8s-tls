@@ -1,0 +1,32 @@
+---
+- name: stop the haproxy & keepalived service
+  service: 
+    name: "{{ item }}"
+    state: stopped 
+    enabled: no
+  loop:
+    - haproxy
+    - keepalived
+  ignore_errors: true
+
+- name: uninstall haproxy & keepalived
+  apt: 
+    name: ["haproxy", "keepalived"]
+    state: absent
+
+- name: remove haproxy & keepalived directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/haproxy
+    - /var/lib/haproxy
+    - /var/run/haproxy.pid
+    - /etc/sysconfig/haproxy
+    - /etc/keepalived
+    - /etc/sysconfig/keepalived
+
+- name: remove haproxy user
+  user:
+    name: haproxy
+    state: absent

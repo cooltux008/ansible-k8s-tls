@@ -1,0 +1,10 @@
+---
+- hosts: 
+    - lb_node
+  roles:
+    - lb
+  vars_files: 
+    - dev/group_vars/all.yml
+    - dev/group_vars/vault.yml
+    - dev/group_vars/{{ ansible_distribution }}/{{ ansible_distribution_major_version }}.yml
+  tags: lb

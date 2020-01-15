@@ -1,0 +1,3 @@
+---
+- import_tasks: lb_{{ install_or_uninstall }}.yml
+  tags: lb
