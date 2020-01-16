@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - etcd
+  strategy: free
   roles:
     - etcd
   vars_files: 

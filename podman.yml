@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - kubernetes_node
+  strategy: free
   roles:
     - podman
   vars_files: 

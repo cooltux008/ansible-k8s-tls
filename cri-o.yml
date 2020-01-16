@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - kubernetes_node
+  strategy: free
   roles:
     - cri-o
   vars_files: 

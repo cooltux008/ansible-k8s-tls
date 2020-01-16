@@ -109,9 +109,7 @@ cgroup_driver: cgroupfs
 ## kubernetes ##
 kubernetes_version: v1.17.1
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
-kubernetes_master_cluster_ip: 192.168.130.11
-kubernetes_master_cluster_port: 6443
-kubernetes_apiserver: https://{{ kubernetes_master_cluster_ip }}:{{ kubernetes_master_cluster_port }}
+kubernetes_apiserver: https://192.168.130.100
 service_cluster_ip_range: 10.254.0.0/16
 
 ## kube-proxy ##

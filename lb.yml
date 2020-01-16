@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - lb_node
+  strategy: free
   roles:
     - lb
   vars_files: 

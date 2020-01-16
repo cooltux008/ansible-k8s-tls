@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - kubernetes_master
+  strategy: free
   roles:
     - kubectl
     - kubernetes-master

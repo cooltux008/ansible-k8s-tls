@@ -1,6 +1,7 @@
 ---
 - hosts: 
     - kubernetes_node
+  strategy: free
   roles:
     - kubernetes-node
   vars_files: 

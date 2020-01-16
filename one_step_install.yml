@@ -38,6 +38,7 @@
 # k8s
 ####################################
 - import_playbook: kubernetes-master.yml
+- import_playbook: lb.yml
 - import_playbook: kubernetes-node.yml
 - import_playbook: kubectl.yml
 - import_playbook: kubernetes-cni.yml

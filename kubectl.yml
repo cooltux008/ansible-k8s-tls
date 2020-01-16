@@ -2,6 +2,7 @@
 - hosts: 
     - kubernetes_master
     - kubernetes_client
+  strategy: free
   roles:
     - kubectl
   vars_files: 

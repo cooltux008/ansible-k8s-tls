@@ -26,3 +26,8 @@
     - /var/lib/etcd
     - /etc/etcd
     - /lib/systemd/system/etcd.service
+
+- name: clear cron of backup etcd 
+  cron:
+    name: "backup etcd"
+    state: absent
