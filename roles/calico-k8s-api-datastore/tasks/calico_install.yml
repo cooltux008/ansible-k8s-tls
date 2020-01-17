@@ -37,7 +37,7 @@
     - calico.yaml
     - calicoctl.yaml
 
-- name: untial calico containers ok
+- name: until calico containers ok
   raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system get pods --field-selector="status.phase==Running" --no-headers | grep '^calico' | wc -l
   register: result
   until: result.stdout | int >= 4

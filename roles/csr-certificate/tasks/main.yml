@@ -1,11 +1,22 @@
 ---
+- import_tasks: clusterrolebinding.yml
+  tags: clusterrolebinding
+
+- name: until kubelet csr ok
+  raw: kubectl -s {{ kubernetes_apiserver }} get csr --no-headers | wc -l
+  register: result
+  until: result.stdout != 0
+  retries: 5
+  delay: 3
+
 - name: certificate approve csr
   raw: kubectl -s {{ kubernetes_apiserver }} certificate approve $(kubectl get csr -ojsonpath='{.items[?(@.status.conditions[0].type!="Approved")].metadata.name}';kubectl -s {{ kubernetes_apiserver }} get csr -ojsonpath='{.items[?(not @.status)].metadata.name}')
   failed_when: false
   tags: approve_csr
 
 - name: wait kubelet node ok (15s)
-  wait_for: timeout=15
+  wait_for: 
+    timeout: 15
   delegate_to: localhost
 
 - name: sync label_node.sh

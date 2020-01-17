@@ -1,0 +1,24 @@
+---
+- name: clusterrolebinding kubelet-bootstrap exist ?
+  raw: kubectl -s {{ kubernetes_apiserver }} get clusterrolebinding kubelet-bootstrap
+  register: kubelet_bootstrap
+  failed_when: false
+
+- name: clusterrolebinding system:anonymous exist ?
+  raw: kubectl -s {{ kubernetes_apiserver }} get clusterrolebinding system:anonymous 
+  register: system_anonymous
+  failed_when: false
+
+- name: create clusterrolebinding kubelet-bootstrap
+  raw: >
+         kubectl -s {{ kubernetes_apiserver }} create clusterrolebinding kubelet-bootstrap \
+         --clusterrole=system:node-bootstrapper \
+         --user=kubelet-bootstrap 
+  when: kubelet_bootstrap.rc != 0
+
+- name: create clusterrolebinding system:anonymous
+  raw: >
+         kubectl -s {{ kubernetes_apiserver }} create clusterrolebinding system:anonymous \
+         --clusterrole=cluster-admin \
+         --user=system:anonymous 
+  when: system_anonymous.rc != 0

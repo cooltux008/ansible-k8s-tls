@@ -7,5 +7,3 @@
   tags: kube-controller-manager
 - import_tasks: kube-scheduler.yml
   tags: kube-scheduler
-- import_tasks: clusterrolebinding.yml
-  tags: clusterrolebinding_kubelet-bootstrap
