@@ -6,8 +6,8 @@ Documentation=man:crio(8)
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/rm -f /var/lib/crio/crio.shutdown
-ExecStop=/usr/bin/bash -c "/usr/bin/mkdir /var/lib/crio; /usr/bin/touch /var/lib/crio/crio.shutdown"
+ExecStart=/bin/rm -f /var/lib/crio/crio.shutdown
+ExecStop=/bin/bash -c "/bin/mkdir -p /var/lib/crio; /bin/touch /var/lib/crio/crio.shutdown"
 RemainAfterExit=yes
 
 [Install]

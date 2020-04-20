@@ -102,4 +102,4 @@
     name: "backup etcd"
     minute: "0"
     hour: "*/6"
-    job: ETCDCTL_API=3 etcdctl --cacert=/etc/etcd/tls/etcd-ca.pem --cert=/etc/etcd/tls/etcd-client.pem --key=/etc/etcd/tls/etcd-client-key.pem --endpoints="https://127.0.0.1:2379" snapshot save /var/lib/etcd/etcd_backup-`date +\%Y\%m\%d-\%H\%M\%S`.db ; rm -rf /var/lib/etcd/etcd_backup-`date +\%Y\%m\%d --date "15 days ago"`-*.db
+    job: ETCDCTL_API=3 etcdctl --cacert=/etc/etcd/tls/etcd-ca.pem --cert=/etc/etcd/tls/etcd-client.pem --key=/etc/etcd/tls/etcd-client-key.pem --endpoints="https://127.0.0.1:2379" snapshot save /var/lib/etcd/etcd_backup-`date +\%Y\%m\%d-\%H\%M\%S`.db ; rm -rf /var/lib/etcd/etcd_backup-`date +\%Y\%m\%d --date "30 days ago"`-*.db
