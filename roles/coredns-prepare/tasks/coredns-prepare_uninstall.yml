@@ -1,0 +1,13 @@
+---
+- name: enable systemd-resolved
+  service:
+    name: systemd-resolved
+    state: started
+    enabled: yes
+
+- name: link /etc/resolv.conf --> /run/systemd/resolve/stub-resolv.conf
+  file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: yes

@@ -1,0 +1,9 @@
+---
+- hosts: 
+    - kubernetes_node
+  roles:
+    - coredns-prepare
+  vars_files: 
+    - dev/group_vars/all.yml
+    - dev/group_vars/vault.yml
+  tags: coredns-prepare
