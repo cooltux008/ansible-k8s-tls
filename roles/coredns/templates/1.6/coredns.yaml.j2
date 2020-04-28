@@ -54,13 +54,12 @@ data:
   Corefile: |
     .:53 {
         errors
-        health
+        health {
+          lameduck 5s
+        }
         ready
         kubernetes cluster.local in-addr.arpa ip6.arpa {
-          pods insecure
-          upstream
           fallthrough in-addr.arpa ip6.arpa
-          ttl 30
         }
         prometheus :9153
         forward . /etc/resolv.conf
@@ -79,7 +78,9 @@ metadata:
     k8s-app: kube-dns
     kubernetes.io/name: "CoreDNS"
 spec:
-  replicas: 2
+  # replicas: not specified here:
+  # 1. Default is 1.
+  # 2. Will be tuned in real time if DNS horizontal auto-scaling is turned on.
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -98,7 +99,16 @@ spec:
         - key: "CriticalAddonsOnly"
           operator: "Exists"
       nodeSelector:
-        beta.kubernetes.io/os: linux
+        kubernetes.io/os: linux
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values: ["kube-dns"]
+            topologyKey: kubernetes.io/hostname
       containers:
       - name: coredns
         image: {{ coredns_image }}

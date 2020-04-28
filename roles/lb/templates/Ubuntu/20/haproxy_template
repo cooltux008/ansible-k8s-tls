@@ -1,0 +1,78 @@
+global
+    # to have these messages end up in /var/log/haproxy.log you will
+    # need to:
+    #    by adding the '-r' option to the SYSLOGD_OPTIONS in
+    #    /etc/sysconfig/syslog
+    #
+    # 2) configure local2 events to go to the /var/log/haproxy.log
+    #   file. A line like the following can be added to
+    #   /etc/sysconfig/syslog
+    #
+    #    local2.*                       /var/log/haproxy.log
+    log         127.0.0.1 local2      #日志将通过rsyslog进行归档记录
+    chroot      /var/lib/haproxy      #运行的安装路径
+    pidfile     /var/run/haproxy.pid  #pid文件存放的位置
+    maxconn     4000                  #最大连接
+    user        haproxy               #运行haproxy的用户
+    group       haproxy               #运行haprixy的组
+    daemon                            #以后台模式运行haproxy
+    # turn on stats unix socket
+    stats socket /var/lib/haproxy/stats
+#---------------------------------------------------------------------
+# common defaults that all the 'listen' and 'backend' sections will
+# use if not designated in their block
+#---------------------------------------------------------------------
+defaults
+    mode                    http                #工作模式
+    log                     global              #记录日志
+    option                  httplog             #详细记录http日志
+    option                  dontlognull         #不记录健康检查的日志信息
+    option http-server-close                    #启用服务器端主动关闭
+    option forwardfor       except 127.0.0.0/8  #传递客户端IP
+    retries                 3                   #请求重试次数
+    timeout http-request    10s                 #http请求超时时间
+    timeout queue           1m                  #一个请求在队列里的超时时间
+    timeout connect         10s                 #连接服务器超时时间
+    timeout client          1m                  #客户端超时时间
+    timeout server          1m                  #客户端超时时间
+    timeout http-keep-alive 10s                 #持久连接超时时间
+    timeout check           10s                 #心跳检测超时时间
+    maxconn                 3000                #最大连接数
+#---------------------------------------------------------------------
+# main frontend which proxys to the backends
+#---------------------------------------------------------------------
+frontend  proxy *:80
+    #定义ACL
+    acl url_static       path_beg       -i /static /images /javascript /stylesheets
+    acl url_static       path_end       -i .jpg .gif .png .css .js
+    acl url_dynamic      path_end       _i .php .jsp
+    use_backend dynamic          if url_dynamic   #调用后端服务器并检查ACL规则是否被匹配
+    default_backend             static
+#---------------------------------------------------------------------
+# static backend for serving up images, stylesheets and such
+#---------------------------------------------------------------------
+backend static           #后端调度
+    balance     source   #调度算法
+    server      s1 172.16.10.125:80 inter 1500 rise 2 fall 3  check 
+#----------------------------------------
+listen statistics
+    mode http                           #http 7 层模式
+    bind *:8080                         #监听地址
+    stats enable                        #启用状态监控
+    stats auth admin:admin              #验证的用户与密码
+    stats uri /admin?status             #访问路径
+    stats hide-version                  #隐藏状态页面版本号
+    stats admin if TRUE                 #如果验证通过了就允许登录
+    stats refresh 3s                    #每3秒刷新一次
+    acl allow src 192.168.12.0/24       #允许的访问的IP地址
+    tcp-request content accept if allow #允许的地址段就允许访问
+    tcp-request content reject          #拒绝非法连接
+#---------------------------------------------------------------------
+# round robin balancing between the various backends
+#---------------------------------------------------------------------
+backend dynamic
+    balance     source
+    server      s2 172.16.10.12:80 check inter 1500 rise 2 fall 3 
+#check inter 1500是检测心跳频率
+#rise2 2次正确认为服务器可用
+#fall3 3次失败认为服务器不可用

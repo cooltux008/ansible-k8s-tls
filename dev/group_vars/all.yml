@@ -81,7 +81,7 @@ skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version
 # cni
 cni_version: v0.8.4
 cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
-pod_cidr: 172.30.0.0/16
+pod_cidr: 10.244.0.0/16
 
 # calico
 calico_version: v3.10.2
@@ -107,7 +107,7 @@ cgroup_driver: cgroupfs
 #cgroup_driver: systemd
  
 ## kubernetes ##
-kubernetes_version: v1.19.0
+kubernetes_version: v1.18.2
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_apiserver: https://192.168.130.100
 service_cluster_ip_range: 10.254.0.0/16
@@ -122,8 +122,9 @@ proxy_mode: iptables
 #kubedns_sidecar_image: "{{ docker_registry }}/google_containers/k8s-dns-sidecar-amd64:1.14.8"
 
 ## coredns ##
-coredns_version: 1.5.2
-coredns_image: "{{ docker_registry }}/google_containers/coredns:{{ coredns_version }}"
+coredns_version: 1.6.7
+coredns_image: "{{ docker_registry }}/coredns/coredns:{{ coredns_version }}"
+cluster_proportional_autoscaler_image: "{{ docker_registry }}/cluster-proportional-autoscaler-amd64:1.6.0"
 #########################################################
 
 
@@ -141,9 +142,9 @@ addon_resizer_image: "{{ docker_registry }}/google_containers/addon-resizer:1.8.
 #kubernetes_dashboard_version: v1.10.1
 #kubernetes_dashboard_image: "gcr.azk8s.cn/google_containers/kubernetes-dashboard-amd64:{{ kubernetes_dashboard_version }}"
 #v2 支持>=1.16的版本
-kubernetes_dashboard_version: v2.0.0-rc5
+kubernetes_dashboard_version: v2.0.0
 kubernetes_dashboard_image: "{{ docker_registry }}/kubernetesui/dashboard:{{ kubernetes_dashboard_version }}"
-kubernetes_dashboard_metrics_scraper_image: "{{ docker_registry }}/kubernetesui/metrics-scraper:v1.0.3"
+kubernetes_dashboard_metrics_scraper_image: "{{ docker_registry }}/kubernetesui/metrics-scraper:v1.0.4"
 #########################################################
 
 

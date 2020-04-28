@@ -1,0 +1,4 @@
+depends_repo_url: 
+  - "{{ url_prefix }}/ubuntu20.04"
+depends_offline: false
+docker_repo_url: "https://mirrors.aliyun.com/docker-ce/linux/ubuntu"

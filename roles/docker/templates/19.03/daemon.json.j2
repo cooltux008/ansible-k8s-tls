@@ -1,0 +1,22 @@
+{
+  "exec-opts": [
+    "native.cgroupdriver={{ cgroup_driver }}"
+  ],
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+    "dm.thinpooldev=/dev/mapper/{{ VG_NAME }}-{{ THINPOOL_NAME }}",
+    "dm.use_deferred_removal=true",
+    "dm.use_deferred_deletion=true",
+    "dm.basesize=50G",
+    "dm.min_free_space=10%"
+  ],
+  "insecure-registries": [
+      "0.0.0.0/0"
+  ],
+  "log-driver": "json-file",
+  "live-restore": true,
+  "log-opts": {
+      "max-size": "100m",
+      "max-file": "3"
+  }
+}

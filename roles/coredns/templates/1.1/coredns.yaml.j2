@@ -108,7 +108,7 @@ spec:
         operator: Exists
       containers:
       - name: coredns
-        image: "{{ coredns_image }}"
+        image: {{ coredns_image }}
         imagePullPolicy: IfNotPresent
         resources:
           limits:

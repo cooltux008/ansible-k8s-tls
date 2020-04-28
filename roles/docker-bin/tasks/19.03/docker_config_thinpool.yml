@@ -1,6 +1,6 @@
-- name: docker_config_no_thinpool
+- name: docker_config_thinpool
   template:
-    src: daemon_no_thinpool.json.j2
+    src: "{{ docker_version.split('.')[:2] | join('.') }}/daemon.json.j2"
     dest: /etc/docker/daemon.json
     owner: root
     group: root

@@ -16,4 +16,5 @@
     mode: 0644
   with_items:
     - { src: coredns.yaml.j2, dest: coredns.yaml }
+    - { src: dns-horizontal-autoscaler.yaml.j2, dest: dns-horizontal-autoscaler.yaml }
   notify: apply coredns

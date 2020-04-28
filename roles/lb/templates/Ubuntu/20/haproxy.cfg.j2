@@ -1,0 +1,56 @@
+global
+    log         127.0.0.1 local2
+    chroot      /var/lib/haproxy
+    pidfile     /var/run/haproxy.pid
+    maxconn     100000
+    user        haproxy
+    group       haproxy
+    daemon
+    stats socket /var/lib/haproxy/stats
+
+defaults
+    mode                    http                #工作模式
+    log                     global              #记录日志
+    option                  httplog             #详细记录http日志
+    option                  dontlognull         #不记录健康检查的日志信息
+    option http-server-close                    #启用服务器端主动关闭
+    option forwardfor       except 127.0.0.0/8  #传递客户端IP
+    retries                 3                   #请求重试次数
+    timeout http-request    10s                 #http请求超时时间
+    timeout queue           1m                  #一个请求在队列里的超时时间
+    timeout connect         10s                 #连接服务器超时时间
+    timeout client          1m                  #客户端超时时间
+    timeout server          1m                  #客户端超时时间
+    timeout http-keep-alive 10s                 #持久连接超时时间
+    timeout check           10s                 #心跳检测超时时间
+    maxconn                 3000                #最大连接数
+
+    #stats enable    
+    #stats uri /haproxy-status
+    #stats refresh 10s
+    #stats realm Haproxy\ statistic
+    #stats auth hadmin:foo.123
+    #stats hide-version
+
+frontend stats
+    bind *:8404
+    stats enable
+    stats uri /stats
+    stats refresh 10s
+    stats realm Haproxy\ statistic
+    stats auth hadmin:foo.123
+    stats hide-version
+
+
+frontend k8s-apiserver-https
+    bind :{{ haproxy_port_https }}
+    mode tcp
+    option tcplog
+    default_backend k8s-apiserver-https-realservers
+backend k8s-apiserver-https-realservers
+    mode tcp
+    option tcplog
+    balance {{ haproxy_balance }}
+    {% for host in groups['kubernetes_master'] %}
+server {{ host.split('.') | join('-') }} {{ hostvars[host]['inventory_hostname'] }}:{{ k8s_apiserver_port_https }} inter 1500 rise 2 fall 3 check
+    {% endfor %}
