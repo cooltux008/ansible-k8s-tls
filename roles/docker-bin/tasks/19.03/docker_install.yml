@@ -29,14 +29,14 @@
     group: root
     mode: 0755
   loop:
+    - containerd
     - docker
-    - docker-containerd
-    - docker-containerd-ctr
-    - docker-containerd-shim
-    - docker-init
-    - docker-proxy
-    - docker-runc
+    - ctr
     - dockerd
+    - runc
+    - docker-proxy
+    - docker-init
+    - containerd-shim
 
 - name: docker.service
   template:

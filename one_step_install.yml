@@ -58,6 +58,7 @@
 
 # extra
 #######################################
+- import_playbook: coredns-prepare.yml
 - import_playbook: coredns.yml
 - import_playbook: metrics-server.yml
 - import_playbook: dashboard.yml

@@ -35,7 +35,7 @@ docker_version: 17.03.2.ce
 
 ## docker-bin ##
 #docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
-docker_bin_version: 18.06.3-ce
+docker_bin_version: 19.03.6
 docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_bin_version }}.tgz"
 
 ## containerd ##
