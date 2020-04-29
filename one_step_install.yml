@@ -19,10 +19,10 @@
 ####################################
 #docker#
 #- import_playbook: docker.yml
-- import_playbook: docker-bin.yml
+#- import_playbook: docker-bin.yml
 
 #containerd#
-#- import_playbook: containerd.yml
+- import_playbook: containerd.yml
 
 #cri-o#
 #- import_playbook: cri-o.yml
@@ -30,7 +30,7 @@
 #- import_playbook: podman.yml
 
 #kata-containers#
-#- import_playbook: kata-containers.yml
+- import_playbook: kata-containers.yml
 ####################################
   
 
@@ -58,9 +58,9 @@
 
 # extra
 #######################################
+- import_playbook: metrics-server.yml
 - import_playbook: coredns-prepare.yml
 - import_playbook: coredns.yml
-- import_playbook: metrics-server.yml
 - import_playbook: dashboard.yml
 #- import_playbook: ingress.yml
 #- import_playbook: heapster.yml

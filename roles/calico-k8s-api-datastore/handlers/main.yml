@@ -1,7 +1,8 @@
 ---
 - name: add calico-ippool
-  shell: kubectl -s {{ kubernetes_apiserver }} exec -i -n kube-system calicoctl /calicoctl -- apply -f - < /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml
+  shell: kubectl -s {{ kubernetes_apiserver }} exec -i -n kube-system calicoctl -- /calicoctl apply -f - < /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml
+  delay: 10
 
 - name: delete default-calico-ippool
-  shell: kubectl -s {{ kubernetes_apiserver }} exec -i -n kube-system calicoctl /calicoctl -- delete ippool default-ipv4-ippool
+  shell: kubectl -s {{ kubernetes_apiserver }} exec -i -n kube-system calicoctl -- /calicoctl delete ippool default-ipv4-ippool
   failed_when: false
