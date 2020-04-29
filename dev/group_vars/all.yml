@@ -13,7 +13,7 @@ url_prefix: http://192.168.130.1/ftp
 #########################################################
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
-etcd_version: v3.4.3
+etcd_version: v3.4.7
 etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
 #########################################################
 
@@ -39,7 +39,7 @@ docker_bin_version: 19.03.6
 docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_bin_version }}.tgz"
 
 ## containerd ##
-containerd_version: 1.3.2
+containerd_version: 1.3.4
 containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
 
 ## cri-o ##
@@ -51,11 +51,11 @@ conmon_version: v2.0.7
 conmon_bin_url: "{{ url_prefix }}/linux_soft/k8s/conmon/{{ conmon_version }}"
 
 ## runc
-runc_version: 1.0.0-rc9
+runc_version: 1.0.0-rc10
 runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
 
 ## kata-containers
-kata_containers_version: 1.10.0-rc0
+kata_containers_version: 1.10.3
 kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/kata-static-{{ kata_containers_version }}-x86_64.tar.xz"
 
 ## cri-tools
@@ -79,7 +79,7 @@ skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version
 #########################################################
 ## network ##
 # cni
-cni_version: v0.8.4
+cni_version: v0.8.5
 cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
 pod_cidr: 10.244.0.0/16
 
