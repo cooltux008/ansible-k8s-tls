@@ -1,2 +1,59 @@
----
-- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/docker_install.yml"
+- name: create docker directory
+  file:
+    path: "{{ item.dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop: 
+    - { dir: /etc/docker, mode: '0700' }
+    - { dir: /etc/systemd/system/docker.service.d, mode: '0700' }
+
+- name: unarchive docker tar
+  unarchive:
+    src: "{{ docker_tar_url }}"
+    dest: /tmp
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- include_tasks: "{{ docker_version.split('.')[:2] | join('.') }}/docker-bin_install.yml"
+
+- name: docker storage driver (devicemapper)
+  include_tasks: thinpool.yml
+  when: STORAGE_DRIVER == 'devicemapper' and ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7' and docker_version.split('.')[:2] | join('.') is version('18.06', '<')
+
+- name: docker storage driver (overlay2)
+  include_tasks: overlay2.yml
+  when: STORAGE_DRIVER == 'overlay2'
+
+- name: docker.service
+  template:
+    src: "{{ docker_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop: 
+    - { src: docker.service.j2, dest: /lib/systemd/system/docker.service }
+    - { src: tune.conf.j2, dest: /etc/systemd/system/docker.service.d/tune.conf }
+    - { src: 80-docker.rules.j2, dest: /etc/udev/rules.d/80-docker.rules }
+  notify: restart docker
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start docker
+  service: 
+    name: docker
+    state: started 
+    enabled: yes
+
+- name: clean docker tmp
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /tmp/docker

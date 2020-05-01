@@ -1,9 +1,9 @@
 [crio]
 root = "/var/lib/containers/storage"
 runroot = "/var/run/containers/storage"
-storage_driver = "overlay"
+storage_driver = "overlay2"
 storage_option = [
-        "overlay.override_kernel_check=1",
+        "overlay2.override_kernel_check=1",
    ]
 
 [crio.api]

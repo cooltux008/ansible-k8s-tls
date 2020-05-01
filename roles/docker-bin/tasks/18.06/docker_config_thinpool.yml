@@ -1,8 +1,0 @@
-- name: docker_config_thinpool
-  template:
-    src: "{{ docker_version.split('.')[:2] | join('.') }}/daemon.json.j2"
-    dest: /etc/docker/daemon.json
-    owner: root
-    group: root
-    mode: 0644
-  notify: restart docker

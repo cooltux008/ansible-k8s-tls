@@ -19,9 +19,16 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-
 
 
 #########################################################
-### devicemapper thinpool相关 ##
-## 组成thinpool vg的磁盘列表,多块磁盘用','分隔,如/dev/sdb,/dev/sdc。如果主机没有用于thinpool的磁盘，则会使用overlay2
-#thinpool_disks: /dev/sdb
+## devicemapper thinpool ##
+# 用作thinpool vg的磁盘
+thinpool_disk: /dev/sdb
+ 
+## overlay2 ##
+# 用作overlay2的磁盘
+overlay2_disk: /dev/sdb
+
+## docker storage driver, 支持<overlay2 | devicemapper>, 默认为overlay2
+storage_driver: overlay2
 #########################################################
 
 
@@ -30,24 +37,21 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-
 docker_registry: 192.168.130.254:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
 
-## docker ## docker_repo_url: https://download.docker.com/linux/centos/7/x86_64/stable/
-docker_version: 17.03.2.ce
-
-## docker-bin ##
-#docker_bin_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
-docker_bin_version: 19.03.6
-docker_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_bin_version }}.tgz"
+## docker ##
+#docker_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
+docker_version: 19.03.6
+docker_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_version }}.tgz"
 
 ## containerd ##
 containerd_version: 1.3.4
 containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
 
 ## cri-o ##
-crio_version: v1.17.0
-crio_bin_url: "{{ url_prefix }}/linux_soft/k8s/cri-o/{{ crio_version }}"
+crio_version: v1.18.0
+crio_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-o/crio-{{ crio_version }}.tar.gz"
 
 ## conmon ##
-conmon_version: v2.0.7
+conmon_version: v2.0.15
 conmon_bin_url: "{{ url_prefix }}/linux_soft/k8s/conmon/{{ conmon_version }}"
 
 ## runc

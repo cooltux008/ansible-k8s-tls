@@ -41,7 +41,7 @@
   raw: kubectl -s {{ kubernetes_apiserver }} -n kube-system get pods --field-selector="status.phase==Running" --no-headers | grep '^calico' | wc -l
   register: result
   until: result.stdout | int >= 4
-  retries: 5
+  retries: 10
   delay: 10
 
 - name: sync calico_ipv4pool_cidr.yaml

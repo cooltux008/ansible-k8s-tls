@@ -1,2 +1,101 @@
 ---
-- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/docker_uninstall.yml"
+- name: stop the docker service
+  service: 
+    name: docker 
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: filter mounted pod dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+
+- name: filter mounted docker dirs
+  shell: df
+  register: df_result
+
+- name: unmount left docker
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/docker/.+)') }}"
+
+- name: unmount left docker dirs
+  raw: umount proc
+  failed_when: false
+  tags: unmount
+
+- name: get UUID of {{ OVERLAY2_DISK }}
+  raw: blkid|grep -w '{{ OVERLAY2_DISK }}'|awk -F'"' '{print $2}'
+  register: res_BLOCK_ID
+  ignore_errors: true
+  when: OVERLAY2_DISK != ''
+
+- name: umount {{ OVERLAY2_DISK }}
+  mount:
+    path: /var/lib/docker
+    src: UUID={{ res_BLOCK_ID.stdout.strip() }}
+    fstype: xfs
+    opts: defaults,pquota
+    state: absent
+
+- name: remove docker directories
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/docker
+    - /etc/udev/rules.d/80-docker.rules
+    - /etc/systemd/system/docker.service.d
+    - /var/lib/docker
+    - /var/run/docker
+    - /var/run/dockershim.sock
+    - /usr/lib/systemd/system/docker.service
+    - /run/docker
+    - /run/dockershim.sock
+
+- include_tasks: "{{ docker_version.split('.')[:2] | join('.') }}/docker-bin_uninstall.yml"
+
+- name: remove thinpool
+  lvol:
+    vg: "{{ VG_NAME }}"
+    lv: "{{ THINPOOL_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: thinpool_remove
+
+- name: remove vg
+  lvg:
+    vg: "{{ VG_NAME }}"
+    state: absent
+    force: "{{ force_remove | default('no') }}"
+  ignore_errors: true
+  tags: vg_remove
+
+- name: remove pv
+  raw: pvremove -y {{ THINPOOL_DISK }}
+  ignore_errors: true
+  tags: pv_remove
+
+- name: read device information (always use unit when probing)
+  parted: device={{ THINPOOL_DISK }} unit=MiB
+  register: thinpool_disk_info
+  ignore_errors: true
+
+- name: remove all partitions from disk
+  parted:
+    device: "{{ THINPOOL_DISK }}"
+    number: "{{ item.num }}"
+    state: absent
+  loop:
+    - "{{ thinpool_disk_info.partitions }}"
+  tags: pv_remove
+  ignore_errors: true
+

@@ -1,6 +1,6 @@
 ---
 - name: install crio depends (libseccomp)
   dnf: 
-    name: ["libseccomp-devel"]
+    name: ["libseccomp"]
     state: present
     update_cache: yes

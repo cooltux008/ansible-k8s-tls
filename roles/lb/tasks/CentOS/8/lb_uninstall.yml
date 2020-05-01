@@ -23,8 +23,10 @@
     - /var/lib/haproxy
     - /var/run/haproxy.pid
     - /etc/sysconfig/haproxy
+    - /etc/default/haproxy
     - /etc/keepalived
     - /etc/sysconfig/keepalived
+    - /etc/default/keepalived
 
 - name: remove haproxy user
   user:

@@ -3,4 +3,3 @@ depends_repo_url:
   - "{{ url_prefix }}/debian10-2"
   - "{{ url_prefix }}/debian10-3"
 depends_offline: false
-docker_repo_url: "https://mirrors.aliyun.com/docker-ce/linux/debian"

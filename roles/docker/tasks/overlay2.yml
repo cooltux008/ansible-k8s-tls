@@ -1,0 +1,41 @@
+- name: format {{ OVERLAY2_DISK }} as XFS
+  filesystem:
+    fstype: xfs
+    dev: "{{ OVERLAY2_DISK }}"
+    opts: -n ftype=1
+  when: OVERLAY2_DISK != ''
+
+- name: get UUID of {{ OVERLAY2_DISK }}
+  raw: blkid|grep -w '{{ OVERLAY2_DISK }}'|awk -F'"' '{print $2}'
+  register: res_BLOCK_ID
+  ignore_errors: true
+  when: OVERLAY2_DISK != ''
+
+- name: mount up {{ OVERLAY2_DISK }} by UUID
+  mount:
+    path: /var/lib/docker
+    src: UUID={{ res_BLOCK_ID.stdout.strip() }}
+    fstype: xfs
+    opts: defaults,pquota
+    state: mounted
+  when: OVERLAY2_DISK != ''
+
+- name: docker_config_overlay2 with quota
+  template:
+    src: "{{ docker_version.split('.')[:2] | join('.') }}/daemon-overlay2-quota.json.j2"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  when: OVERLAY2_DISK != ''
+  notify: restart docker
+
+- name: docker_config_overlay2 without quota
+  template:
+    src: "{{ docker_version.split('.')[:2] | join('.') }}/daemon-overlay2.json.j2"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  when: OVERLAY2_DISK == ''
+  notify: restart docker

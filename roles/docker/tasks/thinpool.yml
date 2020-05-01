@@ -1,0 +1,41 @@
+- name: create vg {{ VG_NAME }}
+  lvg:
+    vg: "{{ VG_NAME }}"
+    pvs: "{{ THINPOOL_DISK }}"
+    pesize: "{{ VG_PE_SIZE }}"
+    state: present
+  tags: vg_create
+  ignore_errors: true
+
+- name: _VG_SIZE
+  raw: vgs --noheadings --nosuffix --units s -o vg_size {{ VG_NAME }}
+  register: res_VG_SIZE
+  ignore_errors: true
+
+- set_fact: 
+    _META_SIZE={{ res_VG_SIZE.stdout | int / 1000 + 1 }}
+  ignore_errors: true
+
+- raw: echo {{ _META_SIZE | int }}
+
+- name: create thinpool /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}
+  lvol:
+    vg: "{{ VG_NAME }}"
+    lv: "{{ THINPOOL_NAME }}"
+    size: 90%FREE
+    opts: --type thin-pool --zero n --chunksize {{ THIN_POOL_CHUNK_SIZE }} --poolmetadatasize {{ _META_SIZE | int }}s
+  ignore_errors: true
+
+- name: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }} exists ?
+  stat: 
+    path: /dev/mapper/{{ VG_NAME | regex_replace('-', '--') }}-{{ THINPOOL_NAME | regex_replace('-', '--') }}
+  register: thinpool_exists
+
+- name: docker_config_thinpool
+  template:
+    src: "{{ docker_version.split('.')[:2] | join('.') }}/daemon-thinpool.json.j2"
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: restart docker

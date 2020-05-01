@@ -10,3 +10,9 @@
     name: crio-shutdown
     state: restarted
     enabled: yes
+
+- name: restart crio-wipe
+  service: 
+    name: crio-wipe
+    state: restarted
+    enabled: yes

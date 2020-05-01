@@ -1,2 +1,0 @@
----
-- include_tasks: "{{ docker_bin_version.split('.')[:2] | join('.') }}/docker_install.yml"

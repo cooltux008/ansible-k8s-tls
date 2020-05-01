@@ -1,0 +1,17 @@
+- name: install docker bin to /usr/bin
+  copy:
+    remote_src: yes
+    src: /tmp/docker/{{ item }}
+    dest: /usr/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - runc
+    - ctr
+    - containerd
+    - containerd-shim
+    - docker
+    - dockerd
+    - docker-proxy
+    - docker-init

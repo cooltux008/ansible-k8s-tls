@@ -1,0 +1,13 @@
+- name: remove docker bin from /usr/bin
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /usr/bin/docker
+    - /usr/bin/dockerd
+    - /usr/bin/docker-init
+    - /usr/bin/docker-proxy
+    - /usr/bin/docker-runc
+    - /usr/bin/docker-containerd
+    - /usr/bin/docker-containerd-ctr
+    - /usr/bin/docker-containerd-shim

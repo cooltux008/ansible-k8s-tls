@@ -1,0 +1,103 @@
+---
+- include_tasks: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/cri-o_depends.yml"
+
+- import_tasks: runc.yml
+  tags: runc
+
+- name: install conmon
+  get_url:
+    url: "{{ conmon_bin_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - conmon
+
+- name: unarchive crio bin tar
+  unarchive:
+    src: "{{ crio_bin_tar_url }}"
+    dest: /tmp
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+
+- name: create crio dirs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - /etc/crio
+    - /etc/containers/oci/hooks.d
+    - /var/lib/crio
+    - /var/lib/containers/storage
+    - /var/log/crio/pods
+
+- name: install crio bin 
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - { src: '/tmp/crio-{{ crio_version }}/bin/pinns', dest: '/usr/local/bin/pinns' }
+    - { src: '/tmp/crio-{{ crio_version }}/bin/crio-static', dest: '/usr/local/bin/crio' }
+    - { src: '/tmp/crio-{{ crio_version }}/bin/crio-status-static', dest: '/usr/local/bin/crio-status' }
+
+- name: install crio man doc
+  archive:
+    path: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    format: gz
+    force_archive: true
+  loop:
+    - { src: '/tmp/crio-{{ crio_version }}/man/crio.8', dest: '/usr/share/man/man8/crio.8.gz' }
+    - { src: '/tmp/crio-{{ crio_version }}/man/crio.conf.5', dest: '/usr/share/man/man5/crio.conf.5.gz' }
+    - { src: '/tmp/crio-{{ crio_version }}/man/crio.conf.d.5', dest: '/usr/share/man/man5/crio.conf.d.5.gz' }
+
+- name: install crio configurations
+  template:
+    src: "{{ crio_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: crio.j2, dest: /etc/default/crio }
+    - { src: crio.conf.j2, dest: /etc/crio/crio.conf }
+    - { src: crio-umount.conf.j2, dest: /etc/crio/crio-umount.conf }
+    - { src: policy.json.j2, dest: /etc/containers/policy.json }
+    - { src: crio.service.j2, dest: /lib/systemd/system/crio.service }
+    - { src: crio-wipe.service.j2, dest: /lib/systemd/system/crio-wipe.service }
+    - { src: crio-shutdown.service.j2, dest: /lib/systemd/system/crio-shutdown.service }
+  notify: 
+    - restart crio
+    - restart crio-wipe
+    - restart crio-shutdown
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start crio
+  service: 
+    name: "{{ item }}"
+    state: started 
+    enabled: yes
+  loop:
+    - crio
+    - crio-shutdown
+    - crio-wipe
+
+- name: clear tmp files
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /tmp/crio-{{ crio_version }}
