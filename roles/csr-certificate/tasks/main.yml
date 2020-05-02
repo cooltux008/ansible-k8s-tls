@@ -26,7 +26,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: label_node.sh.j2, dest: /var/tmp/label_node.sh }
 
 - name: label node

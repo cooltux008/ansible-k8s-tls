@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - etcd-peer.pem
     - etcd-peer-key.pem
     - etcd-client.pem
@@ -52,7 +52,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items:
+  loop:
     - etcd
     - etcdctl
 
@@ -63,7 +63,7 @@
     owner: etcd
     group: etcd
     mode: 0755
-  with_items: 
+  loop: 
     - /var/lib/etcd
     - /etc/etcd
 
@@ -74,7 +74,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'etcd.service.j2', dest: '/lib/systemd/system/etcd.service' }
     - { src: 'etcd.conf.j2', dest: '/etc/etcd/etcd.conf' }
   notify: restart etcd
@@ -93,7 +93,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /tmp/etcd-{{ etcd_version }}-linux-amd64
     - /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz
 

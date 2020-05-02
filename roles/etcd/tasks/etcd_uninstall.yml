@@ -20,7 +20,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /usr/bin/etcd
     - /usr/bin/etcdctl
     - /var/lib/etcd

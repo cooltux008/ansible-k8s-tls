@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: fluentd-es-configmap.yaml, dest: fluentd-es-configmap.yaml }
 
 - name: sync efk yaml
@@ -27,7 +27,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: es-statefulset.yaml.j2, dest: es-statefulset.yaml }
     - { src: es-service.yaml.j2, dest: es-service.yaml }
     - { src: fluentd-es-ds.yaml.j2, dest: fluentd-es-ds.yaml }

@@ -26,7 +26,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'kube-proxy.j2', dest: '/etc/kubernetes/kube-proxy' }
     - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
   notify: restart kube-proxy
@@ -39,7 +39,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'kube-proxy-ipvs.j2', dest: '/etc/kubernetes/kube-proxy' }
     - { src: 'kube-proxy.service.j2', dest: '/lib/systemd/system/kube-proxy.service' }
   notify: restart kube-proxy

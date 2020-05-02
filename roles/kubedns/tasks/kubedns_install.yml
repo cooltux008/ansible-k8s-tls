@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: kubedns-cm.yaml.j2, dest: kubedns-cm.yaml }
     - { src: kubedns-controller.yaml.j2, dest: kubedns-controller.yaml }
     - { src: kubedns-sa.yaml.j2, dest: kubedns-sa.yaml }

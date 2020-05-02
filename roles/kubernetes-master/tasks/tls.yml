@@ -18,7 +18,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
     - { src: 'ca.pem', dest: '/etc/kubernetes/tls/kubernetes/ca.pem' }
@@ -37,7 +37,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'etcd-ca.pem', dest: '/etc/kubernetes/tls/etcd/etcd-ca.pem' }
     - { src: 'etcd-client.pem', dest: '/etc/kubernetes/tls/etcd/etcd-client.pem' }
     - { src: 'etcd-client-key.pem', dest: '/etc/kubernetes/tls/etcd/etcd-client-key.pem' }

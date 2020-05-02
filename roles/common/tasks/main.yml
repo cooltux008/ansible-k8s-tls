@@ -11,3 +11,4 @@
     - sysctl.yml
   loop_control:
     loop_var: task_item
+  tags: sysctl

@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'bootstrap.kubeconfig', dest: '/etc/kubernetes/bootstrap.kubeconfig' }
     - { src: 'kube-proxy.kubeconfig', dest: '/etc/kubernetes/kube-proxy.kubeconfig' }
     - { src: 'token.csv', dest: '/etc/kubernetes/token.csv' }

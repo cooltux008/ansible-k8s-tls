@@ -13,5 +13,5 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /var/tmp/traefik

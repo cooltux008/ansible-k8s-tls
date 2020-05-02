@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: traefik_crd.yaml.j2, dest: traefik_crd.yaml }
     - { src: traefik_deploy.yaml.j2, dest: traefik_deploy.yaml }
     - { src: traefik_demo_whoami.yaml.j2, dest: traefik_demo_whoami.yaml }

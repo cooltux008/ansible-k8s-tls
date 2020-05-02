@@ -1,7 +1,7 @@
 ---
 - name: delete metrics-server
   shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/metrics-server/{{ metrics_server_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
+  loop:
     - metrics-server.yaml
   failed_when: false
 
@@ -9,5 +9,5 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /var/tmp/metrics-server

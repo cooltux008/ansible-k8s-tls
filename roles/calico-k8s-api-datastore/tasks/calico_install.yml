@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: calico-typha.yaml.j2, dest: calico.yaml }
     - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
   when: calico_typha 
@@ -26,14 +26,14 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: calico.yaml.j2, dest: calico.yaml }
     - { src: calicoctl.yaml.j2, dest: calicoctl.yaml }
   when: not calico_typha 
 
 - name: apply calico
   shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
+  loop:
     - calico.yaml
     - calicoctl.yaml
 
@@ -51,7 +51,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: calico_ipv4pool_cidr.yaml.j2, dest: "/var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/calico_ipv4pool_cidr.yaml" }
   notify: 
     - add calico-ippool

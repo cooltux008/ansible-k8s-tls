@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'kube-scheduler.j2', dest: '/etc/kubernetes/kube-scheduler' }
     - { src: 'kube-scheduler.service.j2', dest: '/lib/systemd/system/kube-scheduler.service' }
   notify: restart kube-scheduler

@@ -8,7 +8,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items: 
+  loop: 
     - /var/lib/kubelet
     - /etc/kubernetes/manifests
 
@@ -44,7 +44,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
@@ -58,7 +58,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet-containerd.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
@@ -72,7 +72,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
     - { src: 'kubelet-crio.j2', dest: '/etc/kubernetes/kubelet' }
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }

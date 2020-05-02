@@ -1,7 +1,7 @@
 ---
 - name: apply k8s-ingress
   shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/k8s-ingress/{{ item }}
-  with_items:
+  loop:
     - namespace.yaml
     - default-backend.yaml
     - configmap.yaml

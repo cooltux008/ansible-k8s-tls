@@ -1,5 +1,5 @@
 ---
 - name: apply flannel
   shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/flannel/{{ flannel_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
+  loop:
     - kube-flannel.yaml

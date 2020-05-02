@@ -1,7 +1,7 @@
 ---
 - name: delete calico 
   shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/calico/{{ calico_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
+  loop:
     - calico.yaml
   failed_when: false
 
@@ -9,7 +9,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /usr/local/bin/calicoctl
     - /etc/calico
     - /var/tmp/calico

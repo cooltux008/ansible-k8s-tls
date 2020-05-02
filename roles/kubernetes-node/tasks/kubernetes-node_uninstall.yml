@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: stopped
     enabled: no
-  with_items: 
+  loop: 
     - kubelet
     - kube-proxy
   ignore_errors: true
@@ -23,7 +23,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /usr/local/bin/kubelet
     - /usr/local/bin/kube-proxy
     - /etc/kubernetes/

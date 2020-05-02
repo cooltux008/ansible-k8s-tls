@@ -18,7 +18,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'ca.pem', dest: '/etc/flannel/tls/ca.pem' }
     - { src: 'server.pem', dest: '/etc/flannel/tls/server.pem' }
     - { src: 'server-key.pem', dest: '/etc/flannel/tls/server-key.pem' }

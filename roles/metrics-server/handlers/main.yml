@@ -1,5 +1,5 @@
 ---
 - name: apply metrics-server
   shell: kubectl -s {{ kubernetes_apiserver }} apply -f /var/tmp/metrics-server/{{ metrics_server_version.split('.')[:2] | join('.') }}/{{ item }}
-  with_items:
+  loop:
     - metrics-server.yaml

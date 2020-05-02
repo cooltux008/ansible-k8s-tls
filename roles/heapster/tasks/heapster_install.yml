@@ -14,7 +14,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: influxdb.yaml.j2, dest: influxdb.yaml }
     - { src: heapster-rbac.yaml.j2, dest: heapster-rbac.yaml }
     - { src: heapster.yaml.j2, dest: heapster.yaml }

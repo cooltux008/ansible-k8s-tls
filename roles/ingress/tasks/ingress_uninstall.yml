@@ -9,7 +9,7 @@
 
 - name: delete k8s-ingress containers
   shell: kubectl -s {{ kubernetes_apiserver }} delete -f /var/tmp/k8s-ingress/{{ item }}
-  with_items:
+  loop:
     - default-backend.yaml
     - with-rbac.yaml
     - rbac.yaml

@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'kube-controller-manager.j2', dest: '/etc/kubernetes/kube-controller-manager' }
     - { src: 'kube-controller-manager.service.j2', dest: '/lib/systemd/system/kube-controller-manager.service' }
   notify: restart kube-controller-manager

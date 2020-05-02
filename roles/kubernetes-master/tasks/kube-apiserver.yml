@@ -30,7 +30,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: 'kube-apiserver.j2', dest: '/etc/kubernetes/kube-apiserver' }
     - { src: 'kube-apiserver.service.j2', dest: '/lib/systemd/system/kube-apiserver.service' }
   notify: restart kube-apiserver

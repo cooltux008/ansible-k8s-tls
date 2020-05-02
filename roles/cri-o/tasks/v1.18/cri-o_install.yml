@@ -99,5 +99,5 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /tmp/crio-{{ crio_version }}

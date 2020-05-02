@@ -5,7 +5,7 @@
 - name: clear swap in /etc/fstab
   lineinfile:
     path: /etc/fstab
-    regexp: '^.*swap\s*swap.*$'
+    regexp: '.*swap.+[0-2]$'
     state: absent
     owner: root
     group: root

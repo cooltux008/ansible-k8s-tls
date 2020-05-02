@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: stopped
     enabled: no
-  with_items: 
+  loop: 
     - kube-apiserver
     - kube-controller-manager
     - kube-scheduler
@@ -25,7 +25,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /usr/local/bin/kube-apiserver
     - /usr/local/bin/kube-controller-manager
     - /usr/local/bin/kube-scheduler

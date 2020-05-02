@@ -3,6 +3,6 @@
   file:
     path: "{{ item }}"
     state: absent
-  with_items:
+  loop:
     - /usr/local/bin/kubectl
     - ~/.kube/

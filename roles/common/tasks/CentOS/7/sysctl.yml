@@ -8,19 +8,17 @@
 
 - name: load modules on boot
   template:
-    src: netfilter.conf.j2
-    dest: /etc/modules-load.d/netfilter.conf
-
-- name: nf_conntrack hashsize persistence
-  template:
-    src: netfilter_parameter.conf.j2
-    dest: /etc/modprobe.d/netfilter_parameter.conf
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+      - { src: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/netfilter.conf.j2",  dest: /etc/modules-load.d/netfilter.conf }
+      - { src: "{{ ansible_distribution }}/{{ ansible_distribution_major_version }}/netfilter_parameter.conf.j2",  dest: /etc/modprobe.d/netfilter_parameter.conf }
 
 - name: modprobe modules
   modprobe:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - nf_conntrack
     - nf_conntrack_ipv4
     - br_netfilter
@@ -31,7 +29,7 @@
     sysctl_set: yes
     state: present
     reload: yes
-  with_items:
+  loop:
     - { name: vm.swappiness, value: 0 }
     - { name: fs.may_detach_mounts, value: 1 }
     - { name: fs.file-max, value: 6553600 }

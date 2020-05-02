@@ -24,6 +24,6 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - { src: kube-flannel.yaml.j2, dest: kube-flannel.yaml }
   notify: apply flannel
