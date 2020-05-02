@@ -1,4 +1,4 @@
 ---
 depends_repo_url: 
   - "{{ url_prefix }}/centos7"
-podman_repo_url: "{{ url_prefix }}/linux_soft/yum/podman"
+podman_repo_url: "{{ url_prefix }}/linux_soft/yum/podman/{{ ansible_distribution_major_version }}"

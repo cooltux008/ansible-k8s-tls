@@ -6,8 +6,8 @@
   raw: kubectl -s {{ kubernetes_apiserver }} get csr --no-headers | wc -l
   register: result
   until: (result.stdout|int) >= (groups['kubernetes_node']|length)
-  retries: 5
-  delay: 3
+  retries: 10
+  delay: 5
 
 - name: certificate approve csr
   raw: kubectl -s {{ kubernetes_apiserver }} certificate approve $(kubectl get csr -ojsonpath='{.items[?(@.status.conditions[0].type!="Approved")].metadata.name}';kubectl -s {{ kubernetes_apiserver }} get csr -ojsonpath='{.items[?(not @.status)].metadata.name}')
