@@ -21,6 +21,9 @@
     group: root
     mode: 0755
   tags: fetch_kube-apiserver
+  register: download
+  until: download is not failed
+  retries: 5
   notify: restart kube-apiserver
 
 - name: create kube-apiserver configuration

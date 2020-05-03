@@ -7,16 +7,14 @@
     group: root
     mode: 0755
 
-- name: download containerd binary
-  get_url:
-    url: "{{ containerd_bin_tar_url }}"
-    dest: /tmp
-
 - name: unarchive containerd tar
   unarchive:
     remote_src: yes
-    src: /tmp/containerd-{{ containerd_version }}.linux-amd64.tar.gz
+    src: "{{ containerd_bin_tar_url }}"
     dest: /tmp
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: move containerd, ctr to PATH
   copy:

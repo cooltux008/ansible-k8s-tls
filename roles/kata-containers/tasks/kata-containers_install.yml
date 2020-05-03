@@ -26,14 +26,12 @@
     owner: root
     group: root
     mode: 0755
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: install kata-containers to /opt/kata
-  raw: rm -rf /opt/kata ; mv /tmp/opt/kata /opt
-
-- name: remove tmp dir
-  file:
-    path: /tmp/opt
-    state: absent
+  raw: rm -rf /opt/kata ; mv /tmp/opt/kata /opt ; rm -rf /tmp/opt
 
 - name: link containerd-shim-kata-v2 to $PATH
   file:

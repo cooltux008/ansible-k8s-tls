@@ -17,6 +17,9 @@
     owner: root
     group: root
     mode: 0755
+  register: download
+  until: download is not failed
+  retries: 5
 
 - include_tasks: "{{ docker_version.split('.')[:2] | join('.') }}/docker-bin_install.yml"
 

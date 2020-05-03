@@ -45,6 +45,9 @@
     owner: root
     group: root
     mode: 0755
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: sync calico_ipv4pool_cidr.yaml
   template:

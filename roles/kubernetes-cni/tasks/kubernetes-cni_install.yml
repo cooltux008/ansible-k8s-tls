@@ -15,3 +15,6 @@
     src: "{{ cni_binary_url }}"
     dest: /opt/cni/bin
     remote_src: yes
+  register: download
+  until: download is not failed
+  retries: 5

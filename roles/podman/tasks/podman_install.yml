@@ -27,6 +27,9 @@
   loop:
     - podman
     - podman-remote
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: create podman conf
   template:

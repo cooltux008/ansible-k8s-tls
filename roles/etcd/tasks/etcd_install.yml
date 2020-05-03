@@ -33,16 +33,14 @@
     groups: etcd
     append: yes
 
-- name: download etcd binary
-  get_url:
-    url: "{{ etcd_bin_tar_url }}"
-    dest: /tmp
-
 - name: unarchive etcd tar
   unarchive:
     remote_src: yes
-    src: /tmp/etcd-{{ etcd_version }}-linux-amd64.tar.gz
+    src: "{{ etcd_bin_tar_url }}"
     dest: /tmp
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: move etcd,etcdctl to PATH
   copy:

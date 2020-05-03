@@ -20,6 +20,9 @@
     group: root
     mode: 0755
   tags: fetch_kubelet
+  register: download
+  until: download is not failed
+  retries: 5
   notify: restart kubelet
 
 - name: container engine is docker ?

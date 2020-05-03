@@ -10,6 +10,9 @@
   loop:
     - crictl-{{ cri_tools_version }}-linux-amd64.tar.gz
     - critest-{{ cri_tools_version }}-linux-amd64.tar.gz
+  register: download
+  until: download is not failed
+  retries: 5
 
 - name: container engine is docker ?
   stat:
