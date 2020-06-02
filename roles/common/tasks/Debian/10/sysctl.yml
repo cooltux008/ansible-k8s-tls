@@ -30,7 +30,8 @@
     reload: yes
   loop:
     - { name: vm.swappiness, value: 0 }
-    - { name: fs.file-max, value: 6553600 }
+    - { name: fs.nr_open, value: 2147483584 }
+    - { name: fs.file-max, value: 2147483584 }
     - { name: fs.aio-max-nr, value: 1048576 }
     - { name: fs.inotify.max_user_watches, value: 524288 }
     - { name: fs.inotify.max_user_instances, value: 512 }

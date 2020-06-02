@@ -1,0 +1,15 @@
+---
+- pam_limits:
+    domain: "{{ item.domain }}"
+    limit_type: "{{ item.limit_type }}"
+    limit_item: "{{ item.limit_item }}"
+    value: "{{ item.value }}"
+  loop:
+    - { 'domain': root, 'limit_type': -, 'limit_item': nofile, 'value': 1048576 }
+    - { 'domain': root, 'limit_type': -, 'limit_item': nproc, 'value': 163840 }
+    - { 'domain': root, 'limit_type': -, 'limit_item': stack, 'value': 10240 }
+    - { 'domain': root, 'limit_type': -, 'limit_item': memlock, 'value': unlimited }
+    - { 'domain': '*', 'limit_type': -, 'limit_item': nofile, 'value': 1048576 }
+    - { 'domain': '*', 'limit_type': -, 'limit_item': nproc, 'value': 163840 }
+    - { 'domain': '*', 'limit_type': -, 'limit_item': stack, 'value': 10240 }
+    - { 'domain': '*', 'limit_type': -, 'limit_item': memlock, 'value': unlimited }
