@@ -16,10 +16,10 @@ global_defs {
    vrrp_gna_interval 0.000001
 }
 
-vrrp_instance VI_1 {
-    state {{ keepalived_state }}
+vrrp_instance {{ ansible_fqdn }} {
+    state MASTER
     interface {{ keepalived_interface }}
-    virtual_router_id {{ keepalived_virtual_router_id }}
+    virtual_router_id 51
     priority {{ keepalived_priority }}
     advert_int 1
     authentication {
