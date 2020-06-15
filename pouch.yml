@@ -1,0 +1,10 @@
+---
+- hosts: 
+    - kubernetes_node
+  strategy: free
+  roles:
+    - pouch
+  vars_files: 
+    - dev/group_vars/all.yml
+    - dev/group_vars/vault.yml
+  tags: pouch

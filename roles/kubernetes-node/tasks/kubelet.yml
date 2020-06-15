@@ -30,6 +30,11 @@
     path: /var/run/docker.sock
   register: docker
 
+- name: container engine is pouch ?
+  stat:
+    path: /var/run/pouchcri.sock
+  register: pouch
+
 - name: container engine is containerd ?
   stat:
     path: /var/run/containerd/containerd.sock
@@ -53,6 +58,20 @@
     - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
   notify: restart kubelet
   when: docker.stat.exists
+
+- name: create kubelet configuration with docker
+  template: 
+    src: "{{ kubernetes_version.split('.')[:2] | join('.') }}/{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: 'config.yaml.j2', dest: '/etc/kubernetes/config.yaml' }
+    - { src: 'kubelet-pouch.j2', dest: '/etc/kubernetes/kubelet' }
+    - { src: 'kubelet.service.j2', dest: '/lib/systemd/system/kubelet.service' }
+  notify: restart kubelet
+  when: pouch.stat.exists
 
 - name: create kubelet configuration with containerd
   template: 

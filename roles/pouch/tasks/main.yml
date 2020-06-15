@@ -1,0 +1,3 @@
+---
+- import_tasks: pouch_{{ install_or_uninstall }}.yml
+  tags: pouch

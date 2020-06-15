@@ -1,0 +1,57 @@
+---
+- name: stop pouch
+  service: 
+    name: pouch
+    state: stopped 
+    enabled: no
+  ignore_errors: true
+
+- name: uninstall pouch
+  apt:
+    name: pouch
+    state: absent
+
+- name: remove pouch group
+  group:
+    name: pouch
+    state: absent
+
+- name: filter mounted pod dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pods 
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/kubelet/pods/.+)') }}"
+
+- name: filter mounted pouch dirs
+  shell: df
+  register: df_result
+
+- name: unmount left pouch
+  mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop: "{{ df_result.stdout | regex_findall('(/var/lib/pouch/.+)') }}"
+
+- name: unmount left pouch dirs
+  raw: umount proc
+  failed_when: false
+  tags: unmount
+
+- name: remove pouch dir
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/run/pouch.pid
+    - /var/lib/pouch
+    - /etc/pouch
+
+- name: remove pouch signing key
+  apt_key:
+    id:  0xF443EDD04A587E8BF6459C40CF68F84ABE2F475F
+    state: absent
+

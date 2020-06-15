@@ -1,0 +1,58 @@
+---
+- name: add pouch signing key
+  apt_key:
+    url:  http://mirrors.aliyun.com/opsx/pouch/linux/debian/opsx@service.alibaba.com.gpg.key
+    state: present
+
+- name: add pouch repo
+  apt_repository:
+    repo: deb http://mirrors.aliyun.com/opsx/pouch/linux/debian/ pouch stable
+    state: present
+    update_cache: no
+    validate_certs: no
+    filename: pouch
+
+- name: install pouch
+  apt: 
+    name: ["lxcfs", "pouch"]
+    state: present
+    update_cache: yes
+    install_recommends: no
+
+- name: mkdir /etc/pouch
+  file:
+    path: /etc/pouch
+    state: directory
+    mode: '0755'
+
+- name: pouch.service
+  template: 
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: 0644
+  loop:
+    - { src: 'config.json.j2', dest: '/etc/pouch/config.json' }
+    - { src: 'pouch.service.j2', dest: '/lib/systemd/system/pouch.service' }
+  notify: restart pouch
+
+- name: add pouch group
+  group:
+    name: pouch
+    state: present
+
+- name: remove /etc/init.d/pouch avoid "update-rc.d error pouch Default-Start contains no runlevels, aborting"
+  file:
+    path: /etc/init.d/pouch
+    state: absent
+
+- name: systemd daemon-reload
+  systemd:
+    daemon-reload: yes
+
+- name: start the pouch service
+  service: 
+    name: pouch
+    state: started 
+    enabled: yes

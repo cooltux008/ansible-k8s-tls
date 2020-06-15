@@ -20,16 +20,19 @@
 #docker#
 #- import_playbook: docker.yml
 
+#pouch#
+- import_playbook: pouch.yml
+ 
 #containerd#
-- import_playbook: containerd.yml
+#- import_playbook: containerd.yml
 
 #cri-o#
 #- import_playbook: cri-o.yml
-- import_playbook: cri-tools.yml
-- import_playbook: podman.yml
+#- import_playbook: cri-tools.yml
+#- import_playbook: podman.yml
 
 #kata-containers#
-- import_playbook: kata-containers.yml
+#- import_playbook: kata-containers.yml
 ####################################
   
 
