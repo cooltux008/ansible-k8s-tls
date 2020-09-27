@@ -17,9 +17,22 @@
     - /etc/containers
     - /var/lib/containers
 
+- name: download conmon binary
+  get_url:
+    url: "{{ conmon_bin_url }}/{{ item }}"
+    dest: /usr/local/bin
+    owner: root
+    group: root
+    mode: 0755
+  loop:
+    - conmon
+  register: download
+  until: download is not failed
+  retries: 5
+
 - name: download podman binary
   get_url:
-    url: "{{ podman_bin_tar_url }}/{{ item }}"
+    url: "{{ podman_bin_url }}/{{ item }}"
     dest: /usr/local/bin
     owner: root
     group: root

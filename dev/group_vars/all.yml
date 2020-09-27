@@ -6,14 +6,14 @@ ntp_servers:
   - ntp2.aliyun.com
 domain_name: example.com
 hostname_prefix: node
-url_prefix: http://192.168.130.1/ftp
+url_prefix: http://192.168.8.1/ftp
 #########################################################
 
 
 #########################################################
 ## etcd ##
 # https://github.com/coreos/etcd/releases/download/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz
-etcd_version: v3.4.7
+etcd_version: v3.4.13
 etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-linux-amd64.tar.gz"
 #########################################################
 
@@ -21,11 +21,11 @@ etcd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/etcd/etcd-{{ etcd_version }}-
 #########################################################
 ## devicemapper thinpool ##
 # 用作thinpool vg的磁盘
-thinpool_disk: /dev/sdb
+#thinpool_disk: /dev/sdb
  
 ## overlay2 ##
 # 用作overlay2的磁盘
-overlay2_disk: /dev/sdb
+#overlay2_disk: /dev/sdb
 
 ## docker storage driver, 支持<overlay2 | devicemapper>, 默认为overlay2
 storage_driver: overlay2
@@ -34,7 +34,7 @@ storage_driver: overlay2
 
 #########################################################
 ## registry ##
-docker_registry: 192.168.130.1:5000
+docker_registry: 192.168.8.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
 
 ## docker ##
@@ -43,39 +43,39 @@ docker_version: 19.03.6
 docker_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_version }}.tgz"
 
 ## containerd ##
-containerd_version: 1.3.4
-containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}.linux-amd64.tar.gz"
+containerd_version: 1.4.1
+containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}-linux-amd64.tar.gz"
 
 ## cri-o ##
-crio_version: v1.18.0
+crio_version: v1.19.0
 crio_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-o/crio-{{ crio_version }}.tar.gz"
 
 ## conmon ##
-conmon_version: v2.0.15
+conmon_version: v2.0.20
 conmon_bin_url: "{{ url_prefix }}/linux_soft/k8s/conmon/{{ conmon_version }}"
 
 ## runc
-runc_version: 1.0.0-rc10
+runc_version: 1.0.0-rc92
 runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
 
 ## kata-containers
-kata_containers_version: 1.11.0-rc0
+kata_containers_version: 1.11.3
 kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/kata-static-{{ kata_containers_version }}-x86_64.tar.xz"
 
 ## cri-tools
-cri_tools_version: v1.18.0
+cri_tools_version: v1.19.0
 cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
  
 ## podman
-podman_version: v1.4.4
-podman_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/podman/{{ podman_version }}"
+podman_version: v1.9.1
+podman_bin_url: "{{ url_prefix }}/linux_soft/k8s/podman/{{ podman_version }}"
  
 ## buildah
-buildah_version: v1.10.1
+buildah_version: v1.14.8
 buildah_bin_url: "{{ url_prefix }}/linux_soft/k8s/buildah/{{ buildah_version }}"
  
 ## skopeo
-skopeo_version: v0.1.39
+skopeo_version: v0.2.0
 skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version }}"
 #########################################################
 
@@ -83,7 +83,7 @@ skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version
 #########################################################
 ## network ##
 # cni
-cni_version: v0.8.5
+cni_version: v0.8.7
 cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
 pod_cidr: 10.244.0.0/16
 
@@ -97,7 +97,7 @@ flannel_version: v0.11.0
 flannel_image: "{{ docker_registry }}/coreos/flannel:{{ flannel_version }}-amd64"
 # flannel(systemd)
 flannel_wan_iface: ens33
-flannel_rpm: http://192.168.130.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7.x86_64.rpm
+flannel_rpm: http://192.168.8.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7.x86_64.rpm
 
 #cni_binary_url: https://github.com/containernetworking/plugins/releases/download/v0.8.0/cni-plugins-linux-amd64-v0.8.0.tgz
 #########################################################
@@ -111,14 +111,14 @@ cgroup_driver: cgroupfs
 #cgroup_driver: systemd
  
 ## kubernetes ##
-kubernetes_version: v1.18.2
+kubernetes_version: v1.20.0
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
-kubernetes_apiserver: https://192.168.130.100
+kubernetes_apiserver: https://192.168.8.100
 service_cluster_ip_range: 10.254.0.0/16
 
 ## kube-proxy ##
-#proxy_mode: ipvs
-proxy_mode: iptables
+proxy_mode: ipvs
+#proxy_mode: iptables
 
 ## kubedns ##
 #kubedns_image: "{{ docker_registry }}/google_containers/k8s-dns-kube-dns-amd64:1.14.8"

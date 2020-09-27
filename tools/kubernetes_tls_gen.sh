@@ -93,16 +93,16 @@ function kubernetes_gen {
 	{
 	    "CN": "kubernetes",
 	    "hosts": [
-	      "192.168.130.11",
-	      "192.168.130.12",
-	      "192.168.130.13",
-	      "192.168.130.21",
-	      "192.168.130.22",
-	      "192.168.130.23",
-	      "192.168.130.31",
-	      "192.168.130.32",
-	      "192.168.130.33",
-	      "192.168.130.100",
+	      "192.168.8.11",
+	      "192.168.8.12",
+	      "192.168.8.13",
+	      "192.168.8.21",
+	      "192.168.8.22",
+	      "192.168.8.23",
+	      "192.168.8.31",
+	      "192.168.8.32",
+	      "192.168.8.33",
+	      "192.168.8.100",
 	      "127.0.0.1",
 	      "10.254.0.1",
 	      "kubernetes",
@@ -164,7 +164,7 @@ function verify_pem {
 mkdir -p ../tls/kubernetes
 cd ../tls/kubernetes
 #export CFSSL_URL="https://pkg.cfssl.org/R1.2"
-export CFSSL_URL="http://192.168.130.1/ftp/linux_soft/cfssl/R1.2"
+export CFSSL_URL="http://192.168.8.1/ftp/linux_soft/cfssl/R1.2"
 download_cfssl $CFSSL_URL
 ca_gen
 admin_gen
