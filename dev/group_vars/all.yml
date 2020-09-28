@@ -38,43 +38,52 @@ docker_registry: 192.168.8.1:5000
 pod_infra_container_image: "{{ docker_registry }}/google_containers/pause-amd64:3.1"
 
 ## docker ##
-#docker_tar_url: https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
-docker_version: 19.03.6
+# https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/docker-18.06.3-ce.tgz
+docker_version: 19.03.9
 docker_tar_url: "{{ url_prefix }}/linux_soft/k8s/docker/docker-{{ docker_version }}.tgz"
 
 ## containerd ##
+# https://github.com/containerd/containerd/releases/download/v1.4.1/containerd-1.4.1-linux-amd64.tar.gz
 containerd_version: 1.4.1
 containerd_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/containerd/containerd-{{ containerd_version }}-linux-amd64.tar.gz"
 
 ## cri-o ##
+# https://storage.googleapis.com/k8s-conform-cri-o/artifacts/crio-v1.19.0.tar.gz
 crio_version: v1.19.0
 crio_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-o/crio-{{ crio_version }}.tar.gz"
 
 ## conmon ##
+# https://github.com/containers/conmon/releases/download/v2.0.20/conmon
 conmon_version: v2.0.20
 conmon_bin_url: "{{ url_prefix }}/linux_soft/k8s/conmon/{{ conmon_version }}"
 
 ## runc
+# https://github.com/opencontainers/runc/releases/download/v1.0.0-rc92/runc.amd64
 runc_version: 1.0.0-rc92
 runc_bin_url: "{{ url_prefix }}/linux_soft/k8s/runc/runc-{{ runc_version }}"
 
 ## kata-containers
+# https://github.com/kata-containers/runtime/releases/download/1.11.3/kata-static-1.11.3-x86_64.tar.xz
 kata_containers_version: 1.11.3
 kata_containers_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/kata-containers/kata-static-{{ kata_containers_version }}-x86_64.tar.xz"
 
 ## cri-tools
+# https://github.com/kubernetes-sigs/cri-tools/releases/download/v1.19.0/crictl-v1.19.0-linux-amd64.tar.gz
 cri_tools_version: v1.19.0
 cri_tools_bin_tar_url: "{{ url_prefix }}/linux_soft/k8s/cri-tools"
  
 ## podman
+# https://github.com/containers/podman/releases
 podman_version: v1.9.1
 podman_bin_url: "{{ url_prefix }}/linux_soft/k8s/podman/{{ podman_version }}"
  
 ## buildah
+# https://github.com/containers/buildah/releases
 buildah_version: v1.14.8
 buildah_bin_url: "{{ url_prefix }}/linux_soft/k8s/buildah/{{ buildah_version }}"
  
 ## skopeo
+# https://github.com/containers/skopeo/releases
 skopeo_version: v0.2.0
 skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version }}"
 #########################################################
@@ -83,6 +92,7 @@ skopeo_bin_url: "{{ url_prefix }}/linux_soft/k8s/skopeo/skopeo-{{ skopeo_version
 #########################################################
 ## network ##
 # cni
+# https://github.com/containernetworking/plugins/releases/download/v0.8.7/cni-plugins-linux-amd64-v0.8.7.tgz
 cni_version: v0.8.7
 cni_binary_url: "{{ url_prefix }}/linux_soft/k8s/cni/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
 pod_cidr: 10.244.0.0/16
@@ -99,18 +109,17 @@ flannel_image: "{{ docker_registry }}/coreos/flannel:{{ flannel_version }}-amd64
 flannel_wan_iface: ens33
 flannel_rpm: http://192.168.8.1/ftp/linux_soft/k8s/flannel/flannel-0.7.1-4.el7.x86_64.rpm
 
-#cni_binary_url: https://github.com/containernetworking/plugins/releases/download/v0.8.0/cni-plugins-linux-amd64-v0.8.0.tgz
 #########################################################
 
 
 #########################################################
 ## k8s ##
-# https://dl.k8s.io/release/v1.11.0/bin/linux/amd64/
 ## cgroup_driver ##
 cgroup_driver: cgroupfs
 #cgroup_driver: systemd
  
 ## kubernetes ##
+# https://dl.k8s.io/release/v1.20.0/bin/linux/amd64/
 kubernetes_version: v1.20.0
 kubernetes_binary_url: "{{ url_prefix }}/linux_soft/k8s/{{ kubernetes_version }}"
 kubernetes_apiserver: https://192.168.8.100
