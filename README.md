@@ -14,7 +14,6 @@ pip install ansible
 
 3. 下载ansible-k8s-tls ansible playbook
 ``` shell
-git clone https://github.com/liujun1990/ansible-k8s-tls
 cd ansible-k8s-tls
 ```
 > 以下操作都以ansible-k8s-tls为basedir
